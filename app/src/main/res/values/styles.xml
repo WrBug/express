@@ -1,0 +1,39 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="btn_main_bg">
+        <item name="android:background">@drawable/bg_button_main</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:padding">15dp</item>
+    </style>
+    <style name="edit_main_bg">
+        <item name="android:background">@drawable/bg_view_frame</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:padding">10dp</item>
+    </style>
+    <style name="btn_no_shape_bg">
+        <item name="android:background">@drawable/bg_button_no_shape</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:padding">10dp</item>
+    </style>
+    <style name="view_line">
+        <item name="android:height">1dp</item>
+        <item name="android:background">@color/black_line</item>
+    </style>
+    <style name="MyDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+</resources>

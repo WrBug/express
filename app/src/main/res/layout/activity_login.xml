@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".UI.activity.LoginActivity">
+
+    <cn.mandroid.express.UI.widget.ActionBar
+        android:id="@+id/actionBar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <LinearLayout
+            android:id="@+id/loginEditContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/usernameEdit"
+                style="@style/edit_main_bg"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:hint="学号"
+                android:singleLine="true" />
+
+            <EditText
+                android:id="@+id/passwordEdit"
+                style="@style/edit_main_bg"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_view_frame"
+                android:ems="10"
+                android:hint="密码(新用户请输入教务处密码)"
+                android:inputType="textPassword"
+                android:singleLine="true" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/checkInfoContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <EditText
+                android:id="@+id/nameEdit"
+                style="@style/edit_main_bg"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:focusable="true"
+                android:hint="真实姓名"
+                android:singleLine="true" />
+
+            <EditText
+                android:id="@+id/idcardEdit"
+                style="@style/edit_main_bg"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="20dp"
+                android:hint="身份证号码"
+                android:inputType="number"
+                android:singleLine="true" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/setPasswordContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <EditText
+                android:id="@+id/setPasswordEdit"
+                style="@style/edit_main_bg"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="20dp"
+                android:focusable="true"
+                android:hint="请输入登录密码"
+                android:inputType="textPassword"
+                android:singleLine="true" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/submit"
+            style="@style/btn_main_bg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="登录" />
+    </LinearLayout>
+</LinearLayout>

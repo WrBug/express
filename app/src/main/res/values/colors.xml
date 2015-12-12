@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="app_main">#b06720</color>
+    <color name="button_pressed">#c05720</color>
+    <color name="button_dialing">#43AA76</color>
+    <color name="button_dial_error">#ff1111</color>
+    <color name="button_dial_success">#339933</color>
+    <color name="black_line">#313030</color>
+    <color name="trans_70_black">#af000000</color>
+    <color name="trans_50_black">#80000000</color>
+    <color name="trans_30_black">#4b000000</color>
+    <color name="trans_10_black">#19000000</color>
+
+</resources>
