@@ -103,7 +103,7 @@ public class LoginActivity extends BasicActivity implements ActionBar.OnHeadImgC
         showProgressDialog();
         mJwcManager.register(username, password, name, idcard, new FetchCallBack<UserBean>() {
             @Override
-            public void onSuccess(int status, UserBean userBean) {
+            public void onSuccess(int status,int code, UserBean userBean) {
                 hideProgressDialog();
                 if (status == 1) {
                     mPreferenceHelper.saveUser(userBean);
@@ -138,7 +138,7 @@ public class LoginActivity extends BasicActivity implements ActionBar.OnHeadImgC
         showProgressDialog();
         mJwcManager.getCookie(ticket, new FetchCallBack<String>() {
             @Override
-            public void onSuccess(int status, String s) {
+            public void onSuccess(int status,int code, String s) {
                 checkInfo(s);
             }
 
@@ -152,9 +152,9 @@ public class LoginActivity extends BasicActivity implements ActionBar.OnHeadImgC
 
     private void checkInfo(final String s) {
         showProgressDialog();
-        mJwcManager.checkInfo(username, name, idcard, s, new FetchCallBack<Integer>() {
+        mJwcManager.checkInfo(username, name, idcard, s, new FetchCallBack() {
             @Override
-            public void onSuccess(int status, Integer t) {
+            public void onSuccess(int status,int code,Object o) {
                 hideProgressDialog();
                 if (status == 1) {
                     showToast("验证成功,请设置登录密码");
@@ -162,13 +162,13 @@ public class LoginActivity extends BasicActivity implements ActionBar.OnHeadImgC
                     showContainerNum = 3;
                     showContainerView();
                 } else {
-                    if (t == Constant.Code.JWC_NAME_ERROR) {
+                    if (code == Constant.Code.JWC_NAME_ERROR) {
                         showToast("姓名有误,请重新输入");
                         cookie = s;
-                    } else if (t == Constant.Code.JWC_IDCARD_ERROR) {
+                    } else if (code == Constant.Code.JWC_IDCARD_ERROR) {
                         showToast("身份证有误,请重新输入");
                         cookie = s;
-                    } else if (t == Constant.Code.JWC_COOKIE_ERROR) {
+                    } else if (code == Constant.Code.JWC_COOKIE_ERROR) {
                         showToast("验证失败,请再试一次");
                         cookie = null;
                         showContainerNum = 1;
@@ -217,7 +217,7 @@ public class LoginActivity extends BasicActivity implements ActionBar.OnHeadImgC
         showProgressDialog();
         mJwcManager.login(username, pswd, new FetchCallBack<JsonObject>() {
             @Override
-            public void onSuccess(int status, JsonObject jsonObject) {
+            public void onSuccess(int status,int code, JsonObject jsonObject) {
                 hideProgressDialog();
                 if (status == 1) {
                     Gson gson = new Gson();
@@ -227,7 +227,6 @@ public class LoginActivity extends BasicActivity implements ActionBar.OnHeadImgC
                     MainActivity_.intent(context).start();
                     finish();
                 } else {
-                    int code = jsonObject.get("code").getAsInt();
                     if (code == Constant.Code.JWC_PSWD_ERROR) {
                         showToast("教务处密码有误");
                     } else if (code == Constant.Code.NO_USER) {

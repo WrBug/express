@@ -13,6 +13,7 @@ public class Constant {
         public static final int JWC_IDCARD_ERROR=3;
         public static final int JWC_COOKIE_ERROR=4;
         public static final int PASSWORD_ERROR=5;
+        public static final int SESSION_ERROR=6;
 
     }
 }

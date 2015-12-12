@@ -63,7 +63,7 @@ public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgCl
 
     @Override
     public void rightImgClick(ImageView view) {
-
+        LoginActivity_.intent(context).start();
     }
     @Override
     public void onBackPressed() {

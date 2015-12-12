@@ -20,6 +20,7 @@ import org.w3c.dom.Document;
 import java.net.CookieManager;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import cn.mandroid.express.Model.Bean.UserBean;
 import cn.mandroid.express.Utils.MLog;
@@ -38,7 +39,7 @@ public class JwcManager extends ApiManager {
     }
 
     public void login(String studentNum, String password, final FetchCallBack<JsonObject> callBack) {
-        Map<String, String> map = new HashMap<>();
+        TreeMap<String, String> map = new TreeMap<>();
         map.put("username", studentNum);
         map.put("password", password);
         Ion.with(context).load(Constant.API_URL + "/JwcInfo/login")
@@ -47,7 +48,7 @@ public class JwcManager extends ApiManager {
             @Override
             public void onCompleted(Exception e, JsonObject result) {
                 if (e == null) {
-                    callBack.onSuccess(result.get("status").getAsInt(), result);
+                    callBack.onSuccess(result.get("status").getAsInt(),result.get("code").getAsInt(), result);
                 } else {
                     callBack.onError();
                 }
@@ -57,7 +58,7 @@ public class JwcManager extends ApiManager {
 
     public void getCookie(String ticket, final FetchCallBack<String> callBack) {
         String url = "http://jxgl.hdu.edu.cn/index.aspx?ticket=" + ticket;
-        Map<String, String> map = new HashMap<>();
+        TreeMap<String, String> map = new TreeMap<>();
         map.put("__VIEWSTATE", "/wEPDwUKLTUxMTcwNzgxMGRk");
         PreferenceHelper.instance(context).cleanCookie();
         CookieMiddleware cookieMiddleware = Ion.getDefault(context).getCookieMiddleware();
@@ -74,14 +75,14 @@ public class JwcManager extends ApiManager {
                             Multimap multimap = result.getHeaders().getHeaders().getMultiMap();
                             String session = multimap.get("set-cookie").get(0);
                             String route = multimap.get("set-cookie").get(1);
-                            callBack.onSuccess(1, session.substring(0, session.indexOf(';') + 1) + route.substring(0, route.indexOf(';')));
+                            callBack.onSuccess(1,1, session.substring(0, session.indexOf(';') + 1) + route.substring(0, route.indexOf(';')));
                         }
                     }
                 });
     }
 
-    public void checkInfo(String username, String name, String idcard, String cookie, final FetchCallBack<Integer> callBack) {
-        Map<String, String> map = new HashMap<>();
+    public void checkInfo(String username, String name, String idcard, String cookie, final FetchCallBack callBack) {
+        TreeMap<String, String> map = new TreeMap<>();
         map.put("username", username);
         map.put("name", name);
         map.put("idcard", idcard);
@@ -96,14 +97,14 @@ public class JwcManager extends ApiManager {
                     @Override
                     public void onCompleted(Exception e, JsonObject result) {
                         if (e == null) {
-                            callBack.onSuccess(result.get("status").getAsInt(), result.get("code").getAsInt());
+                            callBack.onSuccess(result.get("status").getAsInt(), result.get("code").getAsInt(),null);
                         }
                     }
                 });
     }
 
     public void register(String username, String password, String name, String idcard, final FetchCallBack<UserBean> callback) {
-        Map<String, String> map = new HashMap<>();
+        TreeMap<String, String> map = new TreeMap<>();
         map.put("username", username);
         map.put("password", password);
         map.put("name", name);
@@ -117,7 +118,7 @@ public class JwcManager extends ApiManager {
                         if (e == null) {
                             Gson gson = new Gson();
                             UserBean userBean = gson.fromJson(result, UserBean.class);
-                            callback.onSuccess(result.get("status").getAsInt(), userBean);
+                            callback.onSuccess(result.get("status").getAsInt(), result.get("code").getAsInt(), userBean);
                         } else {
                             callback.onError();
                         }

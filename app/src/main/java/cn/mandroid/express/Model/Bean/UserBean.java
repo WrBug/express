@@ -12,6 +12,15 @@ public class UserBean implements Serializable {
     private int integral;
     private int releaseCount;
     private int receiveCount;
+    private String sessionId;
+
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
 
     public String getUsername() {
         return username;

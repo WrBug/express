@@ -2,6 +2,7 @@ package cn.mandroid.express.Utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.TextUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +26,7 @@ public class Preference {
     public static String INTEGRAL = "integral";
     public static String RELEASE_COUNT = "releaseCount";
     public static String RECEIVE_COUNT = "receiveCount";
-
+    public static String SESSION_ID = "sessionId";
 
     public static Preference instance(Context context) {
         if (catche == null) {
@@ -59,6 +60,9 @@ public class Preference {
     }
 
     public void putString(String key, String value) {
+        if(value==null){
+            return;
+        }
         spf.edit().putString(key, value).commit();
     }
 
