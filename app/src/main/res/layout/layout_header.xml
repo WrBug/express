@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="60dp">
+    android:layout_height="48dp">
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
 
@@ -21,7 +21,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:paddingLeft="5dp"
+            android:padding="5dp"
             android:src="@drawable/ic_head_back" />
 
         <ImageView
@@ -31,7 +31,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:paddingRight="5dp"
+            android:padding="5dp"
             android:src="@drawable/ic_head_more" />
 
         <TextView
@@ -44,7 +44,7 @@
             android:gravity="center"
             android:text="标题"
             android:textColor="@android:color/white"
-            android:textSize="25sp" />
+            android:textSize="20sp" />
 
 
     </RelativeLayout>

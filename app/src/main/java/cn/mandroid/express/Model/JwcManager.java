@@ -1,6 +1,7 @@
 package cn.mandroid.express.Model;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -48,7 +49,7 @@ public class JwcManager extends ApiManager {
             @Override
             public void onCompleted(Exception e, JsonObject result) {
                 if (e == null) {
-                    callBack.onSuccess(result.get("status").getAsInt(),result.get("code").getAsInt(), result);
+                    callBack.onSuccess(result.get("status").getAsInt(), result.get("code").getAsInt(), result);
                 } else {
                     callBack.onError();
                 }
@@ -75,13 +76,13 @@ public class JwcManager extends ApiManager {
                             Multimap multimap = result.getHeaders().getHeaders().getMultiMap();
                             String session = multimap.get("set-cookie").get(0);
                             String route = multimap.get("set-cookie").get(1);
-                            callBack.onSuccess(1,1, session.substring(0, session.indexOf(';') + 1) + route.substring(0, route.indexOf(';')));
+                            callBack.onSuccess(1, 1, session.substring(0, session.indexOf(';') + 1) + route.substring(0, route.indexOf(';')));
                         }
                     }
                 });
     }
 
-    public void checkInfo(String username, String name, String idcard, String cookie, final FetchCallBack callBack) {
+    public void checkInfo(String username, String name, String idcard, String cookie, final FetchCallBack<Integer> callBack) {
         TreeMap<String, String> map = new TreeMap<>();
         map.put("username", username);
         map.put("name", name);
@@ -97,17 +98,18 @@ public class JwcManager extends ApiManager {
                     @Override
                     public void onCompleted(Exception e, JsonObject result) {
                         if (e == null) {
-                            callBack.onSuccess(result.get("status").getAsInt(), result.get("code").getAsInt(),null);
+                            callBack.onSuccess(result.get("status").getAsInt(), result.get("code").getAsInt(), result.get("data")==null|| TextUtils.isEmpty(result.get("data").getAsString())?0:result.get("data").getAsInt());
                         }
                     }
                 });
     }
 
-    public void register(String username, String password, String name, String idcard, final FetchCallBack<UserBean> callback) {
+    public void register(String username, String password, String name, String idcard, String sex, final FetchCallBack<UserBean> callback) {
         TreeMap<String, String> map = new TreeMap<>();
         map.put("username", username);
         map.put("password", password);
         map.put("name", name);
+        map.put("sex", sex);
         map.put("idcard", idcard);
         Ion.with(context).load(Constant.API_URL + "/JwcInfo/register")
                 .setBodyParameters(getFinalMap(map))
@@ -117,7 +119,7 @@ public class JwcManager extends ApiManager {
                     public void onCompleted(Exception e, JsonObject result) {
                         if (e == null) {
                             Gson gson = new Gson();
-                            UserBean userBean = gson.fromJson(result, UserBean.class);
+                            UserBean userBean = gson.fromJson(result.get("data"), UserBean.class);
                             callback.onSuccess(result.get("status").getAsInt(), result.get("code").getAsInt(), userBean);
                         } else {
                             callback.onError();

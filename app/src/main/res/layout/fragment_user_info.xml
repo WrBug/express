@@ -1,13 +1,218 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/userInfoContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/ashy_bg"
     tools:context="cn.mandroid.express.UI.activity.UserInfoFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:orientation="vertical">
 
-</FrameLayout>
+        <RelativeLayout
+            android:id="@+id/userInfoTopContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:gravity="center|left"
+            android:padding="15dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/userIcoImg"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/ic_user_default_man"
+                app:civ_border_color="@color/app_main"
+                app:civ_border_width="2dp" />
+
+            <ImageView
+                android:id="@+id/userSexImg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/userSignInText"
+                android:layout_alignEnd="@+id/userIcoImg"
+                android:layout_alignRight="@+id/userIcoImg"
+                android:src="@drawable/ic_user_sex_male" />
+
+            <TextView
+                android:id="@+id/userNameText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/userIcoImg"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="15dp"
+                android:layout_toEndOf="@+id/userIcoImg"
+                android:layout_toRightOf="@+id/userIcoImg"
+                android:text="王滔"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/userLevelText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/userLevelUpText"
+                android:layout_marginLeft="10dp"
+                android:layout_toEndOf="@+id/userNameText"
+                android:layout_toRightOf="@+id/userNameText"
+                android:text="帮助之星"
+                android:textColor="@color/app_main"
+                android:textSize="10sp" />
+
+            <TextView
+                android:id="@+id/userLevelUpText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/userNameText"
+                android:layout_alignStart="@+id/userNameText"
+                android:layout_below="@+id/userNameText"
+                android:layout_marginTop="20dp"
+                android:maxLength="15"
+                android:text="还差140分升级到帮助达人!"
+                android:textSize="10sp" />
+
+            <ProgressBar
+                android:id="@+id/userLevelUpProgress"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/userLevelUpText"
+                android:layout_alignLeft="@+id/userLevelUpText"
+                android:layout_alignRight="@+id/userLevelUpText"
+                android:layout_alignStart="@+id/userLevelUpText"
+                android:layout_below="@+id/userLevelUpText"
+                android:layout_marginTop="8dp"
+                android:max="100"
+                android:progress="70"
+                android:indeterminate="false" />
+
+            <TextView
+                android:id="@+id/userSignInText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/userIcoImg"
+                android:layout_alignParentBottom="true"
+                android:layout_alignRight="@+id/userIcoImg"
+                android:layout_below="@+id/userIcoImg"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:padding="15dp"
+                android:text="签到" />
+
+            <TextView
+                android:id="@+id/userSignInCountText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/userSignInText"
+                android:layout_alignBottom="@+id/userSignInText"
+                android:layout_alignLeft="@+id/userNameText"
+                android:layout_alignStart="@+id/userNameText"
+                android:text="已连续签到1天" />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/userInfoIntegralContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_white_color_shape"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
+                android:text="积分" />
+
+            <TextView
+                android:id="@+id/howToGetIntegralText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/textView7"
+                android:layout_alignStart="@+id/textView7"
+                android:layout_below="@+id/textView7"
+                android:layout_marginTop="10dp"
+                android:text="如何获取积分?"
+                android:textColor="@android:color/holo_blue_bright" />
+
+            <TextView
+                android:id="@+id/userIntegralDetailText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/howToGetIntegralText"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@+id/textView7"
+                android:layout_marginEnd="37dp"
+                android:layout_marginRight="37dp"
+                android:gravity="center"
+                android:text="查看积分\n获取记录" />
+
+            <TextView
+                android:id="@+id/userIntegralText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/howToGetIntegralText"
+                android:layout_marginLeft="10dp"
+                android:layout_toEndOf="@+id/textView7"
+                android:layout_toRightOf="@+id/textView7"
+                android:text="160"
+                android:textColor="@color/app_main" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/userInfoTaskContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_white_color_shape"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/userReleaseCountText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_user_info_release"
+                android:drawablePadding="10dp"
+                android:drawableRight="@drawable/ic_tip_right_black"
+                android:gravity="bottom"
+                android:padding="5dp"
+                android:text="我发布了5条消息" />
+
+            <View
+                style="@style/view_line"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_height="1dp" />
+
+            <TextView
+                android:id="@+id/userReceiveCountText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="bottom"
+                android:layout_marginTop="5dp"
+                android:drawableLeft="@drawable/ic_user_info_receive"
+                android:drawablePadding="10dp"
+                android:drawableRight="@drawable/ic_tip_right_black"
+                android:padding="5dp"
+                android:text="我帮忙拿了10次快递" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
+

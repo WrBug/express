@@ -1,6 +1,8 @@
 package cn.mandroid.express.UI.dialog;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
 
 import cn.mandroid.express.R;
 
@@ -12,8 +14,23 @@ public class ProgressDialog extends BaseDialog {
     private ProgressDialog(Context context) {
         super(context);
         setContentView(R.layout.dialog_progress);
-        setCancelable(false);
     }
+
+    @Override
+    public void show() {
+        setCancelable(false);
+        Handler handler=new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message msg) {
+                setCancelable(true);
+                return false;
+            }
+        });
+        handler.sendEmptyMessageDelayed(0,8000);
+        super.show();
+
+    }
+
     public static ProgressDialog instance(Context context){
         if(dialog==null){
             dialog=new ProgressDialog(context);

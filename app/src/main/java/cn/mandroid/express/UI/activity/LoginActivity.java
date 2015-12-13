@@ -52,6 +52,7 @@ public class LoginActivity extends BasicActivity implements ActionBar.OnHeadImgC
     String username;
     String cookie;
     String name;
+    String sex;
     String idcard;
     int showContainerNum = 1;
 
@@ -77,9 +78,12 @@ public class LoginActivity extends BasicActivity implements ActionBar.OnHeadImgC
     void onSubmitClick() {
         switch (showContainerNum) {
             case 1:
+                username = usernameEdit.getText().toString();
                 doLogin();
                 break;
             case 2:
+                name = nameEdit.getText().toString();
+                idcard = idcardEdit.getText().toString();
                 if (TextUtils.isEmpty(cookie)) {
                     getCookie();
                 } else {
@@ -101,7 +105,7 @@ public class LoginActivity extends BasicActivity implements ActionBar.OnHeadImgC
         }
         password = MD5.encode(password);
         showProgressDialog();
-        mJwcManager.register(username, password, name, idcard, new FetchCallBack<UserBean>() {
+        mJwcManager.register(username, password, name, idcard,sex, new FetchCallBack<UserBean>() {
             @Override
             public void onSuccess(int status,int code, UserBean userBean) {
                 hideProgressDialog();
@@ -125,12 +129,10 @@ public class LoginActivity extends BasicActivity implements ActionBar.OnHeadImgC
     }
 
     private void getCookie() {
-        name = nameEdit.getText().toString();
         if(TextUtils.isEmpty(name)){
             showToast("姓名输入有误");
             return;
         }
-        idcard = idcardEdit.getText().toString();
         if(TextUtils.isEmpty(idcard)){
             showToast("身份证输入有误");
             return;
@@ -152,11 +154,12 @@ public class LoginActivity extends BasicActivity implements ActionBar.OnHeadImgC
 
     private void checkInfo(final String s) {
         showProgressDialog();
-        mJwcManager.checkInfo(username, name, idcard, s, new FetchCallBack() {
+        mJwcManager.checkInfo(username, name, idcard, s, new FetchCallBack<Integer>() {
             @Override
-            public void onSuccess(int status,int code,Object o) {
+            public void onSuccess(int status,int code,Integer sexNum) {
                 hideProgressDialog();
                 if (status == 1) {
+                    sex=sexNum+"";
                     showToast("验证成功,请设置登录密码");
                     cookie = s;
                     showContainerNum = 3;
@@ -192,18 +195,20 @@ public class LoginActivity extends BasicActivity implements ActionBar.OnHeadImgC
         switch (showContainerNum) {
             case 1:
                 submit.setText("登录");
+                actionBar.setTitle("登录");
                 break;
             case 2:
                 submit.setText("验证");
+                actionBar.setTitle("验证");
                 break;
             case 3:
                 submit.setText("提交");
+                actionBar.setTitle("注册");
                 break;
         }
     }
 
     private void doLogin() {
-        username = usernameEdit.getText().toString();
         if (TextUtils.isEmpty(username)) {
             showToast("学号不得为空");
             return;
@@ -221,7 +226,7 @@ public class LoginActivity extends BasicActivity implements ActionBar.OnHeadImgC
                 hideProgressDialog();
                 if (status == 1) {
                     Gson gson = new Gson();
-                    UserBean userBean = gson.fromJson(jsonObject.get("data").getAsJsonObject(), UserBean.class);
+                    UserBean userBean = gson.fromJson(jsonObject.get("data"), UserBean.class);
                     mPreferenceHelper.saveUser(userBean);
                     showToast("登录成功");
                     MainActivity_.intent(context).start();

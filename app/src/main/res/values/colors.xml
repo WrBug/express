@@ -8,10 +8,10 @@
     <color name="button_dialing">#43AA76</color>
     <color name="button_dial_error">#ff1111</color>
     <color name="button_dial_success">#339933</color>
-    <color name="black_line">#313030</color>
+    <color name="black_line">#93929a</color>
     <color name="trans_70_black">#af000000</color>
     <color name="trans_50_black">#80000000</color>
     <color name="trans_30_black">#4b000000</color>
     <color name="trans_10_black">#19000000</color>
-
+    <color name="ashy_bg">#cccccc</color>
 </resources>

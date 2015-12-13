@@ -13,6 +13,32 @@ public class UserBean implements Serializable {
     private int releaseCount;
     private int receiveCount;
     private String sessionId;
+    private int signInCount;
+    private int sex;
+    private String avatarUrl;
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
+    public int getSignInCount() {
+        return signInCount;
+    }
+
+    public void setSignInCount(int signInCount) {
+        this.signInCount = signInCount;
+    }
+
+    public int getSex() {
+        return sex;
+    }
+
+    public void setSex(int sex) {
+        this.sex = sex;
+    }
 
     public String getSessionId() {
         return sessionId;

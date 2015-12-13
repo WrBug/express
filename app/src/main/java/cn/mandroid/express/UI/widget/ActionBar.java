@@ -16,12 +16,9 @@ public class ActionBar extends RelativeLayout implements OnClickListener {
     private ImageView rightImg;
     private TextView titleText;
     private OnHeadImgClickListenner clickListenner;
-    private Context context;
-    private String tbUrl = "http://color-we.taobao.com";
 
     public ActionBar(Context context, AttributeSet attr) {
         super(context, attr);
-        this.context = context;
         // TODO Auto-generated constructor stub
         LayoutInflater.from(context).inflate(R.layout.layout_header, this);
         leftImg = (ImageView) findViewById(R.id.headLeftImg);
