@@ -14,7 +14,7 @@ public class UserBean implements Serializable {
     private int receiveCount;
     private String sessionId;
     private int signInCount;
-    private int sex;
+    private Integer sex;
     private String avatarUrl;
 
     public String getAvatarUrl() {
@@ -32,11 +32,11 @@ public class UserBean implements Serializable {
         this.signInCount = signInCount;
     }
 
-    public int getSex() {
+    public Integer getSex() {
         return sex;
     }
 
-    public void setSex(int sex) {
+    public void setSex(Integer sex) {
         this.sex = sex;
     }
 

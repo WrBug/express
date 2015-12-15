@@ -21,6 +21,7 @@ import cn.mandroid.express.Model.Constant;
 import cn.mandroid.express.Model.FetchCallBack;
 import cn.mandroid.express.Model.JwcManager;
 import cn.mandroid.express.R;
+import cn.mandroid.express.UI.common.BasicActivity;
 import cn.mandroid.express.UI.widget.ActionBar;
 import cn.mandroid.express.Utils.MD5;
 

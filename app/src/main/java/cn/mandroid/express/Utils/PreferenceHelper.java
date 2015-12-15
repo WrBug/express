@@ -2,8 +2,10 @@ package cn.mandroid.express.Utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.TextUtils;
 
 import cn.mandroid.express.Model.Bean.UserBean;
+import cn.mandroid.express.Model.Constant;
 
 /**
  * Created by Administrator on 2015-11-15.
@@ -55,17 +57,31 @@ public class PreferenceHelper {
         preference.putInt(Preference.RELEASE_COUNT, userBean.getReleaseCount());
         preference.putInt(Preference.RECEIVE_COUNT, userBean.getReceiveCount());
         preference.putString(Preference.SESSION_ID, userBean.getSessionId());
+        preference.putInt(Preference.SIGN_IN_COUNT, userBean.getSignInCount());
+        preference.putInt(Preference.USER_SEX, userBean.getSex());
+        preference.putString(Preference.AVATAR_URL, userBean.getAvatarUrl());
+    }
+
+    public UserBean updataUser() {
+        mUserBean = new UserBean();
+        mUserBean.setIntegral(preference.getInt(Preference.INTEGRAL));
+        mUserBean.setUsername(preference.getString(Preference.USERNAME));
+        mUserBean.setName(preference.getString(Preference.NAME));
+        mUserBean.setReceiveCount(preference.getInt(Preference.RECEIVE_COUNT));
+        mUserBean.setReleaseCount(preference.getInt(Preference.RELEASE_COUNT));
+        mUserBean.setSessionId(preference.getString(Preference.SESSION_ID));
+        mUserBean.setSignInCount(preference.getInt(Preference.SIGN_IN_COUNT));
+        mUserBean.setSex(preference.getInt(Preference.USER_SEX));
+        mUserBean.setAvatarUrl(preference.getString(Preference.AVATAR_URL));
+        if (TextUtils.isEmpty(mUserBean.getUsername()) || TextUtils.isEmpty(mUserBean.getSessionId())) {
+            mUserBean = null;
+        }
+        return mUserBean;
     }
 
     public UserBean getUser() {
         if (mUserBean == null) {
-            mUserBean=new UserBean();
-            mUserBean.setIntegral(preference.getInt(Preference.INTEGRAL));
-            mUserBean.setUsername(preference.getString(Preference.USERNAME));
-            mUserBean.setName(preference.getString(Preference.NAME));
-            mUserBean.setReceiveCount(preference.getInt(Preference.RECEIVE_COUNT));
-            mUserBean.setReleaseCount(preference.getInt(Preference.RELEASE_COUNT));
-            mUserBean.setSessionId(preference.getString(Preference.SESSION_ID));
+            return updataUser();
         }
         return mUserBean;
     }

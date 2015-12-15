@@ -16,6 +16,13 @@
         <item name="android:textColor">@android:color/white</item>
         <item name="android:padding">15dp</item>
     </style>
+    <style name="bottom_dialog_text_bg">
+        <item name="android:background">@drawable/bg_white_color_shape</item>
+        <item name="android:textColor">@color/app_main</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">5dp</item>
+    </style>
     <style name="edit_main_bg">
         <item name="android:background">@drawable/bg_view_frame</item>
         <item name="android:textColor">@android:color/black</item>
@@ -35,5 +42,10 @@
         <item name="android:windowFrame">@null</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+    <style name="MyDialogFragment" parent="@android:style/Theme.Black.NoTitleBar.Fullscreen">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/trans_50_black</item>
     </style>
 </resources>

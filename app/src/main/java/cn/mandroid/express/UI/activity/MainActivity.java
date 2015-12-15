@@ -6,24 +6,22 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.CheckedChange;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
 import cn.mandroid.express.Event.ExitApp;
 import cn.mandroid.express.Model.JwcManager;
 import cn.mandroid.express.R;
+import cn.mandroid.express.UI.common.BasicActivity;
 import cn.mandroid.express.UI.widget.ActionBar;
-import cn.mandroid.express.Utils.MToast;
 import de.greenrobot.event.EventBus;
 
 @EActivity(R.layout.activity_main)
-public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgClickListenner,RadioGroup.OnCheckedChangeListener{
+public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgClickListenner, RadioGroup.OnCheckedChangeListener {
     @Bean
     JwcManager jwcManager;
     @ViewById
@@ -33,12 +31,14 @@ public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgCl
     @ViewById
     RadioGroup tabMenu;
     long exitTime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
     @AfterViews
-    void afterView(){
+    void afterView() {
         setActionBar();
         tabMenu.setOnCheckedChangeListener(this);
     }
@@ -49,13 +49,14 @@ public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgCl
         actionBar.setOnHeadImgClickListenner(this);
 
     }
-    private void setFragment(Fragment fragment)
-    {
-        FragmentManager fm=getSupportFragmentManager();
+
+    private void setFragment(Fragment fragment) {
+        FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.replace(R.id.fragmentContainer, fragment);
         transaction.commit();
     }
+
     @Override
     public void leftImgClick(ImageView view) {
 
@@ -65,25 +66,30 @@ public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgCl
     public void rightImgClick(ImageView view) {
         LoginActivity_.intent(context).start();
     }
+
     @Override
     public void onBackPressed() {
-        if(System.currentTimeMillis()-exitTime>2000){
+        if (System.currentTimeMillis() - exitTime > 2000) {
             showToast("再按一次退出");
-            exitTime=System.currentTimeMillis();
-        }else {
+            exitTime = System.currentTimeMillis();
+        } else {
             EventBus.getDefault().post(new ExitApp());
         }
     }
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
-        switch (checkedId){
+        switch (checkedId) {
             case R.id.rbChat:
                 break;
             case R.id.rbCenter:
                 break;
             case R.id.rbMy:
-                UserInfoFragment fragment=UserInfoFragment_.builder().build();
+                if (mPreferenceHelper.getUser() == null) {
+                    LoginActivity_.intent(context).start();
+                    return;
+                }
+                UserInfoFragment fragment = UserInfoFragment_.builder().build();
                 setFragment(fragment);
                 break;
         }

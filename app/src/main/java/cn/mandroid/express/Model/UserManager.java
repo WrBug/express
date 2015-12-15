@@ -6,14 +6,16 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
+import com.koushikdutta.ion.ProgressCallback;
 
 import org.androidannotations.annotations.EBean;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.File;
 import java.util.TreeMap;
 
 import cn.mandroid.express.Model.Bean.UserBean;
+import cn.mandroid.express.UI.common.App;
+import cn.mandroid.express.Utils.MLog;
 
 /**
  * Created by Administrator on 2015-12-13.
@@ -47,6 +49,41 @@ public class UserManager extends ApiManager {
                         } else {
                             callBack.onError();
                         }
+                    }
+                });
+    }
+
+    public void uploadAvatar(String username, String sessionId, File file, final FetchCallBack<String> callBack) {
+        TreeMap<String, String> map = new TreeMap<>();
+        map.put("username", username);
+        map.put("sessionId", sessionId);
+        Ion.with(context).load(Constant.API_URL + "/User/uploadAvatar")
+                .setTimeout(1000*60*5)
+                .uploadProgress(new ProgressCallback() {
+                    @Override
+                    public void onProgress(long downloaded, long total) {
+                        MLog.i(downloaded+":"+total);
+                    }
+                })
+                .setMultipartFile("userfile", "image/png", file)
+                .setMultipartParameters(getFinalMap(map))
+                .asJsonObject()
+                .setCallback(new FutureCallback<JsonObject>() {
+                    @Override
+                    public void onCompleted(Exception e, JsonObject result) {
+                       if(e==null){
+                           if(result.get("status").getAsInt()==1){
+                               UserBean userBean=App.INSTANCE.getUser();
+                               String url=result.get("data").getAsString();
+                               userBean.setAvatarUrl(url);
+                               App.INSTANCE.saveUser(userBean);
+                               callBack.onSuccess(1,1,url);
+                           }else {
+                               callBack.onSuccess(result.get("status").getAsInt(),result.get("code").getAsInt(),null);
+                           }
+                       }else {
+                           callBack.onError();
+                       }
                     }
                 });
     }

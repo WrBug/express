@@ -1,6 +1,7 @@
 package cn.mandroid.express.UI.common;
 
 import android.app.Application;
+import android.util.Log;
 
 import com.koushikdutta.ion.Ion;
 
@@ -18,6 +19,7 @@ public class App extends Application{
     public void onCreate() {
         super.onCreate();
         INSTANCE=this;
+        Ion.getDefault(this).configure().setLogging("ion-sample", Log.DEBUG);
     }
     public UserBean getUser(){
         return PreferenceHelper.instance(this).getUser();

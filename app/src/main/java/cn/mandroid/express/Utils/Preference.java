@@ -27,7 +27,9 @@ public class Preference {
     public static String RELEASE_COUNT = "releaseCount";
     public static String RECEIVE_COUNT = "receiveCount";
     public static String SESSION_ID = "sessionId";
-
+    public static String SIGN_IN_COUNT = "signInCount";
+    public static String USER_SEX = "sex";
+    public static String AVATAR_URL = "avatarUrl";
     public static Preference instance(Context context) {
         if (catche == null) {
             catche = new Preference(context);
@@ -52,6 +54,9 @@ public class Preference {
     }
 
     public void putBoolean(String key, boolean value) {
+        if(!value){
+            return;
+        }
         spf.edit().putBoolean(key, value).commit();
     }
 
@@ -71,10 +76,16 @@ public class Preference {
     }
 
     public void putInt(String key, int value) {
+        if(value==0){
+            return;
+        }
         spf.edit().putInt(key, value).commit();
     }
 
     public void putLong(String key, long value) {
+        if(value==0){
+            return;
+        }
         spf.edit().putLong(key, value).commit();
     }
 
