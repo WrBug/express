@@ -1,4 +1,4 @@
-package cn.mandroid.express.UI.activity;
+package cn.mandroid.express.UI.common;
 
 import android.app.ActionBar;
 import android.app.Activity;
