@@ -16,6 +16,7 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
+import cn.mandroid.express.Event.ChatEvent;
 import cn.mandroid.express.Model.Bean.UserBean;
 import cn.mandroid.express.Model.Constant;
 import cn.mandroid.express.Model.FetchCallBack;
@@ -24,6 +25,7 @@ import cn.mandroid.express.R;
 import cn.mandroid.express.UI.common.BasicActivity;
 import cn.mandroid.express.UI.widget.ActionBar;
 import cn.mandroid.express.Utils.MD5;
+import de.greenrobot.event.EventBus;
 
 @EActivity(R.layout.activity_login)
 public class LoginActivity extends BasicActivity implements ActionBar.OnHeadImgClickListenner {
@@ -100,20 +102,21 @@ public class LoginActivity extends BasicActivity implements ActionBar.OnHeadImgC
 
     private void doRegister() {
         String password = setPasswordEdit.getText().toString();
-        if(TextUtils.isEmpty(password)){
+        if (TextUtils.isEmpty(password)) {
             showToast("密码不能为空");
             return;
         }
         password = MD5.encode(password);
         showProgressDialog();
-        mJwcManager.register(username, password, name, idcard,sex, new FetchCallBack<UserBean>() {
+        mJwcManager.register(username, password, name, idcard, sex, new FetchCallBack<UserBean>() {
             @Override
-            public void onSuccess(int status,int code, UserBean userBean) {
+            public void onSuccess(int status, int code, UserBean userBean) {
                 hideProgressDialog();
                 if (status == 1) {
                     mPreferenceHelper.saveUser(userBean);
                     mPreferenceHelper.savePassword("");
                     showToast("注册成功!");
+                    EventBus.getDefault().post(new ChatEvent(ChatEvent.Action.CONNECT));
                     MainActivity_.intent(context).start();
                     finish();
                 } else {
@@ -130,18 +133,18 @@ public class LoginActivity extends BasicActivity implements ActionBar.OnHeadImgC
     }
 
     private void getCookie() {
-        if(TextUtils.isEmpty(name)){
+        if (TextUtils.isEmpty(name)) {
             showToast("姓名输入有误");
             return;
         }
-        if(TextUtils.isEmpty(idcard)){
+        if (TextUtils.isEmpty(idcard)) {
             showToast("身份证输入有误");
             return;
         }
         showProgressDialog();
         mJwcManager.getCookie(ticket, new FetchCallBack<String>() {
             @Override
-            public void onSuccess(int status,int code, String s) {
+            public void onSuccess(int status, int code, String s) {
                 checkInfo(s);
             }
 
@@ -157,10 +160,10 @@ public class LoginActivity extends BasicActivity implements ActionBar.OnHeadImgC
         showProgressDialog();
         mJwcManager.checkInfo(username, name, idcard, s, new FetchCallBack<Integer>() {
             @Override
-            public void onSuccess(int status,int code,Integer sexNum) {
+            public void onSuccess(int status, int code, Integer sexNum) {
                 hideProgressDialog();
                 if (status == 1) {
-                    sex=sexNum+"";
+                    sex = sexNum + "";
                     showToast("验证成功,请设置登录密码");
                     cookie = s;
                     showContainerNum = 3;
@@ -223,13 +226,14 @@ public class LoginActivity extends BasicActivity implements ActionBar.OnHeadImgC
         showProgressDialog();
         mJwcManager.login(username, pswd, new FetchCallBack<JsonObject>() {
             @Override
-            public void onSuccess(int status,int code, JsonObject jsonObject) {
+            public void onSuccess(int status, int code, JsonObject jsonObject) {
                 hideProgressDialog();
                 if (status == 1) {
                     Gson gson = new Gson();
                     UserBean userBean = gson.fromJson(jsonObject.get("data"), UserBean.class);
                     mPreferenceHelper.saveUser(userBean);
                     showToast("登录成功");
+                    EventBus.getDefault().post(new ChatEvent(ChatEvent.Action.CONNECT));
                     MainActivity_.intent(context).start();
                     finish();
                 } else {

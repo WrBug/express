@@ -86,7 +86,6 @@ public class UserInfoFragment extends BasicFragment {
                 cropIco(path.get(0));
             }
         }
-        // 处理你自己的逻辑 ....
     }
 
     private void cropIco(String path) {
@@ -182,6 +181,6 @@ public class UserInfoFragment extends BasicFragment {
                 return i;
             }
         }
-        return 4;
+        return 3;
     }
 }

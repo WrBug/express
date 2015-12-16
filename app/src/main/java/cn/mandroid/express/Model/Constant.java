@@ -15,5 +15,6 @@ public class Constant {
         public static final int PASSWORD_ERROR=5;
         public static final int SESSION_ERROR=6;
         public static final int UPLOAD_FAILED=7;
+        public static final int GET_TOKEN_ERROR=8;
     }
 }

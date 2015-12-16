@@ -16,6 +16,15 @@ public class UserBean implements Serializable {
     private int signInCount;
     private Integer sex;
     private String avatarUrl;
+    private String token;
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 
     public String getAvatarUrl() {
         return avatarUrl;

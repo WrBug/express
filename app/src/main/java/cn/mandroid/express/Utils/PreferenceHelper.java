@@ -60,9 +60,10 @@ public class PreferenceHelper {
         preference.putInt(Preference.SIGN_IN_COUNT, userBean.getSignInCount());
         preference.putInt(Preference.USER_SEX, userBean.getSex());
         preference.putString(Preference.AVATAR_URL, userBean.getAvatarUrl());
+        preference.putString(Preference.TOKEN, userBean.getToken());
     }
 
-    public UserBean updataUser() {
+    private UserBean updataUser() {
         mUserBean = new UserBean();
         mUserBean.setIntegral(preference.getInt(Preference.INTEGRAL));
         mUserBean.setUsername(preference.getString(Preference.USERNAME));
@@ -73,9 +74,7 @@ public class PreferenceHelper {
         mUserBean.setSignInCount(preference.getInt(Preference.SIGN_IN_COUNT));
         mUserBean.setSex(preference.getInt(Preference.USER_SEX));
         mUserBean.setAvatarUrl(preference.getString(Preference.AVATAR_URL));
-        if (TextUtils.isEmpty(mUserBean.getUsername()) || TextUtils.isEmpty(mUserBean.getSessionId())) {
-            mUserBean = null;
-        }
+        mUserBean.setToken(preference.getString(Preference.TOKEN));
         return mUserBean;
     }
 

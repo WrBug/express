@@ -30,6 +30,8 @@ public class Preference {
     public static String SIGN_IN_COUNT = "signInCount";
     public static String USER_SEX = "sex";
     public static String AVATAR_URL = "avatarUrl";
+    public static String TOKEN = "token";
+
     public static Preference instance(Context context) {
         if (catche == null) {
             catche = new Preference(context);

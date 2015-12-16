@@ -42,13 +42,14 @@ dependencies {
     apt "org.androidannotations:androidannotations:$AAVersion"
     compile "org.androidannotations:androidannotations-api:$AAVersion"
     compile 'com.koushikdutta.ion:ion:2.+'
-    compile 'de.greenrobot:eventbus:2.4.0'
+//    compile 'de.greenrobot:eventbus:2.4.0'
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.android.support:support-v4:23.0.1'
     compile 'de.hdodenhof:circleimageview:2.0.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     //https://github.com/edmodo/cropper/wiki#Usage
     compile 'com.edmodo:cropper:1.0.1'
+    compile project(':IMKitWithVoIP')
 }
 apt {
     arguments {

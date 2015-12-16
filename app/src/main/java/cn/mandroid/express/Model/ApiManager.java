@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import cn.mandroid.express.Utils.MD5;
+
 /**
  * Created by Administrator on 2015-12-11.
  */
@@ -31,7 +33,7 @@ public class ApiManager {
             params.put(entry.getKey(), list);
         }
         list = new ArrayList<>();
-        list.add(stringBuilder.toString());
+        list.add(MD5.encode(stringBuilder.toString()));
         params.put("code", list);
         return params;
     }

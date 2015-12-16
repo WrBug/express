@@ -57,12 +57,14 @@ public class UserManager extends ApiManager {
         TreeMap<String, String> map = new TreeMap<>();
         map.put("username", username);
         map.put("sessionId", sessionId);
+        map.put("host", Constant.API_URL);
+        map.put("fileType", file.getName().substring(file.getName().lastIndexOf('.')));
         Ion.with(context).load(Constant.API_URL + "/User/uploadAvatar")
-                .setTimeout(1000*60*5)
+                .setTimeout(1000 * 60 * 5)
                 .uploadProgress(new ProgressCallback() {
                     @Override
                     public void onProgress(long downloaded, long total) {
-                        MLog.i(downloaded+":"+total);
+                        MLog.i(downloaded + ":" + total);
                     }
                 })
                 .setMultipartFile("userfile", "image/png", file)
@@ -71,19 +73,42 @@ public class UserManager extends ApiManager {
                 .setCallback(new FutureCallback<JsonObject>() {
                     @Override
                     public void onCompleted(Exception e, JsonObject result) {
-                       if(e==null){
-                           if(result.get("status").getAsInt()==1){
-                               UserBean userBean=App.INSTANCE.getUser();
-                               String url=result.get("data").getAsString();
-                               userBean.setAvatarUrl(url);
-                               App.INSTANCE.saveUser(userBean);
-                               callBack.onSuccess(1,1,url);
-                           }else {
-                               callBack.onSuccess(result.get("status").getAsInt(),result.get("code").getAsInt(),null);
-                           }
-                       }else {
-                           callBack.onError();
-                       }
+                        if (e == null) {
+                            if (result.get("status").getAsInt() == 1) {
+                                UserBean userBean = App.INSTANCE.getUser();
+                                String url = result.get("data").getAsString();
+                                userBean.setAvatarUrl(url);
+                                App.INSTANCE.saveUser(userBean);
+                                callBack.onSuccess(1, 1, url);
+                            } else {
+                                callBack.onSuccess(result.get("status").getAsInt(), result.get("code").getAsInt(), null);
+                            }
+                        } else {
+                            callBack.onError();
+                        }
+                    }
+                });
+    }
+
+    public void getToken(String username, String sessionId, final FetchCallBack<String> callBack) {
+        TreeMap<String, String> map = new TreeMap<>();
+        map.put("username", username);
+        map.put("sessionId", sessionId);
+        Ion.with(context).load(Constant.API_URL + "/RongIm/getToken")
+                .setMultipartParameters(getFinalMap(map))
+                .asJsonObject()
+                .setCallback(new FutureCallback<JsonObject>() {
+                    @Override
+                    public void onCompleted(Exception e, JsonObject result) {
+                        if (e == null) {
+                            if (result.get("status").getAsInt() == 1) {
+                                callBack.onSuccess(1, 1, result.get("data").getAsString());
+                            } else {
+                                callBack.onSuccess(result.get("status").getAsInt(), result.get("code").getAsInt(), null);
+                            }
+                        } else {
+                            callBack.onError();
+                        }
                     }
                 });
     }
