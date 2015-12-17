@@ -11,12 +11,14 @@ import java.io.File;
 import java.util.ArrayList;
 
 import cn.mandroid.express.R;
+import cn.mandroid.express.UI.common.BasicActivity;
+import cn.mandroid.express.UI.common.BasicFragment;
 
 /**
  * 多图选择
  * Created by Nereo on 2015/4/7.
  */
-public class MultiImageSelectorActivity extends FragmentActivity implements MultiImageSelectorFragment.Callback{
+public class MultiImageSelectorActivity extends BasicActivity implements MultiImageSelectorFragment.Callback{
 
     /** 最大图片选择次数，int类型，默认9 */
     public static final String EXTRA_SELECT_COUNT = "max_select_count";

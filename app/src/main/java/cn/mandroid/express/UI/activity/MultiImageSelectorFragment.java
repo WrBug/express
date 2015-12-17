@@ -41,6 +41,7 @@ import cn.mandroid.express.UI.adapter.FolderAdapter;
 import cn.mandroid.express.UI.adapter.ImageGridAdapter;
 import cn.mandroid.express.Model.Bean.Folder;
 import cn.mandroid.express.Model.Bean.Image;
+import cn.mandroid.express.UI.common.BasicFragment;
 import cn.mandroid.express.Utils.FileUtils;
 import cn.mandroid.express.Utils.TimeUtils;
 
@@ -48,7 +49,7 @@ import cn.mandroid.express.Utils.TimeUtils;
  * 图片选择Fragment
  * Created by Nereo on 2015/4/7.
  */
-public class MultiImageSelectorFragment extends Fragment {
+public class MultiImageSelectorFragment extends BasicFragment {
 
     private static final String TAG = "MultiImageSelector";
 

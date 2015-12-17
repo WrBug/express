@@ -8,6 +8,7 @@ import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.koushikdutta.ion.ProgressCallback;
 
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 
 import java.io.File;
@@ -23,7 +24,8 @@ import cn.mandroid.express.Utils.MLog;
 @EBean
 public class UserManager extends ApiManager {
     private Context context;
-
+    @Bean
+    RongImManager rongImManager;
     public UserManager(Context context) {
         super(context);
         this.context = context;
@@ -42,6 +44,7 @@ public class UserManager extends ApiManager {
                         if (e == null) {
                             if (result.get("status").getAsInt() == 1) {
                                 UserBean userBean = new Gson().fromJson(result.get("data").getAsJsonObject(), UserBean.class);
+                                rongImManager.setUserinfo(userBean);
                                 callBack.onSuccess(1, result.get("code").getAsInt(), userBean);
                             } else {
                                 callBack.onSuccess(result.get("status").getAsInt(), result.get("code").getAsInt(), null);
@@ -79,6 +82,7 @@ public class UserManager extends ApiManager {
                                 String url = result.get("data").getAsString();
                                 userBean.setAvatarUrl(url);
                                 App.INSTANCE.saveUser(userBean);
+                                rongImManager.setUserinfo(userBean);
                                 callBack.onSuccess(1, 1, url);
                             } else {
                                 callBack.onSuccess(result.get("status").getAsInt(), result.get("code").getAsInt(), null);

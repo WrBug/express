@@ -2,6 +2,8 @@ package cn.mandroid.express.Utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Environment;
 
 import java.io.BufferedOutputStream;
@@ -12,6 +14,9 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import cn.mandroid.express.R;
+import cn.mandroid.express.UI.common.App;
 
 /**
  * 文件操作类
@@ -28,33 +33,35 @@ public class FileUtils {
         }
         return cachePath;
     }
-    public static File createTmpFile(Context context){
+
+    public static File createTmpFile(Context context) {
 
         String state = Environment.getExternalStorageState();
-        if(state.equals(Environment.MEDIA_MOUNTED)){
+        if (state.equals(Environment.MEDIA_MOUNTED)) {
             // 已挂载
             File pic = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
             String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CHINA).format(new Date());
-            String fileName = "multi_image_"+timeStamp+"";
-            File tmpFile = new File(pic, fileName+".jpg");
+            String fileName = "multi_image_" + timeStamp + "";
+            File tmpFile = new File(pic, fileName + ".jpg");
             return tmpFile;
-        }else{
+        } else {
             File cacheDir = context.getCacheDir();
             String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CHINA).format(new Date());
-            String fileName = "multi_image_"+timeStamp+"";
-            File tmpFile = new File(cacheDir, fileName+".jpg");
+            String fileName = "multi_image_" + timeStamp + "";
+            File tmpFile = new File(cacheDir, fileName + ".jpg");
             return tmpFile;
         }
     }
-    public static File saveBitmapFile(Context context,Bitmap bitmap){
-        String cache=getDiskCacheDir(context);
-        File file=new File(cache+"/"+System.currentTimeMillis()+".png");//将要保存图片的路径
+
+    public static File saveBitmapFile(Context context, Bitmap bitmap,String fileName) {
+        String cache = getDiskCacheDir(context);
+        File file = new File(cache + "/" +fileName+ ".png");//将要保存图片的路径
         try {
             BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
-            MLog.i(bitmap.getHeight()+":"+bitmap.getWidth());
-            int quality=100;
-            if(bitmap.getWidth()>1080){
-                quality =100*1080/bitmap.getWidth();
+            MLog.i(bitmap.getHeight() + ":" + bitmap.getWidth());
+            int quality = 100;
+            if (bitmap.getWidth() > 1080) {
+                quality = 100 * 1080 / bitmap.getWidth();
             }
             bitmap.compress(Bitmap.CompressFormat.JPEG, quality, bos);
             bos.flush();
@@ -64,5 +71,16 @@ public class FileUtils {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static Uri res2Uri(Context context,int res) {
+        Bitmap  bitmap = BitmapFactory.decodeResource(context.getResources(), res);
+        File file=saveBitmapFile(context,bitmap,res+"");
+        return Uri.fromFile(file);
+    }
+
+    public static String getSdcardPath() {
+        File sdDir = Environment.getExternalStorageDirectory();// 获取跟目录
+        return sdDir.toString();
     }
 }

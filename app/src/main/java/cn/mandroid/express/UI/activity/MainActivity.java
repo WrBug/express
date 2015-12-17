@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import org.androidannotations.annotations.AfterViews;
@@ -13,6 +14,7 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
+import cn.mandroid.express.Event.AcountStatusEvent;
 import cn.mandroid.express.Event.ChatEvent;
 import cn.mandroid.express.Event.ExitApp;
 import cn.mandroid.express.Model.JwcManager;
@@ -24,6 +26,7 @@ import cn.mandroid.express.UI.common.BasicActivity;
 import cn.mandroid.express.UI.widget.ActionBar;
 import cn.mandroid.express.Utils.CheckUtil;
 import de.greenrobot.event.EventBus;
+import io.rong.imlib.RongIMClient;
 
 @EActivity(R.layout.activity_main)
 public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgClickListenner, RadioGroup.OnCheckedChangeListener {
@@ -35,9 +38,17 @@ public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgCl
     View fragmentContainer;
     @ViewById
     RadioGroup tabMenu;
+    @ViewById
+    RadioButton rbCenter;
+    @ViewById
+    RadioButton rbChat;
+    @ViewById
+    RadioButton rbMy;
+    RadioButton lastCheckedRb;
     long exitTime;
     @Bean
     UserManager userManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +59,10 @@ public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgCl
         setActionBar();
         tabMenu.setOnCheckedChangeListener(this);
         EventBus.getDefault().post(new ChatEvent(ChatEvent.Action.CONNECT));
+        lastCheckedRb = rbCenter;
+        rbCenter.setChecked(true);
+        CenterFragment fragment = CenterFragment_.builder().build();
+        setFragment(fragment);
     }
 
 
@@ -68,6 +83,16 @@ public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgCl
     @Override
     public void leftImgClick(ImageView view) {
 
+    }
+
+    public void onEvent(AcountStatusEvent event) {
+        super.onEvent(event);
+        if (event.getStatus() == RongIMClient.ConnectionStatusListener.ConnectionStatus.KICKED_OFFLINE_BY_OTHER_CLIENT) {
+            rbCenter.setChecked(true);
+            CenterFragment fragment = CenterFragment_.builder().build();
+            setFragment(fragment);
+            LoginActivity_.intent(context).start();
+        }
     }
 
     @Override
@@ -93,20 +118,28 @@ public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgCl
                     LoginActivity_.intent(context).start();
                     return;
                 }
-                if (isConnectRongIm) {
+                if (rongIMstatus == RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTED) {
+                    lastCheckedRb = rbChat;
                     ChatFragment fragment = ChatFragment_.builder().build();
                     setFragment(fragment);
                 } else {
+                    lastCheckedRb.setChecked(true);
                     EventBus.getDefault().post(new ChatEvent(ChatEvent.Action.CONNECT));
+                    showToast("正在登录,请稍后");
                 }
                 break;
-            case R.id.rbCenter:
+            case R.id.rbCenter: {
+                lastCheckedRb = rbCenter;
+                CenterFragment fragment = CenterFragment_.builder().build();
+                setFragment(fragment);
                 break;
+            }
             case R.id.rbMy:
                 if (!CheckUtil.userIsInvid(mPreferenceHelper.getUser())) {
                     LoginActivity_.intent(context).start();
                     return;
                 }
+                lastCheckedRb = rbMy;
                 UserInfoFragment fragment = UserInfoFragment_.builder().build();
                 setFragment(fragment);
                 break;

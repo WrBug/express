@@ -93,7 +93,7 @@ public class UserInfoFragment extends BasicFragment {
         cropDialog.setCropCallback(new CropDialog.CropCallback() {
             @Override
             public void onComplete(Bitmap bitmap) {
-                File path = FileUtils.saveBitmapFile(getActivity(), bitmap);
+                File path = FileUtils.saveBitmapFile(getActivity(), bitmap,System.currentTimeMillis()+"");
                 uploadAvatar(path);
             }
         });

@@ -12,6 +12,6 @@ import cn.mandroid.express.R;
 public class BaseDialog extends Dialog {
     public BaseDialog(Context context) {
         super(context, R.style.MyDialog);
-        getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+//        getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
     }
 }
