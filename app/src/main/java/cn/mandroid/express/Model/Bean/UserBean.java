@@ -2,6 +2,8 @@ package cn.mandroid.express.Model.Bean;
 
 import java.io.Serializable;
 
+import cn.mandroid.express.Model.Dao.UserDao;
+
 /**
  * Created by Administrator on 2015-12-12.
  */
@@ -103,5 +105,14 @@ public class UserBean implements Serializable {
 
     public void setReceiveCount(int receiveCount) {
         this.receiveCount = receiveCount;
+    }
+
+    public static UserBean dao2Bean(UserDao dao){
+        UserBean userBean=new UserBean();
+        userBean.setSex(dao.getSex());
+        userBean.setUsername(dao.getUsername());
+        userBean.setAvatarUrl(dao.getUserAvatar());
+        userBean.setName(dao.getName());
+        return userBean;
     }
 }

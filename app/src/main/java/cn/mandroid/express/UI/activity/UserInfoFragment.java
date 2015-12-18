@@ -28,6 +28,7 @@ import cn.mandroid.express.UI.dialog.CropDialog;
 import cn.mandroid.express.UI.dialog.CropDialog_;
 import cn.mandroid.express.Utils.Const;
 import cn.mandroid.express.Utils.FileUtils;
+import cn.mandroid.express.Utils.PreferenceHelper;
 import cn.mandroid.express.Utils.UiUtil;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -35,7 +36,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class UserInfoFragment extends BasicFragment {
     @Bean
     UserManager mUserManager;
-    UserBean userBean;
     @ViewById
     CircleImageView userIcoImg;
     @ViewById
@@ -65,7 +65,6 @@ public class UserInfoFragment extends BasicFragment {
 
     @AfterViews
     void afterVew() {
-        userBean = preferenceHelper.getUser();
         updateUI();
     }
 
@@ -93,7 +92,7 @@ public class UserInfoFragment extends BasicFragment {
         cropDialog.setCropCallback(new CropDialog.CropCallback() {
             @Override
             public void onComplete(Bitmap bitmap) {
-                File path = FileUtils.saveBitmapFile(getActivity(), bitmap,System.currentTimeMillis()+"");
+                File path = FileUtils.saveBitmapFile(getActivity(), bitmap, System.currentTimeMillis() + "");
                 uploadAvatar(path);
             }
         });
@@ -102,7 +101,8 @@ public class UserInfoFragment extends BasicFragment {
 
     private void uploadAvatar(File file) {
         showToast("正在上传");
-        mUserManager.uploadAvatar(userBean.getUsername(), userBean.getSessionId(), file, new FetchCallBack<String>() {
+        UserBean userBean = preferenceHelper.getUser();
+        mUserManager.uploadAvatar(userBean.getUsername(), userBean.getName(), userBean.getSessionId(), file, new FetchCallBack<String>() {
             @Override
             public void onSuccess(int status, int code, String s) {
                 if (status == 1) {
@@ -129,12 +129,12 @@ public class UserInfoFragment extends BasicFragment {
     }
 
     private void updateUser() {
+        UserBean userBean = preferenceHelper.getUser();
         mUserManager.updateUser(userBean.getUsername(), userBean.getSessionId(), new FetchCallBack<UserBean>() {
             @Override
             public void onSuccess(int status, int code, UserBean userBean) {
                 if (status == 1) {
                     preferenceHelper.saveUser(userBean);
-                    UserInfoFragment.this.userBean = userBean;
                     updateUI();
                 } else {
                     if (code == Constant.Code.SESSION_ERROR) {
@@ -151,13 +151,14 @@ public class UserInfoFragment extends BasicFragment {
     }
 
     private void updateUI() {
+        UserBean userBean = preferenceHelper.getUser();
         userIcoImg.setImageResource(userBean.getSex() == 2 ? R.drawable.ic_user_default_woman : R.drawable.ic_user_default_man);
         if (!TextUtils.isEmpty(userBean.getAvatarUrl())) {
             UiUtil.loadImage(getActivity(), userIcoImg, userBean.getAvatarUrl());
         }
         userSexImg.setImageResource(userBean.getSex() == 2 ? R.drawable.ic_user_sex_female : R.drawable.ic_user_sex_male);
         userNameText.setText(userBean.getName());
-        int level = getLevel();
+        int level = getLevel(userBean);
         userLevelText.setText(Const.LEVEL[level]);
         if (level < 3) {
             userLevelUpText.setText("还差" + (Const.LEVEL_UP[level] - userBean.getIntegral()) + "分升级到" + Const.LEVEL[level + 1] + "!");
@@ -175,7 +176,7 @@ public class UserInfoFragment extends BasicFragment {
         userReceiveCountText.setText("我帮忙拿了" + userBean.getReceiveCount() + "次快递");
     }
 
-    private int getLevel() {
+    private int getLevel(UserBean userBean) {
         for (int i = 1; i < 4; i++) {
             if (Const.LEVEL_UP[i] > userBean.getIntegral()) {
                 return i;

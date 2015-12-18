@@ -78,7 +78,12 @@ public class FileUtils {
         File file=saveBitmapFile(context,bitmap,res+"");
         return Uri.fromFile(file);
     }
-
+    public static Uri getDefalutManIco(Context context){
+        return res2Uri(context,R.drawable.ic_user_default_man);
+    }
+    public static Uri getDefalutWomanIco(Context context){
+        return res2Uri(context,R.drawable.ic_user_default_woman);
+    }
     public static String getSdcardPath() {
         File sdDir = Environment.getExternalStorageDirectory();// 获取跟目录
         return sdDir.toString();

@@ -1,6 +1,8 @@
 package cn.mandroid.express.UI.common;
 
+import android.app.ActivityManager;
 import android.app.Application;
+import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -11,6 +13,8 @@ import org.androidannotations.annotations.EApplication;
 import cn.mandroid.express.Model.Bean.UserBean;
 import cn.mandroid.express.Model.RongImManager;
 import cn.mandroid.express.Utils.PreferenceHelper;
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import io.rong.imkit.RongIM;
 
 /**
@@ -23,10 +27,35 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         INSTANCE = this;
-        Ion.getDefault(this).configure().setLogging("ion-sample", Log.DEBUG).proxy("192.168.0.102",8888);
-        RongIM.init(this);
-
+        RealmConfiguration config = new RealmConfiguration.Builder(this).build();
+        Realm.setDefaultConfiguration(config);
+        Ion.getDefault(this).configure().setLogging("ion-sample", Log.DEBUG).proxy("192.168.0.102", 8888);
+        rongImInit();
     }
+
+    private void rongImInit() {
+        if (getApplicationInfo().packageName.equals(getCurProcessName(getApplicationContext())) ||
+                "io.rong.push".equals(getCurProcessName(getApplicationContext()))) {
+            RongIM.init(this);
+        }
+    }
+
+    public static String getCurProcessName(Context context) {
+
+        int pid = android.os.Process.myPid();
+
+        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+
+        for (ActivityManager.RunningAppProcessInfo appProcess : activityManager
+                .getRunningAppProcesses()) {
+
+            if (appProcess.pid == pid) {
+                return appProcess.processName;
+            }
+        }
+        return null;
+    }
+
     public UserBean getUser() {
         return PreferenceHelper.instance(this).getUser();
     }

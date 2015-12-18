@@ -26,6 +26,7 @@ public class UserManager extends ApiManager {
     private Context context;
     @Bean
     RongImManager rongImManager;
+
     public UserManager(Context context) {
         super(context);
         this.context = context;
@@ -56,9 +57,33 @@ public class UserManager extends ApiManager {
                 });
     }
 
-    public void uploadAvatar(String username, String sessionId, File file, final FetchCallBack<String> callBack) {
+    public void getUserInfoByUsername(String user, String username, String sessionId, final FetchCallBack<UserBean> callBack) {
+        TreeMap<String, String> map = new TreeMap<>();
+        map.put("user", user);
+        map.put("username", username);
+        map.put("sessionId", sessionId);
+        Ion.with(context).load(Constant.API_URL + "/User/getUserInfoByUsername")
+                .setBodyParameters(getFinalMap(map))
+                .asJsonObject()
+                .setCallback(new FutureCallback<JsonObject>() {
+                    @Override
+                    public void onCompleted(Exception e, JsonObject result) {
+                        if (e == null) {
+                            if (result.get("status").getAsInt() == 1) {
+                                UserBean userBean = new Gson().fromJson(result.get("data").getAsJsonObject(), UserBean.class);
+                                callBack.onSuccess(1, 1, userBean);
+                            }
+                        } else {
+                            callBack.onError();
+                        }
+                    }
+                });
+    }
+
+    public void uploadAvatar(String username, String name, String sessionId, File file, final FetchCallBack<String> callBack) {
         TreeMap<String, String> map = new TreeMap<>();
         map.put("username", username);
+        map.put("name", name);
         map.put("sessionId", sessionId);
         map.put("host", Constant.API_URL);
         map.put("fileType", file.getName().substring(file.getName().lastIndexOf('.')));

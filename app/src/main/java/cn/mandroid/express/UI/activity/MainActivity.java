@@ -115,6 +115,7 @@ public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgCl
         switch (checkedId) {
             case R.id.rbChat:
                 if (!CheckUtil.userIsInvid(mPreferenceHelper.getUser())) {
+                    lastCheckedRb.setChecked(true);
                     LoginActivity_.intent(context).start();
                     return;
                 }
@@ -123,9 +124,13 @@ public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgCl
                     ChatFragment fragment = ChatFragment_.builder().build();
                     setFragment(fragment);
                 } else {
+                    if (rongIMstatus != RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTING) {
+                        EventBus.getDefault().post(new ChatEvent(ChatEvent.Action.CONNECT));
+                        showToast("正在登录,请稍后");
+                    } else {
+                        showToast("正在努力加载中,请稍后");
+                    }
                     lastCheckedRb.setChecked(true);
-                    EventBus.getDefault().post(new ChatEvent(ChatEvent.Action.CONNECT));
-                    showToast("正在登录,请稍后");
                 }
                 break;
             case R.id.rbCenter: {

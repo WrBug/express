@@ -50,6 +50,7 @@ dependencies {
     //https://github.com/edmodo/cropper/wiki#Usage
     compile 'com.edmodo:cropper:1.0.1'
     compile project(':IMKitWithVoIP')
+    compile 'io.realm:realm-android:0.87.0'
 }
 apt {
     arguments {

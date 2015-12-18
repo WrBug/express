@@ -4,10 +4,12 @@ import android.content.Context;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 
 import cn.mandroid.express.Event.AcountStatusEvent;
 import cn.mandroid.express.Model.Bean.UserBean;
+import cn.mandroid.express.Model.Dao.UserDao;
 import cn.mandroid.express.R;
 import cn.mandroid.express.Utils.FileUtils;
 import cn.mandroid.express.Utils.MLog;
@@ -41,7 +43,7 @@ public class RongImManager {
             public void onSuccess(String s) {
                 mCallBack.onSuccess(1, 1, null);
                 setUserinfo(userBean);
-                getUserInfo();
+                getUserInfo(userBean);
                 RongIM.getInstance().getRongIMClient().setConnectionStatusListener(rongImConnectListener);
             }
 
@@ -52,16 +54,37 @@ public class RongImManager {
         });
     }
 
-    private void getUserInfo() {
-//        RongIM.setUserInfoProvider(new RongIM.UserInfoProvider() {
-//            @Override
-//            public UserInfo getUserInfo(String s) {
-//                File file = new File(FileUtils.getSdcardPath() + "/1.png");
-//                Uri uri = Uri.fromFile(file);
-//                UserInfo userInfo = new UserInfo("12946137", "test", uri);
-//                return userInfo;
-//            }
-//        }, true);
+    private void getUserInfo(final UserBean myInfo) {
+        RongIM.setUserInfoProvider(new RongIM.UserInfoProvider() {
+            @Override
+            public UserInfo getUserInfo(String s) {
+                UserBean userBean = DaoManager.getUserInfoByUsername(s);
+                if (userBean != null) {
+                    Uri uri;
+                    if (TextUtils.isEmpty(userBean.getAvatarUrl())) {
+                        uri = userBean.getSex() == 2 ? FileUtils.getDefalutWomanIco(context) : FileUtils.getDefalutManIco(context);
+                    } else {
+                        uri = Uri.parse(userBean.getAvatarUrl());
+                    }
+                    UserInfo userInfo = new UserInfo(userBean.getUsername(), userBean.getName(), uri);
+                    return userInfo;
+                }
+
+                new UserManager(context).getUserInfoByUsername(s, myInfo.getUsername(), myInfo.getSessionId(), new FetchCallBack<UserBean>() {
+                    @Override
+                    public void onSuccess(int status, int code, UserBean userBean) {
+                        if (status == 1 && userBean != null && !TextUtils.isEmpty(userBean.getUsername())) {
+                            DaoManager.saveUserInfo(userBean.getUsername(), userBean.getSex(), userBean.getName(), userBean.getAvatarUrl());
+                        }
+                    }
+                    @Override
+                    public void onError() {
+
+                    }
+                });
+                return null;
+            }
+        }, false);
     }
 
     public void setUserinfo(UserBean userBean) {
@@ -99,7 +122,7 @@ public class RongImManager {
 
         @Override
         public void onChanged(ConnectionStatus status) {
-            AcountStatusEvent event=new AcountStatusEvent();
+            AcountStatusEvent event = new AcountStatusEvent();
             event.setStatus(status);
             EventBus.getDefault().post(event);
         }
