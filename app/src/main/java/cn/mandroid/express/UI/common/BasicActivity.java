@@ -13,6 +13,7 @@ import cn.mandroid.express.Model.RongImManager;
 import cn.mandroid.express.UI.activity.MainActivity;
 import cn.mandroid.express.UI.dialog.ProgressDialog;
 import cn.mandroid.express.Utils.CheckUtil;
+import cn.mandroid.express.Utils.MLog;
 import cn.mandroid.express.Utils.MToast;
 import cn.mandroid.express.Utils.Preference;
 import cn.mandroid.express.Utils.PreferenceHelper;
@@ -23,7 +24,7 @@ import io.rong.imlib.RongIMClient;
 /**
  * Created by Administrator on 2015-11-22.
  */
-public class BasicActivity extends FragmentActivity {
+public class BasicActivity extends FragmentActivity implements RongIMClient.ConnectionStatusListener {
     protected Context context;
     protected Preference mPreference;
     protected PreferenceHelper mPreferenceHelper;
@@ -65,18 +66,11 @@ public class BasicActivity extends FragmentActivity {
     }
 
     private void initIm() {
+        RongIM.getInstance().getRongIMClient().setConnectionStatusListener(this);
         final UserBean user = mPreferenceHelper.getUser();
         if (CheckUtil.userIsInvid(user)) {
             RongImManager rongImManager = new RongImManager(context);
-            rongImManager.connectIm(user, true, new FetchCallBack() {
-                @Override
-                public void onSuccess(int status, int code, Object o) {
-                }
-
-                @Override
-                public void onError() {
-                }
-            });
+            rongImManager.connectIm(user, true);
         }
     }
 
@@ -102,4 +96,9 @@ public class BasicActivity extends FragmentActivity {
         super.onDestroy();
     }
 
+    @Override
+    public void onChanged(ConnectionStatus connectionStatus) {
+        MLog.i(connectionStatus);
+        rongIMstatus = connectionStatus;
+    }
 }

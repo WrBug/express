@@ -11,6 +11,7 @@ import cn.mandroid.express.Event.AcountStatusEvent;
 import cn.mandroid.express.Model.Bean.UserBean;
 import cn.mandroid.express.Model.Dao.UserDao;
 import cn.mandroid.express.R;
+import cn.mandroid.express.UI.common.BasicActivity;
 import cn.mandroid.express.Utils.FileUtils;
 import cn.mandroid.express.Utils.MLog;
 import cn.mandroid.express.Utils.PreferenceHelper;
@@ -18,6 +19,7 @@ import de.greenrobot.event.EventBus;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.UserInfo;
+import io.rong.voipkit.activity.BaseActivity;
 
 /**
  * Created by Administrator on 2015/12/16.
@@ -30,21 +32,22 @@ public class RongImManager {
         this.context = context;
     }
 
-    public void connectIm(final UserBean userBean, final boolean tryAgan, final FetchCallBack mCallBack) {
+    public void connectIm(final UserBean userBean, final boolean tryAgan) {
         RongIM.connect(userBean.getToken(), new RongIMClient.ConnectCallback() {
             @Override
             public void onTokenIncorrect() {
+                MLog.i("incor");
                 if (tryAgan) {
-                    getToken(userBean, mCallBack);
+                    getToken(userBean);
                 }
             }
 
             @Override
             public void onSuccess(String s) {
-                mCallBack.onSuccess(1, 1, null);
+                MLog.i("success");
+//                mCallBack.onSuccess(1, 1, null);
                 setUserinfo(userBean);
                 getUserInfo(userBean);
-                RongIM.getInstance().getRongIMClient().setConnectionStatusListener(rongImConnectListener);
             }
 
             @Override
@@ -77,6 +80,7 @@ public class RongImManager {
                             DaoManager.saveUserInfo(userBean.getUsername(), userBean.getSex(), userBean.getName(), userBean.getAvatarUrl());
                         }
                     }
+
                     @Override
                     public void onError() {
 
@@ -99,7 +103,7 @@ public class RongImManager {
         RongIM.getInstance().setCurrentUserInfo(userInfo);
     }
 
-    private void getToken(final UserBean userBean, final FetchCallBack mCallBack) {
+    private void getToken(final UserBean userBean) {
         UserManager userManager = new UserManager(context);
         userManager.getToken(userBean.getUsername(), userBean.getSessionId(), new FetchCallBack<String>() {
             @Override
@@ -107,7 +111,7 @@ public class RongImManager {
                 if (status == 1) {
                     userBean.setToken(s);
                     PreferenceHelper.instance(context).saveUser(userBean);
-                    connectIm(PreferenceHelper.instance(context).getUser(), false, mCallBack);
+                    connectIm(PreferenceHelper.instance(context).getUser(), false);
                 }
             }
 
@@ -117,14 +121,4 @@ public class RongImManager {
             }
         });
     }
-
-    private RongIMClient.ConnectionStatusListener rongImConnectListener = new RongIMClient.ConnectionStatusListener() {
-
-        @Override
-        public void onChanged(ConnectionStatus status) {
-            AcountStatusEvent event = new AcountStatusEvent();
-            event.setStatus(status);
-            EventBus.getDefault().post(event);
-        }
-    };
 }
