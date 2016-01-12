@@ -4,22 +4,16 @@ import android.content.Context;
 import android.net.Uri;
 import android.text.TextUtils;
 
-import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 
-import cn.mandroid.express.Event.AcountStatusEvent;
 import cn.mandroid.express.Model.Bean.UserBean;
-import cn.mandroid.express.Model.Dao.UserDao;
 import cn.mandroid.express.R;
-import cn.mandroid.express.UI.common.BasicActivity;
 import cn.mandroid.express.Utils.FileUtils;
 import cn.mandroid.express.Utils.MLog;
 import cn.mandroid.express.Utils.PreferenceHelper;
-import de.greenrobot.event.EventBus;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.UserInfo;
-import io.rong.voipkit.activity.BaseActivity;
 
 /**
  * Created by Administrator on 2015/12/16.

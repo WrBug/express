@@ -14,7 +14,6 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
-import cn.mandroid.express.Event.AcountStatusEvent;
 import cn.mandroid.express.Event.ChatEvent;
 import cn.mandroid.express.Event.ExitApp;
 import cn.mandroid.express.Model.JwcManager;
@@ -25,6 +24,7 @@ import cn.mandroid.express.UI.activity.rongIM.ChatFragment_;
 import cn.mandroid.express.UI.common.BasicActivity;
 import cn.mandroid.express.UI.widget.ActionBar;
 import cn.mandroid.express.Utils.CheckUtil;
+import cn.mandroid.express.Utils.MLog;
 import de.greenrobot.event.EventBus;
 import io.rong.imlib.RongIMClient;
 
@@ -85,15 +85,15 @@ public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgCl
 
     }
 
-    public void onEvent(AcountStatusEvent event) {
-        super.onEvent(event);
-        if (event.getStatus() == RongIMClient.ConnectionStatusListener.ConnectionStatus.KICKED_OFFLINE_BY_OTHER_CLIENT) {
-            rbCenter.setChecked(true);
-            CenterFragment fragment = CenterFragment_.builder().build();
-            setFragment(fragment);
-            LoginActivity_.intent(context).start();
-        }
-    }
+//    public void onEvent(AcountStatusEvent event) {
+//        super.onEvent(event);
+//        if (event.getStatus() == RongIMClient.ConnectionStatusListener.ConnectionStatus.KICKED_OFFLINE_BY_OTHER_CLIENT) {
+//            rbCenter.setChecked(true);
+//            CenterFragment fragment = CenterFragment_.builder().build();
+//            setFragment(fragment);
+//            LoginActivity_.intent(context).start();
+//        }
+//    }
 
     @Override
     public void rightImgClick(ImageView view) {

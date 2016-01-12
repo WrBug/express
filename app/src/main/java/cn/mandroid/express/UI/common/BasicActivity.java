@@ -4,11 +4,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
-import cn.mandroid.express.Event.AcountStatusEvent;
 import cn.mandroid.express.Event.ChatEvent;
 import cn.mandroid.express.Event.ExitApp;
 import cn.mandroid.express.Model.Bean.UserBean;
-import cn.mandroid.express.Model.FetchCallBack;
 import cn.mandroid.express.Model.RongImManager;
 import cn.mandroid.express.UI.activity.MainActivity;
 import cn.mandroid.express.UI.dialog.ProgressDialog;
@@ -54,17 +52,6 @@ public class BasicActivity extends FragmentActivity implements RongIMClient.Conn
         }
     }
 
-    public void onEvent(AcountStatusEvent event) {
-        rongIMstatus = event.getStatus();
-        if (rongIMstatus == RongIMClient.ConnectionStatusListener.ConnectionStatus.KICKED_OFFLINE_BY_OTHER_CLIENT) {
-            if (!(context instanceof MainActivity)) {
-                finish();
-            }
-            showToast("账号在别处登录,您已强制下线");
-            RongIM.getInstance().logout();
-        }
-    }
-
     private void initIm() {
         RongIM.getInstance().getRongIMClient().setConnectionStatusListener(this);
         final UserBean user = mPreferenceHelper.getUser();
@@ -98,7 +85,13 @@ public class BasicActivity extends FragmentActivity implements RongIMClient.Conn
 
     @Override
     public void onChanged(ConnectionStatus connectionStatus) {
-        MLog.i(connectionStatus);
         rongIMstatus = connectionStatus;
+        if (rongIMstatus == RongIMClient.ConnectionStatusListener.ConnectionStatus.KICKED_OFFLINE_BY_OTHER_CLIENT) {
+            if (!(context instanceof MainActivity)) {
+                finish();
+            }
+            showToast("账号在别处登录,您已强制下线");
+            RongIM.getInstance().logout();
+        }
     }
 }
