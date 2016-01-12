@@ -2,7 +2,6 @@ package cn.mandroid.express.UI.dialog;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -19,7 +18,7 @@ import cn.mandroid.express.R;
 /**
  * Created by Administrator on 2015/12/15.
  */
-@EFragment(R.layout.dialog_bottom)
+@EFragment(R.layout.dialog_bottom1)
 public class BottomDialog extends BaseDialogFragment {
     @ViewById
     LinearLayout container;
