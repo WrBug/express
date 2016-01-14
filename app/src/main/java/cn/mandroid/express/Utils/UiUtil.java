@@ -7,8 +7,11 @@ import android.widget.ImageView;
 
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
+import java.lang.ref.SoftReference;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,14 +21,9 @@ import java.util.Map;
 public class UiUtil {
     public static void loadImage(Context context, final ImageView imageView, final String url) {
         Picasso.with(context).load(Uri.parse(url)).into(imageView);
-//        Ion.with(context).load(url).asBitmap().setCallback(new FutureCallback<Bitmap>() {
-//            @Override
-//            public void onCompleted(Exception e, Bitmap result) {
-//                if (e == null) {
-//                    imageView.setImageBitmap(result);
-//                } else {
-//                }
-//            }
-//        });
+    }
+
+    public static void loadImage(Context context, final ImageView imageView, final int res) {
+        Picasso.with(context).load(FileUtils.res2Uri(context, res)).into(imageView);
     }
 }

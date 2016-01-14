@@ -53,9 +53,9 @@ public class FileUtils {
         }
     }
 
-    public static File saveBitmapFile(Context context, Bitmap bitmap,String fileName) {
+    public static File saveBitmapFile(Context context, Bitmap bitmap, String fileName) {
         String cache = getDiskCacheDir(context);
-        File file = new File(cache + "/" +fileName+ ".png");//将要保存图片的路径
+        File file = new File(cache + "/" + fileName + ".png");//将要保存图片的路径
         try {
             BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
             MLog.i(bitmap.getHeight() + ":" + bitmap.getWidth());
@@ -73,17 +73,20 @@ public class FileUtils {
         return null;
     }
 
-    public static Uri res2Uri(Context context,int res) {
-        Bitmap  bitmap = BitmapFactory.decodeResource(context.getResources(), res);
-        File file=saveBitmapFile(context,bitmap,res+"");
+    public static Uri res2Uri(Context context, int res) {
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), res);
+        File file = saveBitmapFile(context, bitmap, res + "");
         return Uri.fromFile(file);
     }
-    public static Uri getDefalutManIco(Context context){
-        return res2Uri(context,R.drawable.ic_user_default_man);
+
+    public static Uri getDefalutManIco(Context context) {
+        return res2Uri(context, R.drawable.ic_user_default_man);
     }
-    public static Uri getDefalutWomanIco(Context context){
-        return res2Uri(context,R.drawable.ic_user_default_woman);
+
+    public static Uri getDefalutWomanIco(Context context) {
+        return res2Uri(context, R.drawable.ic_user_default_woman);
     }
+
     public static String getSdcardPath() {
         File sdDir = Environment.getExternalStorageDirectory();// 获取跟目录
         return sdDir.toString();

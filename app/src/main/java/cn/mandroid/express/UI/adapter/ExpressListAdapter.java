@@ -2,6 +2,7 @@ package cn.mandroid.express.UI.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,12 +65,17 @@ public class ExpressListAdapter extends BaseAdapter {
             holder.userIcoImg = (ImageView) convertView.findViewById(R.id.userIcoImg);
             holder.whereText = (TextView) convertView.findViewById(R.id.whereText);
             holder.destText = (TextView) convertView.findViewById(R.id.destText);
+            holder.userIcoImg.setDrawingCacheEnabled(true);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
         holder.container.setBackgroundColor(colors[position % 3]);
-        UiUtil.loadImage(context, holder.userIcoImg, info.getUser().getAvatarUrl());
+        if(TextUtils.isEmpty(info.getUser().getAvatarUrl())){
+            UiUtil.loadImage(context, holder.userIcoImg,R.drawable.ic_user_default_man);
+        }else {
+            UiUtil.loadImage(context, holder.userIcoImg, info.getUser().getAvatarUrl());
+        }
         holder.whereText.setText(info.getWhere());
         holder.destText.setText(info.getDest());
         return convertView;
