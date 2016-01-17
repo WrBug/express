@@ -9,6 +9,33 @@ public class ExpressInfo implements Serializable {
     private UserBean user;
     private String where;
     private String dest;
+    private long date;
+    private String expressCompany;
+    private int status;
+
+    public long getDate() {
+        return date;
+    }
+
+    public void setDate(long date) {
+        this.date = date;
+    }
+
+    public String getExpressCompany() {
+        return expressCompany;
+    }
+
+    public void setExpressCompany(String expressCompany) {
+        this.expressCompany = expressCompany;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
     public UserBean getUser() {
         return user;

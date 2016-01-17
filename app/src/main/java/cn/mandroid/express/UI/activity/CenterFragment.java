@@ -45,6 +45,9 @@ public class CenterFragment extends BasicFragment implements PullToRefreshView.O
             info.setUser(userBean);
             info.setWhere("测试" + i);
             info.setDest("目的地" + i);
+            info.setDate(System.currentTimeMillis());
+            info.setExpressCompany("顺丰快递");
+            info.setStatus(i%4);
             list.add(info);
         }
         adapter = new ExpressListAdapter(getActivity(), list);
@@ -64,8 +67,11 @@ public class CenterFragment extends BasicFragment implements PullToRefreshView.O
             UserBean userBean = new UserBean();
             userBean.setAvatarUrl("http://3.im.guokr.com/PH_23qTq4Yp3Cfg4bhu9lwI2firbTmCFJX_Dpe-vx5MiBAAAwAIAAEpQ.jpg");
             info.setUser(userBean);
-            info.setWhere("测试" + i + index);
-            info.setDest("目的地" + i + index);
+            info.setWhere("测试" + (i + index));
+            info.setDest("目的地" + (i + index));
+            info.setDate(System.currentTimeMillis());
+            info.setExpressCompany("顺丰快递");
+            info.setStatus(i%3);
             list.add(info);
         }
         if (adapter == null) {

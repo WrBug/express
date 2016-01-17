@@ -15,6 +15,8 @@ import java.util.List;
 
 import cn.mandroid.express.Model.Bean.ExpressInfo;
 import cn.mandroid.express.R;
+import cn.mandroid.express.Utils.DateUtil;
+import cn.mandroid.express.Utils.MLog;
 import cn.mandroid.express.Utils.UiUtil;
 
 /**
@@ -65,6 +67,9 @@ public class ExpressListAdapter extends BaseAdapter {
             holder.userIcoImg = (ImageView) convertView.findViewById(R.id.userIcoImg);
             holder.whereText = (TextView) convertView.findViewById(R.id.whereText);
             holder.destText = (TextView) convertView.findViewById(R.id.destText);
+            holder.dateText = (TextView) convertView.findViewById(R.id.dateText);
+            holder.companyText = (TextView) convertView.findViewById(R.id.companyText);
+            holder.statusText = (TextView) convertView.findViewById(R.id.statusText);
             holder.userIcoImg.setDrawingCacheEnabled(true);
             convertView.setTag(holder);
         } else {
@@ -78,7 +83,31 @@ public class ExpressListAdapter extends BaseAdapter {
         }
         holder.whereText.setText(info.getWhere());
         holder.destText.setText(info.getDest());
+        holder.dateText.setText(DateUtil.timeToStrYMDHM_ZH(info.getDate()));
+        holder.companyText.setText(info.getExpressCompany());
+        setStatus(holder.statusText, info.getStatus());
         return convertView;
+    }
+
+    private void setStatus(TextView statusText, int status) {
+        switch (status) {
+            case 1:
+                statusText.setText("待接取");
+                statusText.setTextColor(Color.RED);
+                break;
+            case 2:
+                statusText.setText("进行中");
+                statusText.setTextColor(Color.BLUE);
+                break;
+            case 3:
+                statusText.setText("已完成");
+                statusText.setTextColor(Color.GREEN);
+                break;
+            default:
+                statusText.setText("未知状态");
+                statusText.setTextColor(Color.WHITE);
+                break;
+        }
     }
 
     class ViewHolder {
@@ -86,5 +115,8 @@ public class ExpressListAdapter extends BaseAdapter {
         public ImageView userIcoImg;
         public TextView whereText;
         public TextView destText;
+        public TextView dateText;
+        public TextView companyText;
+        public TextView statusText;
     }
 }
