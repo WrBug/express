@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by Administrator on 2016/1/14 0014.
  */
-public class ExpressInfo implements Serializable{
+public class ExpressInfo implements Serializable {
     private UserBean user;
     private String where;
     private String dest;

@@ -71,9 +71,9 @@ public class ExpressListAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         holder.container.setBackgroundColor(colors[position % 3]);
-        if(TextUtils.isEmpty(info.getUser().getAvatarUrl())){
-            UiUtil.loadImage(context, holder.userIcoImg,R.drawable.ic_user_default_man);
-        }else {
+        if (TextUtils.isEmpty(info.getUser().getAvatarUrl())) {
+            UiUtil.loadImage(context, holder.userIcoImg, R.drawable.ic_user_default_man);
+        } else {
             UiUtil.loadImage(context, holder.userIcoImg, info.getUser().getAvatarUrl());
         }
         holder.whereText.setText(info.getWhere());

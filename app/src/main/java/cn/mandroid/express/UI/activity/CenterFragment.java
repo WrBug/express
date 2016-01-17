@@ -16,22 +16,24 @@ import cn.mandroid.express.Model.Bean.UserBean;
 import cn.mandroid.express.R;
 import cn.mandroid.express.UI.adapter.ExpressListAdapter;
 import cn.mandroid.express.UI.common.BasicFragment;
+import cn.mandroid.express.UI.widget.LoadMoreListView;
 
 /**
  * Created by Administrator on 2015/12/17.
  */
 @EFragment(R.layout.fragment_center)
-public class CenterFragment extends BasicFragment implements PullToRefreshView.OnRefreshListener {
+public class CenterFragment extends BasicFragment implements PullToRefreshView.OnRefreshListener, LoadMoreListView.PushToLoadListenner {
     @ViewById(R.id.pull_to_refresh)
     PullToRefreshView pullToRefreshView;
     @ViewById(R.id.list_view)
-    ListView listView;
+    LoadMoreListView listView;
     List<ExpressInfo> list = new ArrayList<>();
     ExpressListAdapter adapter;
 
     @AfterViews
     void afterView() {
         pullToRefreshView.setOnRefreshListener(this);
+        listView.setOnPushToLoadListenner(this);
         loadInfo();
     }
 
@@ -51,11 +53,16 @@ public class CenterFragment extends BasicFragment implements PullToRefreshView.O
 
     @Override
     public void onRefresh() {
+        pullToRefreshView.setRefreshing(false);
+    }
+
+    @Override
+    public void pushToLoad() {
         int index = list.size();
         for (int i = 0; i < 3; i++) {
             ExpressInfo info = new ExpressInfo();
             UserBean userBean = new UserBean();
-            userBean.setAvatarUrl("");
+            userBean.setAvatarUrl("http://3.im.guokr.com/PH_23qTq4Yp3Cfg4bhu9lwI2firbTmCFJX_Dpe-vx5MiBAAAwAIAAEpQ.jpg");
             info.setUser(userBean);
             info.setWhere("测试" + i + index);
             info.setDest("目的地" + i + index);
@@ -67,6 +74,5 @@ public class CenterFragment extends BasicFragment implements PullToRefreshView.O
         } else {
             adapter.notifyDataSetChanged();
         }
-        pullToRefreshView.setRefreshing(false);
     }
 }

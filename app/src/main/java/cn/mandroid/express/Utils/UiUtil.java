@@ -24,6 +24,6 @@ public class UiUtil {
     }
 
     public static void loadImage(Context context, final ImageView imageView, final int res) {
-        Picasso.with(context).load(FileUtils.res2Uri(context, res)).into(imageView);
+        imageView.setImageResource(res);
     }
 }
