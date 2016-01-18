@@ -35,6 +35,13 @@ public class LoadMoreListView extends ListView implements View.OnTouchListener {
                 break;
             case MotionEvent.ACTION_MOVE:
                 MLog.i("now:" + this.getLastVisiblePosition() + ":" + getCount());
+                if (isBottom(event) && startY - event.getY() > 500) {
+                    footView.setVisibility(VISIBLE);
+                } else {
+                    if (footView.getVisibility() == VISIBLE) {
+                        footView.setVisibility(GONE);
+                    }
+                }
 //                if(isBottom(event)&&)
                 break;
             case MotionEvent.ACTION_UP:

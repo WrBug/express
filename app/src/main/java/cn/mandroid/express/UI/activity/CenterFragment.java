@@ -1,10 +1,9 @@
 package cn.mandroid.express.UI.activity;
 
-import android.widget.ListView;
-
 import com.yalantis.phoenix.PullToRefreshView;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
@@ -13,6 +12,8 @@ import java.util.List;
 
 import cn.mandroid.express.Model.Bean.ExpressInfo;
 import cn.mandroid.express.Model.Bean.UserBean;
+import cn.mandroid.express.Model.FetchCallBack;
+import cn.mandroid.express.Model.TaskManager;
 import cn.mandroid.express.R;
 import cn.mandroid.express.UI.adapter.ExpressListAdapter;
 import cn.mandroid.express.UI.common.BasicFragment;
@@ -29,6 +30,8 @@ public class CenterFragment extends BasicFragment implements PullToRefreshView.O
     LoadMoreListView listView;
     List<ExpressInfo> list = new ArrayList<>();
     ExpressListAdapter adapter;
+    @Bean
+    TaskManager mTaskManager;
 
     @AfterViews
     void afterView() {
@@ -38,25 +41,25 @@ public class CenterFragment extends BasicFragment implements PullToRefreshView.O
     }
 
     private void loadInfo() {
-        for (int i = 0; i < 10; i++) {
-            ExpressInfo info = new ExpressInfo();
-            UserBean userBean = new UserBean();
-            userBean.setAvatarUrl("");
-            info.setUser(userBean);
-            info.setWhere("测试" + i);
-            info.setDest("目的地" + i);
-            info.setDate(System.currentTimeMillis());
-            info.setExpressCompany("顺丰快递");
-            info.setStatus(i%4);
-            list.add(info);
-        }
-        adapter = new ExpressListAdapter(getActivity(), list);
-        listView.setAdapter(adapter);
+        mTaskManager.getTaskList(new FetchCallBack<List<ExpressInfo>>() {
+            @Override
+            public void onSuccess(int status, int code, List<ExpressInfo> expressInfos) {
+                pullToRefreshView.setRefreshing(false);
+                list = expressInfos;
+                adapter = new ExpressListAdapter(getActivity(), list);
+                listView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onError() {
+                pullToRefreshView.setRefreshing(false);
+            }
+        });
     }
 
     @Override
     public void onRefresh() {
-        pullToRefreshView.setRefreshing(false);
+        loadInfo();
     }
 
     @Override
@@ -67,11 +70,11 @@ public class CenterFragment extends BasicFragment implements PullToRefreshView.O
             UserBean userBean = new UserBean();
             userBean.setAvatarUrl("http://3.im.guokr.com/PH_23qTq4Yp3Cfg4bhu9lwI2firbTmCFJX_Dpe-vx5MiBAAAwAIAAEpQ.jpg");
             info.setUser(userBean);
-            info.setWhere("测试" + (i + index));
-            info.setDest("目的地" + (i + index));
+            info.setDepository("测试" + (i + index));
+            info.setDestination("目的地" + (i + index));
             info.setDate(System.currentTimeMillis());
             info.setExpressCompany("顺丰快递");
-            info.setStatus(i%3);
+            info.setStatus(i % 3);
             list.add(info);
         }
         if (adapter == null) {

@@ -7,8 +7,8 @@ import java.io.Serializable;
  */
 public class ExpressInfo implements Serializable {
     private UserBean user;
-    private String where;
-    private String dest;
+    private String depository;
+    private String destination;
     private long date;
     private String expressCompany;
     private int status;
@@ -45,19 +45,19 @@ public class ExpressInfo implements Serializable {
         this.user = user;
     }
 
-    public String getWhere() {
-        return where;
+    public String getDepository() {
+        return depository;
     }
 
-    public void setWhere(String where) {
-        this.where = where;
+    public void setDepository(String depository) {
+        this.depository = depository;
     }
 
-    public String getDest() {
-        return dest;
+    public String getDestination() {
+        return destination;
     }
 
-    public void setDest(String dest) {
-        this.dest = dest;
+    public void setDestination(String destination) {
+        this.destination = destination;
     }
 }

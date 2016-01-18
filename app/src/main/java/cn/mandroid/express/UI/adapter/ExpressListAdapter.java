@@ -16,7 +16,6 @@ import java.util.List;
 import cn.mandroid.express.Model.Bean.ExpressInfo;
 import cn.mandroid.express.R;
 import cn.mandroid.express.Utils.DateUtil;
-import cn.mandroid.express.Utils.MLog;
 import cn.mandroid.express.Utils.UiUtil;
 
 /**
@@ -77,13 +76,13 @@ public class ExpressListAdapter extends BaseAdapter {
         }
         holder.container.setBackgroundColor(colors[position % 3]);
         if (TextUtils.isEmpty(info.getUser().getAvatarUrl())) {
-            UiUtil.loadImage(context, holder.userIcoImg, R.drawable.ic_user_default_man);
+            UiUtil.loadImage(context, holder.userIcoImg, info.getUser().getSex() == 1 ? R.drawable.ic_user_default_man : R.drawable.ic_user_default_woman);
         } else {
             UiUtil.loadImage(context, holder.userIcoImg, info.getUser().getAvatarUrl());
         }
-        holder.whereText.setText(info.getWhere());
-        holder.destText.setText(info.getDest());
-        holder.dateText.setText(DateUtil.timeToStrYMDHM_ZH(info.getDate()));
+        holder.whereText.setText(info.getDepository());
+        holder.destText.setText(info.getDestination());
+        holder.dateText.setText(DateUtil.timeToStrMDHM_ZH(info.getDate()));
         holder.companyText.setText(info.getExpressCompany());
         setStatus(holder.statusText, info.getStatus());
         return convertView;
