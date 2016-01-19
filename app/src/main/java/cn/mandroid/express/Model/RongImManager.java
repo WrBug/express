@@ -7,6 +7,9 @@ import android.text.TextUtils;
 
 import org.androidannotations.annotations.EBean;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.mandroid.express.Model.Bean.UserBean;
 import cn.mandroid.express.Model.RongIMListener.UnreadCountChangedListener;
 import cn.mandroid.express.R;
@@ -15,6 +18,7 @@ import cn.mandroid.express.Utils.MLog;
 import cn.mandroid.express.Utils.PreferenceHelper;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.UserInfo;
 
 /**
@@ -40,12 +44,15 @@ public class RongImManager {
 
             @Override
             public void onSuccess(String s) {
-                RongIM.getInstance().setOnReceiveUnreadCountChangedListener(new RongIM.OnReceiveUnreadCountChangedListener() {
-                    @Override
-                    public void onMessageIncreased(int i) {
-                        MLog.i(i);
-                    }
-                });
+                Conversation.ConversationType[] types=new Conversation.ConversationType[7];
+                types[0]= Conversation.ConversationType.PRIVATE;
+                types[1]= Conversation.ConversationType.APP_PUBLIC_SERVICE;
+                types[2]= Conversation.ConversationType.CHATROOM;
+                types[3]= Conversation.ConversationType.CUSTOMER_SERVICE;
+                types[4]= Conversation.ConversationType.DISCUSSION;
+                types[5]= Conversation.ConversationType.GROUP;
+                types[6]= Conversation.ConversationType.PUSH_SERVICE;
+                RongIM.getInstance().setOnReceiveUnreadCountChangedListener(new UnreadCountChangedListener(), types);
                 setUserinfo(userBean);
                 getUserInfo(userBean);
             }
