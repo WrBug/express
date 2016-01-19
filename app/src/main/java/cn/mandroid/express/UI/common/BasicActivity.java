@@ -26,7 +26,7 @@ public class BasicActivity extends FragmentActivity implements RongIMClient.Conn
     protected Context context;
     protected Preference mPreference;
     protected PreferenceHelper mPreferenceHelper;
-    protected RongIMClient.ConnectionStatusListener.ConnectionStatus rongIMstatus;
+    protected static RongIMClient.ConnectionStatusListener.ConnectionStatus rongIMstatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

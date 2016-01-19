@@ -3,8 +3,11 @@ package cn.mandroid.express.UI.activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -13,6 +16,9 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import cn.mandroid.express.Event.ChatEvent;
 import cn.mandroid.express.Event.ExitApp;
@@ -35,7 +41,7 @@ public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgCl
     @ViewById
     ActionBar actionBar;
     @ViewById
-    View fragmentContainer;
+    FrameLayout fragmentContainer;
     @ViewById
     RadioGroup tabMenu;
     @ViewById
@@ -48,6 +54,11 @@ public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgCl
     long exitTime;
     @Bean
     UserManager userManager;
+    List<Fragment> fragments;
+    CenterFragment centerFragment;
+    ChatFragment chatFragment;
+    UserInfoFragment userInfoFragment;
+    Fragment cacheFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,8 +72,14 @@ public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgCl
         EventBus.getDefault().post(new ChatEvent(ChatEvent.Action.CONNECT));
         lastCheckedRb = rbCenter;
         rbCenter.setChecked(true);
-        CenterFragment fragment = CenterFragment_.builder().build();
-        setFragment(fragment);
+        initFragment();
+        setFragment(centerFragment);
+    }
+
+    private void initFragment() {
+        centerFragment = CenterFragment_.builder().build();
+        chatFragment = ChatFragment_.builder().build();
+        userInfoFragment = UserInfoFragment_.builder().build();
     }
 
 
@@ -76,9 +93,25 @@ public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgCl
     private void setFragment(Fragment fragment) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(R.id.fragmentContainer, fragment);
+        if (cacheFragment != null) {
+            transaction.hide(cacheFragment);
+        }
+        if (fragment.isAdded()) {
+            transaction.show(fragment);
+        } else {
+            transaction.add(R.id.fragmentContainer, fragment);
+        }
+//        transaction.replace(R.id.fragmentContainer, fragment);
         transaction.commit();
+        cacheFragment = fragment;
     }
+
+//    private void setFragment(int index) {
+//        Fragment fragment = (Fragment) mFragmentPagerAdapter.instantiateItem(
+//                fragmentContainer, index);
+//        mFragmentPagerAdapter.setPrimaryItem(fragmentContainer, index, fragment);
+//        mFragmentPagerAdapter.finishUpdate(fragmentContainer);
+//    }
 
     @Override
     public void leftImgClick(ImageView view) {
@@ -121,8 +154,7 @@ public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgCl
                 }
                 if (rongIMstatus == RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTED) {
                     lastCheckedRb = rbChat;
-                    ChatFragment fragment = ChatFragment_.builder().build();
-                    setFragment(fragment);
+                    setFragment(chatFragment);
                 } else {
                     if (rongIMstatus != RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTING) {
                         EventBus.getDefault().post(new ChatEvent(ChatEvent.Action.CONNECT));
@@ -135,8 +167,9 @@ public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgCl
                 break;
             case R.id.rbCenter: {
                 lastCheckedRb = rbCenter;
-                CenterFragment fragment = CenterFragment_.builder().build();
-                setFragment(fragment);
+
+                setFragment(centerFragment);
+//                setFragment(checkedId);
                 break;
             }
             case R.id.rbMy:
@@ -145,10 +178,8 @@ public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgCl
                     return;
                 }
                 lastCheckedRb = rbMy;
-                UserInfoFragment fragment = UserInfoFragment_.builder().build();
-                setFragment(fragment);
+                setFragment(userInfoFragment);
                 break;
         }
     }
-
 }
