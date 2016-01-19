@@ -6,7 +6,9 @@ import android.support.v4.app.FragmentActivity;
 
 import cn.mandroid.express.Event.ChatEvent;
 import cn.mandroid.express.Event.ExitApp;
+import cn.mandroid.express.Event.UnreadEvent;
 import cn.mandroid.express.Model.Bean.UserBean;
+import cn.mandroid.express.Model.RongIMListener.ReceiveMeassageListener;
 import cn.mandroid.express.Model.RongImManager;
 import cn.mandroid.express.UI.activity.MainActivity;
 import cn.mandroid.express.UI.dialog.ProgressDialog;
@@ -18,6 +20,7 @@ import cn.mandroid.express.Utils.PreferenceHelper;
 import de.greenrobot.event.EventBus;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Message;
 
 /**
  * Created by Administrator on 2015-11-22.
@@ -37,11 +40,15 @@ public class BasicActivity extends FragmentActivity implements RongIMClient.Conn
         mPreferenceHelper = PreferenceHelper.instance(this);
         EventBus.getDefault().register(this);
     }
-
+    public void onEvent(UnreadEvent event) {
+        MLog.i("basicUnread");
+    }
     public void onEvent(ExitApp exit) {
         finish();
     }
-
+    public void onEvent(Message message) {
+       MLog.i(message.getExtra());
+    }
     public void onEvent(ChatEvent event) {
         switch (event.action) {
             case CONNECT:
@@ -54,6 +61,7 @@ public class BasicActivity extends FragmentActivity implements RongIMClient.Conn
 
     private void initIm() {
         RongIM.getInstance().getRongIMClient().setConnectionStatusListener(this);
+        RongIM.setOnReceiveMessageListener(new ReceiveMeassageListener());
         final UserBean user = mPreferenceHelper.getUser();
         if (CheckUtil.userIsInvid(user)) {
             RongImManager rongImManager = new RongImManager(context);

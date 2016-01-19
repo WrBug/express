@@ -29,7 +29,7 @@ public class App extends Application {
         INSTANCE = this;
         RealmConfiguration config = new RealmConfiguration.Builder(this).build();
         Realm.setDefaultConfiguration(config);
-        Ion.getDefault(this).configure().setLogging("ion-sample", Log.DEBUG).proxy("192.168.0.102", 8888);
+        Ion.getDefault(this).configure().setLogging("ion-sample", Log.DEBUG).proxy("192.168.1.195", 8888);
         rongImInit();
     }
 

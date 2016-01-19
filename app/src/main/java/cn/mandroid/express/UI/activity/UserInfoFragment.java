@@ -21,6 +21,7 @@ import java.util.List;
 import cn.mandroid.express.Model.Bean.UserBean;
 import cn.mandroid.express.Model.Constant;
 import cn.mandroid.express.Model.FetchCallBack;
+import cn.mandroid.express.Model.RongImManager;
 import cn.mandroid.express.Model.UserManager;
 import cn.mandroid.express.R;
 import cn.mandroid.express.UI.common.BasicFragment;
@@ -36,6 +37,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class UserInfoFragment extends BasicFragment {
     @Bean
     UserManager mUserManager;
+    @Bean
+    RongImManager mRongImManager;
     @ViewById
     CircleImageView userIcoImg;
     @ViewById
@@ -101,13 +104,14 @@ public class UserInfoFragment extends BasicFragment {
 
     private void uploadAvatar(File file) {
         showToast("正在上传");
-        UserBean userBean = preferenceHelper.getUser();
+        final UserBean userBean = preferenceHelper.getUser();
         mUserManager.uploadAvatar(userBean.getUsername(), userBean.getName(), userBean.getSessionId(), file, new FetchCallBack<String>() {
             @Override
             public void onSuccess(int status, int code, String s) {
                 if (status == 1) {
                     showToast("上传成功！");
                     UiUtil.loadImage(getActivity(), userIcoImg, s);
+                    mRongImManager.refreshUserInfoCache(userBean.getUsername(), userBean.getName(), s);
                 } else {
                     if (code == Constant.Code.SESSION_ERROR) {
                         showToast("身份已过期，请重新登录！");

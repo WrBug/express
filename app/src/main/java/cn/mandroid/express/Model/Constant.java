@@ -4,8 +4,8 @@ package cn.mandroid.express.Model;
  * Created by Administrator on 2015-12-11.
  */
 public class Constant {
-    public static  String API_URL="http://192.168.0.102";
-
+//    public static  String API_URL="http://192.168.0.102";
+    public static  String API_URL="http://192.168.1.195";
     public static class Code{
         public static final int JWC_PSWD_ERROR=0;
         public static final int NO_USER=1;

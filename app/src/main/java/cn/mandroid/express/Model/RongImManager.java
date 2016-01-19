@@ -2,11 +2,13 @@ package cn.mandroid.express.Model;
 
 import android.content.Context;
 import android.net.Uri;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import org.androidannotations.annotations.EBean;
 
 import cn.mandroid.express.Model.Bean.UserBean;
+import cn.mandroid.express.Model.RongIMListener.UnreadCountChangedListener;
 import cn.mandroid.express.R;
 import cn.mandroid.express.Utils.FileUtils;
 import cn.mandroid.express.Utils.MLog;
@@ -38,8 +40,12 @@ public class RongImManager {
 
             @Override
             public void onSuccess(String s) {
-                MLog.i("success");
-//                mCallBack.onSuccess(1, 1, null);
+                RongIM.getInstance().setOnReceiveUnreadCountChangedListener(new RongIM.OnReceiveUnreadCountChangedListener() {
+                    @Override
+                    public void onMessageIncreased(int i) {
+                        MLog.i(i);
+                    }
+                });
                 setUserinfo(userBean);
                 getUserInfo(userBean);
             }
@@ -114,5 +120,9 @@ public class RongImManager {
 
             }
         });
+    }
+
+    public void refreshUserInfoCache(String username, String nickname, @Nullable String avatarUrl) {
+        RongIM.getInstance().refreshUserInfoCache(new UserInfo(username, nickname, Uri.parse(avatarUrl)));
     }
 }

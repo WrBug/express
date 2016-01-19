@@ -22,7 +22,9 @@ import java.util.List;
 
 import cn.mandroid.express.Event.ChatEvent;
 import cn.mandroid.express.Event.ExitApp;
+import cn.mandroid.express.Event.UnreadEvent;
 import cn.mandroid.express.Model.JwcManager;
+import cn.mandroid.express.Model.RongIMListener.UnreadCountChangedListener;
 import cn.mandroid.express.Model.UserManager;
 import cn.mandroid.express.R;
 import cn.mandroid.express.UI.activity.rongIM.ChatFragment;
@@ -32,6 +34,7 @@ import cn.mandroid.express.UI.widget.ActionBar;
 import cn.mandroid.express.Utils.CheckUtil;
 import cn.mandroid.express.Utils.MLog;
 import de.greenrobot.event.EventBus;
+import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 
 @EActivity(R.layout.activity_main)
@@ -56,7 +59,6 @@ public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgCl
     UserManager userManager;
     List<Fragment> fragments;
     CenterFragment centerFragment;
-    ChatFragment chatFragment;
     UserInfoFragment userInfoFragment;
     Fragment cacheFragment;
 
@@ -74,11 +76,11 @@ public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgCl
         rbCenter.setChecked(true);
         initFragment();
         setFragment(centerFragment);
+
     }
 
     private void initFragment() {
         centerFragment = CenterFragment_.builder().build();
-        chatFragment = ChatFragment_.builder().build();
         userInfoFragment = UserInfoFragment_.builder().build();
     }
 
@@ -106,18 +108,14 @@ public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgCl
         cacheFragment = fragment;
     }
 
-//    private void setFragment(int index) {
-//        Fragment fragment = (Fragment) mFragmentPagerAdapter.instantiateItem(
-//                fragmentContainer, index);
-//        mFragmentPagerAdapter.setPrimaryItem(fragmentContainer, index, fragment);
-//        mFragmentPagerAdapter.finishUpdate(fragmentContainer);
-//    }
-
     @Override
     public void leftImgClick(ImageView view) {
 
     }
-
+    public void onEvent(UnreadEvent event) {
+        super.onEvent(event);
+        MLog.i(event.getCount());
+    }
 //    public void onEvent(AcountStatusEvent event) {
 //        super.onEvent(event);
 //        if (event.getStatus() == RongIMClient.ConnectionStatusListener.ConnectionStatus.KICKED_OFFLINE_BY_OTHER_CLIENT) {
@@ -154,6 +152,7 @@ public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgCl
                 }
                 if (rongIMstatus == RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTED) {
                     lastCheckedRb = rbChat;
+                    ChatFragment chatFragment = ChatFragment_.builder().build();
                     setFragment(chatFragment);
                 } else {
                     if (rongIMstatus != RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTING) {

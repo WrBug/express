@@ -80,7 +80,7 @@
 
     <string name="rc_notice_network_unavailable">当前网络不可用</string>
     <string name="rc_notice_disconnect">无法连接到服务器</string>
-    <string name="rc_notice_tick">该账号已经在其他设备登录</string>
+    <string name="rc_notice_tick">该帐号已经在其他设备登录</string>
     <string name="rc_notice_connecting">正在连接服务器</string>
     <string name="rc_notice_create_discussion">正在创建讨论组</string>
     <string name="rc_notice_create_discussion_fail">创建讨论组失败</string>
@@ -98,6 +98,8 @@
     <string name="rc_info_not_in_chatroom">你不在该聊天室</string>
     <string name="rc_rejected_by_blacklist_prompt">您的消息已经发出，但被对方拒收</string>
     <string name="rc_info_forbidden_to_talk">您当前在群组中被禁言</string>
+    <string name="rc_forbidden_in_chatroom">你已被禁言，不能发送消息</string>
+    <string name="rc_kicked_from_chatroom">你已被踢出聊天室</string>
 
     <string name="rc_send_format">发送(%1$s)</string>
     <string name="rc_yesterday_format">昨天 %1$s</string>
@@ -116,6 +118,7 @@
     <string name="rc_read_all">阅读全文</string>
 
     <string name="rc_voip_cpu_error">很抱歉，该功能暂时不支持您的机型</string>
+    
     
     <string name="rc_notification_ticker_text">您有了一条新消息</string>
     <string name="rc_notification_new_msg">%1$s发来了%2$d条消息</string>
