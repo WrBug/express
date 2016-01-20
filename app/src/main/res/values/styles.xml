@@ -6,6 +6,8 @@
         <item name="colorPrimary">@android:color/transparent</item>
         <!--<item name="colorPrimaryDark">@color/trans_30_black</item>-->
         <item name="colorAccent">@color/app_main</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
     </style>
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>

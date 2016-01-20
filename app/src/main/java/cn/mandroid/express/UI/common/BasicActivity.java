@@ -1,6 +1,7 @@
 package cn.mandroid.express.UI.common;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
@@ -40,15 +41,25 @@ public class BasicActivity extends FragmentActivity implements RongIMClient.Conn
         mPreferenceHelper = PreferenceHelper.instance(this);
         EventBus.getDefault().register(this);
     }
+
+    @Override
+    public void startActivity(Intent intent) {
+        overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
+        super.startActivity(intent);
+    }
+
     public void onEvent(UnreadEvent event) {
         MLog.i("basicUnread");
     }
+
     public void onEvent(ExitApp exit) {
         finish();
     }
+
     public void onEvent(Message message) {
-       MLog.i(message.getExtra());
+        MLog.i(message.getExtra());
     }
+
     public void onEvent(ChatEvent event) {
         switch (event.action) {
             case CONNECT:

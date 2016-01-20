@@ -79,7 +79,14 @@ public class UserInfoFragment extends BasicFragment {
         intent.putExtra(MultiImageSelectorActivity.EXTRA_SELECT_MODE, MultiImageSelectorActivity.MODE_SINGLE);
         startActivityForResult(intent, REQUEST_IMAGE);
     }
-
+    @Click(R.id.howToGetIntegralText)
+    void howToGetIntegralText(){
+        UserSubActivity_.intent(getActivity()).action(UserSubActivity.Action.HOWTOGETINTEGRAL).start();
+    }
+    @Click(R.id.userIntegralDetailText)
+    void userIntegralDetailText(){
+        UserSubActivity_.intent(getActivity()).action(UserSubActivity.Action.INTEGRALDETAIL).start();
+    }
     @OnActivityResult(value = REQUEST_IMAGE)
     void onResult(Intent data) {
         if (data != null) {

@@ -23,6 +23,7 @@ public class LoadMoreListView extends ListView implements View.OnTouchListener {
         super(context, attrs);
         setOnTouchListener(this);
         footView = LayoutInflater.from(context).inflate(R.layout.list_view_foot_view, null);
+        setVerticalScrollBarEnabled(false);
         addFooterView(footView);
     }
 

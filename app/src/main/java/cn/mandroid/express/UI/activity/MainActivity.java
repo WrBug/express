@@ -163,6 +163,7 @@ public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgCl
                 if (rongIMstatus == RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTED) {
                     lastCheckedRb = rbChat;
                     ChatFragment chatFragment = ChatFragment_.builder().build();
+                    actionBar.setTitle("聊天");
                     setFragment(chatFragment);
                 } else {
                     if (rongIMstatus != RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTING) {
@@ -178,16 +179,19 @@ public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgCl
                 lastCheckedRb = rbCenter;
 
                 setFragment(centerFragment);
+                actionBar.setTitle("发现");
 //                setFragment(checkedId);
                 break;
             }
             case R.id.rbMy:
                 if (!CheckUtil.userIsInvid(mPreferenceHelper.getUser())) {
                     LoginActivity_.intent(context).start();
+                    lastCheckedRb.setChecked(true);
                     return;
                 }
                 lastCheckedRb = rbMy;
                 setFragment(userInfoFragment);
+                actionBar.setTitle("个人中心");
                 break;
         }
     }
