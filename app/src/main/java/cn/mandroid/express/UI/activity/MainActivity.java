@@ -1,5 +1,6 @@
 package cn.mandroid.express.UI.activity;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -112,9 +113,18 @@ public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgCl
     public void leftImgClick(ImageView view) {
 
     }
+
     public void onEvent(UnreadEvent event) {
         super.onEvent(event);
-        MLog.i(event.getCount());
+        if (event.getCount() > 0) {
+            Drawable drawable = getResources().getDrawable(R.drawable.tab_selector_contact_new_msg);
+            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+            rbChat.setCompoundDrawables(null, drawable, null, null);
+        } else {
+            Drawable drawable = getResources().getDrawable(R.drawable.tab_selector_contact);
+            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+            rbChat.setCompoundDrawables(null, drawable, null, null);
+        }
     }
 //    public void onEvent(AcountStatusEvent event) {
 //        super.onEvent(event);
