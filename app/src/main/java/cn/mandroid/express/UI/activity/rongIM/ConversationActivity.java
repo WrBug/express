@@ -38,7 +38,7 @@ public class ConversationActivity extends BasicActivity {
     private void getIntentDate(Intent intent) {
         mTargetId = intent.getData().getQueryParameter("targetId");
         mTargetIds = intent.getData().getQueryParameter("targetIds");
-        //intent.getData().getLastPathSegment();//获得当前会话类型
+        //intent.getDate().getLastPathSegment();//获得当前会话类型
         mConversationType = Conversation.ConversationType.valueOf(intent.getData().getLastPathSegment().toUpperCase(Locale.getDefault()));
 
         enterFragment(mConversationType, mTargetId);

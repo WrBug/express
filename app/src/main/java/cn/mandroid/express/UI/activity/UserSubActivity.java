@@ -33,10 +33,12 @@ public class UserSubActivity extends BasicActivity {
     private void initView() {
         switch (action) {
             case INTEGRALDETAIL:
-                actionBar.setTitle("积分详情");
+                actionBar.setVisibility(View.GONE);
+
                 setFragment(UserIntegralDetailFragment_.builder().build());
                 break;
             case HOWTOGETINTEGRAL:
+                actionBar.setVisibility(View.VISIBLE);
                 actionBar.setTitle("获取积分方式");
 //                setFragment(UserIntegralDetailFragment_.builder().build());
 

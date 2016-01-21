@@ -41,13 +41,6 @@ public class BasicActivity extends FragmentActivity implements RongIMClient.Conn
         mPreferenceHelper = PreferenceHelper.instance(this);
         EventBus.getDefault().register(this);
     }
-
-    @Override
-    public void startActivity(Intent intent) {
-        overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
-        super.startActivity(intent);
-    }
-
     public void onEvent(UnreadEvent event) {
         MLog.i("basicUnread");
     }

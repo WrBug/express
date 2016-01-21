@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
+import cn.mandroid.express.UI.dialog.ProgressDialog;
 import cn.mandroid.express.Utils.MToast;
 import cn.mandroid.express.Utils.PreferenceHelper;
 
@@ -22,4 +23,13 @@ public class BasicFragment extends Fragment {
     protected void showToast(String msg) {
         MToast.show(getActivity(), msg);
     }
+
+    protected void showProgressDialog() {
+        ProgressDialog.instance(getActivity()).show();
+    }
+
+    protected void hideProgressDialog() {
+        ProgressDialog.instance(getActivity()).hide();
+    }
+
 }

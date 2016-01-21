@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import cn.mandroid.express.R;
 import cn.mandroid.express.Utils.MLog;
@@ -24,6 +25,11 @@ public class LoadMoreListView extends ListView implements View.OnTouchListener {
         setOnTouchListener(this);
         footView = LayoutInflater.from(context).inflate(R.layout.list_view_foot_view, null);
         setVerticalScrollBarEnabled(false);
+        setDivider(null);
+        setDividerHeight(0);
+        TextView textView=new TextView(context);
+        textView.setText("暂无数据");
+        setEmptyView(textView);
         addFooterView(footView);
     }
 

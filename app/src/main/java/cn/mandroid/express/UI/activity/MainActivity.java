@@ -4,10 +4,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -18,14 +16,12 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import cn.mandroid.express.Event.ChatEvent;
 import cn.mandroid.express.Event.ExitApp;
 import cn.mandroid.express.Event.UnreadEvent;
 import cn.mandroid.express.Model.JwcManager;
-import cn.mandroid.express.Model.RongIMListener.UnreadCountChangedListener;
 import cn.mandroid.express.Model.UserManager;
 import cn.mandroid.express.R;
 import cn.mandroid.express.UI.activity.rongIM.ChatFragment;
@@ -33,9 +29,7 @@ import cn.mandroid.express.UI.activity.rongIM.ChatFragment_;
 import cn.mandroid.express.UI.common.BasicActivity;
 import cn.mandroid.express.UI.widget.ActionBar;
 import cn.mandroid.express.Utils.CheckUtil;
-import cn.mandroid.express.Utils.MLog;
 import de.greenrobot.event.EventBus;
-import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 
 @EActivity(R.layout.activity_main)
