@@ -44,7 +44,7 @@ public class UserManager extends ApiManager {
                     @Override
                     public void onCompleted(Exception e, JsonObject result) {
                         if (e == null) {
-                            if (result.get("status").getAsInt() == 1) {
+                            if (isSuccess(result)) {
                                 UserBean userBean = new Gson().fromJson(result.get("data").getAsJsonObject(), UserBean.class);
                                 rongImManager.setUserinfo(userBean);
                                 callBack.onSuccess(1, result.get("code").getAsInt(), userBean);
@@ -70,7 +70,7 @@ public class UserManager extends ApiManager {
                     @Override
                     public void onCompleted(Exception e, JsonObject result) {
                         if (e == null) {
-                            if (result.get("status").getAsInt() == 1) {
+                            if (isSuccess(result)) {
                                 UserBean userBean = new Gson().fromJson(result.get("data").getAsJsonObject(), UserBean.class);
                                 callBack.onSuccess(1, 1, userBean);
                             }
@@ -103,7 +103,7 @@ public class UserManager extends ApiManager {
                     @Override
                     public void onCompleted(Exception e, JsonObject result) {
                         if (e == null) {
-                            if (result.get("status").getAsInt() == 1) {
+                            if (isSuccess(result)) {
                                 UserBean userBean = App.INSTANCE.getUser();
                                 String url = result.get("data").getAsString();
                                 userBean.setAvatarUrl(url);
@@ -131,7 +131,7 @@ public class UserManager extends ApiManager {
                     @Override
                     public void onCompleted(Exception e, JsonObject result) {
                         if (e == null) {
-                            if (result.get("status").getAsInt() == 1) {
+                            if (isSuccess(result)) {
                                 callBack.onSuccess(1, 1, result.get("data").getAsString());
                             } else {
                                 callBack.onSuccess(result.get("status").getAsInt(), result.get("code").getAsInt(), null);
@@ -147,21 +147,49 @@ public class UserManager extends ApiManager {
         TreeMap<String, String> map = new TreeMap<>();
         map.put("username", username);
         map.put("sessionId", sessionId);
-        Ion.with(context).load(Constant.API_URL + "/User/getIntegralDetail").setMultipartParameters(getFinalMap(map)).asJsonObject().setCallback(new FutureCallback<JsonObject>() {
-            @Override
-            public void onCompleted(Exception e, JsonObject result) {
-                if (e == null) {
-                    if (result.get("status").getAsInt() == 1) {
-                        Gson gson=new Gson();
-                        IntegralDetailBean bean=gson.fromJson(result.get("data").getAsJsonObject(),IntegralDetailBean.class);
-                        callBack.onSuccess(1, 1, bean);
-                    } else {
-                        callBack.onSuccess(result.get("status").getAsInt(), result.get("code").getAsInt(), null);
+        Ion.with(context).load(Constant.API_URL + "/User/getIntegralDetail")
+                .setMultipartParameters(getFinalMap(map))
+                .asJsonObject()
+                .setCallback(new FutureCallback<JsonObject>() {
+                    @Override
+                    public void onCompleted(Exception e, JsonObject result) {
+                        if (e == null) {
+                            if (isSuccess(result)) {
+                                Gson gson = new Gson();
+                                IntegralDetailBean bean = gson.fromJson(result.get("data").getAsJsonObject(), IntegralDetailBean.class);
+                                callBack.onSuccess(1, 1, bean);
+                            } else {
+                                callBack.onSuccess(result.get("status").getAsInt(), result.get("code").getAsInt(), null);
+                            }
+                        } else {
+                            callBack.onError();
+                        }
                     }
-                } else {
-                    callBack.onError();
-                }
-            }
-        });
+                });
+    }
+
+    public void signIn(String username, String sessionId, final FetchCallBack<UserBean> callBack) {
+        TreeMap<String, String> map = new TreeMap<>();
+        map.put("username", username);
+        map.put("sessionId", sessionId);
+        Ion.with(context).load(Constant.API_URL + "/User/SignIn")
+                .setMultipartParameters(getFinalMap(map))
+                .asJsonObject()
+                .setCallback(new FutureCallback<JsonObject>() {
+                    @Override
+                    public void onCompleted(Exception e, JsonObject result) {
+                        if (e == null) {
+                            if (isSuccess(result)) {
+                                Gson gson = new Gson();
+                                UserBean userBean = gson.fromJson(result.get("data").getAsJsonObject(), UserBean.class);
+                                callBack.onSuccess(1, 1, userBean);
+                            } else {
+                                callBack.onSuccess(0, result.get("code").getAsInt(), null);
+                            }
+                        } else {
+                            callBack.onError();
+                        }
+                    }
+                });
     }
 }

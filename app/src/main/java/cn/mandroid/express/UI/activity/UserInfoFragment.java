@@ -28,6 +28,7 @@ import cn.mandroid.express.UI.common.BasicFragment;
 import cn.mandroid.express.UI.dialog.CropDialog;
 import cn.mandroid.express.UI.dialog.CropDialog_;
 import cn.mandroid.express.Utils.Const;
+import cn.mandroid.express.Utils.DateUtil;
 import cn.mandroid.express.Utils.FileUtils;
 import cn.mandroid.express.Utils.PreferenceHelper;
 import cn.mandroid.express.Utils.UiUtil;
@@ -52,6 +53,8 @@ public class UserInfoFragment extends BasicFragment {
     @ViewById
     ProgressBar userLevelUpProgress;
     @ViewById
+    TextView userSignInText;
+    @ViewById
     TextView userSignInCountText;
     @ViewById
     TextView userIntegralText;
@@ -60,6 +63,7 @@ public class UserInfoFragment extends BasicFragment {
     @ViewById
     TextView userReceiveCountText;
     Bitmap photo;
+    UserBean userBean;
     final int REQUEST_IMAGE = 1;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -79,14 +83,41 @@ public class UserInfoFragment extends BasicFragment {
         intent.putExtra(MultiImageSelectorActivity.EXTRA_SELECT_MODE, MultiImageSelectorActivity.MODE_SINGLE);
         startActivityForResult(intent, REQUEST_IMAGE);
     }
+
     @Click(R.id.howToGetIntegralText)
-    void howToGetIntegralText(){
+    void howToGetIntegralText() {
         UserSubActivity_.intent(getActivity()).action(UserSubActivity.Action.HOWTOGETINTEGRAL).start();
     }
+
     @Click(R.id.userIntegralDetailText)
-    void userIntegralDetailText(){
+    void userIntegralDetailText() {
         UserSubActivity_.intent(getActivity()).action(UserSubActivity.Action.INTEGRALDETAIL).start();
     }
+
+    @Click(R.id.userSignInText)
+    void userSignInClick() {
+        mUserManager.signIn(userBean.getUsername(), userBean.getSessionId(), new FetchCallBack<UserBean>() {
+            @Override
+            public void onSuccess(int status, int code, UserBean userBean) {
+                if (status == 1) {
+                    preferenceHelper.saveSignInfo(userBean.getSignInCount(), userBean.getSignInDate());
+                    setSignInInfo(userBean);
+                } else {
+                    if (code == Constant.Code.SESSION_ERROR) {
+                        showToast("身份已过期，请重新登录！");
+                    } else if (code == Constant.Code.SING_IN_ERROR) {
+                        showToast("签到失败");
+                    }
+                }
+            }
+
+            @Override
+            public void onError() {
+                showToast("网络连接失败,请稍后再试!");
+            }
+        });
+    }
+
     @OnActivityResult(value = REQUEST_IMAGE)
     void onResult(Intent data) {
         if (data != null) {
@@ -140,7 +171,7 @@ public class UserInfoFragment extends BasicFragment {
     }
 
     private void updateUser() {
-        UserBean userBean = preferenceHelper.getUser();
+        userBean = preferenceHelper.getUser();
         mUserManager.updateUser(userBean.getUsername(), userBean.getSessionId(), new FetchCallBack<UserBean>() {
             @Override
             public void onSuccess(int status, int code, UserBean userBean) {
@@ -180,11 +211,22 @@ public class UserInfoFragment extends BasicFragment {
             userLevelUpProgress.setMax(1);
             userLevelUpProgress.setProgress(1);
         }
-
-        userSignInCountText.setText("已连续签到" + userBean.getSignInCount() + "天");
+        setSignInInfo(userBean);
         userIntegralText.setText("" + userBean.getIntegral());
         userReleaseCountText.setText("我发布了" + userBean.getReleaseCount() + "条消息");
         userReceiveCountText.setText("我帮忙拿了" + userBean.getReceiveCount() + "次快递");
+    }
+
+    private void setSignInInfo(UserBean userBean) {
+        if (DateUtil.getTimesmorning() > userBean.getSignInDate()) {
+            userSignInCountText.setText("今天还未签到");
+            userSignInText.setText("签到");
+            userSignInText.setClickable(true);
+        } else {
+            userSignInCountText.setText("已连续签到" + userBean.getSignInCount() + "天");
+            userSignInText.setText("已签到");
+            userSignInText.setClickable(false);
+        }
     }
 
     private int getLevel(UserBean userBean) {

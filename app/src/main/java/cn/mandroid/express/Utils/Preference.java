@@ -28,6 +28,7 @@ public class Preference {
     public static String RECEIVE_COUNT = "receiveCount";
     public static String SESSION_ID = "sessionId";
     public static String SIGN_IN_COUNT = "signInCount";
+    public static String SIGN_IN_DATE = "signInDate";
     public static String USER_SEX = "sex";
     public static String AVATAR_URL = "avatarUrl";
     public static String TOKEN = "token";

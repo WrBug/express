@@ -184,7 +184,7 @@ public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgCl
                     return;
                 }
                 lastCheckedRb = rbMy;
-                setFragment(userInfoFragment);
+                setFragment(UserInfoFragment_.builder().build());
                 actionBar.setTitle("个人中心");
                 break;
         }

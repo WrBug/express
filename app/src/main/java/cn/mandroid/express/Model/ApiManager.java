@@ -2,6 +2,7 @@ package cn.mandroid.express.Model;
 
 import android.content.Context;
 
+import com.google.gson.JsonObject;
 import com.koushikdutta.ion.Ion;
 
 import java.util.ArrayList;
@@ -36,5 +37,8 @@ public class ApiManager {
         list.add(MD5.encode(stringBuilder.toString()));
         params.put("code", list);
         return params;
+    }
+    protected boolean isSuccess(JsonObject result){
+        return result.get("status").getAsInt() == 1;
     }
 }

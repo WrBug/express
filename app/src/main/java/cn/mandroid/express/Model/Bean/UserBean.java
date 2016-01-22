@@ -16,9 +16,18 @@ public class UserBean implements Serializable {
     private int receiveCount;
     private String sessionId;
     private int signInCount;
-    private Integer sex;
+    private long signInDate;
+    private int sex;
     private String avatarUrl;
     private String token;
+
+    public long getSignInDate() {
+        return signInDate;
+    }
+
+    public void setSignInDate(long signInDate) {
+        this.signInDate = signInDate;
+    }
 
     public String getToken() {
         return token;
@@ -35,6 +44,7 @@ public class UserBean implements Serializable {
     public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
     }
+
     public int getSignInCount() {
         return signInCount;
     }
@@ -43,11 +53,11 @@ public class UserBean implements Serializable {
         this.signInCount = signInCount;
     }
 
-    public Integer getSex() {
+    public int getSex() {
         return sex;
     }
 
-    public void setSex(Integer sex) {
+    public void setSex(int sex) {
         this.sex = sex;
     }
 
@@ -107,8 +117,8 @@ public class UserBean implements Serializable {
         this.receiveCount = receiveCount;
     }
 
-    public static UserBean dao2Bean(UserDao dao){
-        UserBean userBean=new UserBean();
+    public static UserBean dao2Bean(UserDao dao) {
+        UserBean userBean = new UserBean();
         userBean.setSex(dao.getSex());
         userBean.setUsername(dao.getUsername());
         userBean.setAvatarUrl(dao.getUserAvatar());

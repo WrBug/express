@@ -2,10 +2,8 @@ package cn.mandroid.express.Utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.text.TextUtils;
 
 import cn.mandroid.express.Model.Bean.UserBean;
-import cn.mandroid.express.Model.Constant;
 
 /**
  * Created by Administrator on 2015-11-15.
@@ -40,6 +38,11 @@ public class PreferenceHelper {
         preference.putString(Preference.PASSWORD, password);
     }
 
+    public void saveSignInfo(int signInCount, long signInDate) {
+        preference.putInt(Preference.SIGN_IN_COUNT, signInCount);
+        preference.putLong(Preference.SIGN_IN_DATE, signInDate);
+    }
+
     public String getPassword() {
         return preference.getString(Preference.PASSWORD);
     }
@@ -58,6 +61,7 @@ public class PreferenceHelper {
         preference.putInt(Preference.RECEIVE_COUNT, userBean.getReceiveCount());
         preference.putString(Preference.SESSION_ID, userBean.getSessionId());
         preference.putInt(Preference.SIGN_IN_COUNT, userBean.getSignInCount());
+        preference.putLong(Preference.SIGN_IN_DATE, userBean.getSignInDate());
         preference.putInt(Preference.USER_SEX, userBean.getSex());
         preference.putString(Preference.AVATAR_URL, userBean.getAvatarUrl());
         preference.putString(Preference.TOKEN, userBean.getToken());
