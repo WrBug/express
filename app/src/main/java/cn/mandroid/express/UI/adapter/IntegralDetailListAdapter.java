@@ -58,7 +58,7 @@ public class IntegralDetailListAdapter extends BaseAdapter {
         }
         holder.countText.setText((item.getType() == 0 ? "+" : "-") + item.getCount());
         holder.noteText.setText(item.getNote());
-        holder.dateText.setText(DateUtil.timeToStrYMDHMS_EN(item.getDate()));
+        holder.dateText.setText(DateUtil.timeToStrYMDHMS_EN(item.getDate()*1000));
         return convertView;
     }
 

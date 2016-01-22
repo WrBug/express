@@ -172,7 +172,7 @@ public class UserManager extends ApiManager {
         TreeMap<String, String> map = new TreeMap<>();
         map.put("username", username);
         map.put("sessionId", sessionId);
-        Ion.with(context).load(Constant.API_URL + "/User/SignIn")
+        Ion.with(context).load(Constant.API_URL + "/User/signIn")
                 .setMultipartParameters(getFinalMap(map))
                 .asJsonObject()
                 .setCallback(new FutureCallback<JsonObject>() {

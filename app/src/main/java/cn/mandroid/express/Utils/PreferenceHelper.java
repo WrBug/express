@@ -42,7 +42,9 @@ public class PreferenceHelper {
         preference.putInt(Preference.SIGN_IN_COUNT, signInCount);
         preference.putLong(Preference.SIGN_IN_DATE, signInDate);
     }
-
+    public void saveIntegral(int integral) {
+        preference.putInt(Preference.INTEGRAL, integral);
+    }
     public String getPassword() {
         return preference.getString(Preference.PASSWORD);
     }

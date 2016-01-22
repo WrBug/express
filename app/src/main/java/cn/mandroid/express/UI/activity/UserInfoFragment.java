@@ -101,7 +101,10 @@ public class UserInfoFragment extends BasicFragment {
             public void onSuccess(int status, int code, UserBean userBean) {
                 if (status == 1) {
                     preferenceHelper.saveSignInfo(userBean.getSignInCount(), userBean.getSignInDate());
+                    preferenceHelper.saveIntegral(userBean.getIntegral());
                     setSignInInfo(userBean);
+                    userIntegralText.setText(userBean.getIntegral() + "");
+
                 } else {
                     if (code == Constant.Code.SESSION_ERROR) {
                         showToast("身份已过期，请重新登录！");
