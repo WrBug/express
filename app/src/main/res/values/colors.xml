@@ -14,4 +14,6 @@
     <color name="trans_30_black">#4b000000</color>
     <color name="trans_10_black">#19000000</color>
     <color name="ashy_bg">#cccccc</color>
+    <color name="fb_normal">#ffffff</color>
+    <color name="fb_pressed">#bbbbbb</color>
 </resources>

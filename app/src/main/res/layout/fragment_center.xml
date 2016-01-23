@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -17,4 +18,39 @@
             android:dividerHeight="0dp" />
 
     </com.yalantis.phoenix.PullToRefreshView>
-</LinearLayout>
+
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        fab:fab_addButtonColorNormal="@color/app_main"
+        fab:fab_addButtonColorPressed="@color/button_pressed"
+        fab:fab_addButtonSize="mini"
+        fab:fab_labelsPosition="right">
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/releaseFB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@color/app_main"
+            fab:fab_colorPressed="@color/button_pressed"
+            fab:fab_icon="@drawable/ic_user_info_release_white"
+            fab:fab_size="mini" />
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/filterFB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@color/app_main"
+            fab:fab_colorPressed="@color/button_pressed"
+            fab:fab_icon="@drawable/ic_filter_white"
+            fab:fab_size="mini" />
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/searchFB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@color/app_main"
+            fab:fab_colorPressed="@color/button_pressed"
+            fab:fab_icon="@drawable/ic_search_white"
+            fab:fab_size="mini" />
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
+</FrameLayout>

@@ -81,8 +81,9 @@ public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgCl
 
 
     private void setActionBar() {
-        actionBar.setTitle(getResources().getString(R.string.app_name));
+        actionBar.setTitle("发现");
         actionBar.setLeftImgVisible(View.GONE);
+        actionBar.setRigthImgVisible(View.GONE);
         actionBar.setOnHeadImgClickListenner(this);
 
     }
