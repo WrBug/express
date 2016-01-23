@@ -34,14 +34,21 @@
             android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data
                     android:host="cn.mandroid.express"
                     android:pathPrefix="/conversation/"
                     android:scheme="rong" />
             </intent-filter>
         </activity>
-        <activity android:name=".UI.activity.UserSubActivity_"></activity>
+        <activity android:name=".UI.activity.UserSubActivity_" />
+        <activity
+            android:name=".UI.activity.ReleaseTaskActivity_"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden">
+
+        </activity>
     </application>
 
 </manifest>

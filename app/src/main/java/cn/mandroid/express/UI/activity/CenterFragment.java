@@ -1,9 +1,13 @@
 package cn.mandroid.express.UI.activity;
 
+import android.view.View;
+
+import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.yalantis.phoenix.PullToRefreshView;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
@@ -28,6 +32,12 @@ public class CenterFragment extends BasicFragment implements PullToRefreshView.O
     PullToRefreshView pullToRefreshView;
     @ViewById(R.id.list_view)
     LoadMoreListView listView;
+    @ViewById(R.id.releaseFB)
+    FloatingActionButton releaseFB;
+    @ViewById(R.id.filterFB)
+    FloatingActionButton filterFB;
+    @ViewById(R.id.searchFB)
+    FloatingActionButton searchFB;
     List<ExpressInfo> list = new ArrayList<>();
     ExpressListAdapter adapter;
     @Bean
@@ -56,7 +66,14 @@ public class CenterFragment extends BasicFragment implements PullToRefreshView.O
             }
         });
     }
-
+    @Click({R.id.releaseFB, R.id.searchFB, R.id.filterFB})
+    void floatingButtonClick(View view) {
+        switch (view.getId()) {
+            case R.id.releaseFB:
+                ReleaseTaskActivity_.intent(getActivity()).start();
+                break;
+        }
+    }
     @Override
     public void onRefresh() {
         loadInfo();

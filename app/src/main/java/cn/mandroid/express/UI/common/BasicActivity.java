@@ -18,6 +18,7 @@ import cn.mandroid.express.Utils.MLog;
 import cn.mandroid.express.Utils.MToast;
 import cn.mandroid.express.Utils.Preference;
 import cn.mandroid.express.Utils.PreferenceHelper;
+import cn.mandroid.express.Utils.UiUtil;
 import de.greenrobot.event.EventBus;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
@@ -37,6 +38,7 @@ public class BasicActivity extends FragmentActivity implements RongIMClient.Conn
         super.onCreate(savedInstanceState);
         context = this;
         //renceHelper.instance(context);
+        UiUtil.hideKeyboard(this);
         mPreference = Preference.instance(this);
         mPreferenceHelper = PreferenceHelper.instance(this);
         EventBus.getDefault().register(this);

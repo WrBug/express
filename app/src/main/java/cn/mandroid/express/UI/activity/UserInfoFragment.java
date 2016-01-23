@@ -4,9 +4,12 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.getbase.floatingactionbutton.FloatingActionButton;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -125,6 +128,8 @@ public class UserInfoFragment extends BasicFragment {
             }
         });
     }
+
+
 
     private void subActivityStart(UserSubActivity.Action action) {
         UserSubActivity_.intent(getActivity()).action(action).start();

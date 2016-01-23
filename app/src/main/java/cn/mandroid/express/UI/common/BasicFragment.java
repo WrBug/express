@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import cn.mandroid.express.UI.dialog.ProgressDialog;
 import cn.mandroid.express.Utils.MToast;
 import cn.mandroid.express.Utils.PreferenceHelper;
+import cn.mandroid.express.Utils.UiUtil;
 
 /**
  * Created by Administrator on 2015/12/15.
@@ -17,6 +18,7 @@ public class BasicFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        UiUtil.hideKeyboard(getActivity());
         preferenceHelper = PreferenceHelper.instance(getActivity());
     }
 

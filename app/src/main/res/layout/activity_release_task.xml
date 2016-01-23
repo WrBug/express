@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ashy_bg"
+    android:orientation="vertical">
+
+    <cn.mandroid.express.UI.widget.ActionBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/actionBar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:background="@drawable/bg_white_color_shape"
+                android:orientation="vertical"
+                android:padding="7dp">
+
+                <Spinner
+                    android:id="@+id/expressCompanySpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:spinnerMode="dropdown" />
+
+                <EditText
+                    android:id="@+id/expressCompanyEdit"
+                    style="@style/edit_main_bg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:hint="快递公司"
+                    android:visibility="gone" />
+
+                <EditText
+                    android:id="@+id/courierNumberEdit"
+                    style="@style/edit_main_bg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:hint="快递单号" />
+
+                <EditText
+                    android:id="@+id/contactorEdit"
+                    style="@style/edit_main_bg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:hint="联系人" />
+
+                <EditText
+                    android:id="@+id/phoneNumberEdit"
+                    style="@style/edit_main_bg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:ems="10"
+                    android:hint="联系方式"
+                    android:inputType="phone" />
+
+                <CheckBox
+                    android:id="@+id/heavyCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+
+                    android:checked="false"
+                    android:text="是否为重物？" />
+
+                <CheckBox
+                    android:id="@+id/bigCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:text="是否为大件物品？" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:background="@drawable/bg_white_color_shape"
+                android:orientation="vertical"
+                android:padding="7dp">
+
+                <Spinner
+                    android:id="@+id/depositorySpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:spinnerMode="dropdown"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/depositoryEdit"
+                    style="@style/edit_main_bg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:hint="存放地点"
+                    android:visibility="gone" />
+
+                <Spinner
+                    android:id="@+id/destinationSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:spinnerMode="dropdown" />
+
+                <EditText
+                    android:id="@+id/destinationEdit"
+                    style="@style/edit_main_bg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:hint="送达地点"
+                    android:visibility="gone" />
+
+                <EditText
+                    android:id="@+id/expressPasswordEdit"
+                    style="@style/edit_main_bg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:hint="提取密码(选填)" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:background="@drawable/bg_white_color_shape"
+                android:orientation="vertical"
+                android:padding="7dp">
+
+                <EditText
+                    android:id="@+id/remarkEdit"
+                    style="@style/edit_main_bg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="备注"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/submit"
+                style="@style/btn_main_bg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="提交" />
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>
