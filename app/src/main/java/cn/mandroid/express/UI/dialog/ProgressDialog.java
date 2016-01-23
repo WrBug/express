@@ -11,7 +11,7 @@ import cn.mandroid.express.R;
  */
 public class ProgressDialog extends BaseDialog {
     private static ProgressDialog dialog;
-    private ProgressDialog(Context context) {
+    public ProgressDialog(Context context) {
         super(context);
         setContentView(R.layout.dialog_progress);
     }

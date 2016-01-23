@@ -33,10 +33,9 @@ public class UserManager extends ApiManager {
         this.context = context;
     }
 
-    public void updateUser(String username, String sessionId, final FetchCallBack<UserBean> callBack) {
+    public void updateUser(String username, final FetchCallBack<UserBean> callBack) {
         TreeMap<String, String> map = new TreeMap<>();
         map.put("username", username);
-        map.put("sessionId", sessionId);
         Ion.with(context).load(Constant.API_URL + "/User/updateUser")
                 .setBodyParameters(getFinalMap(map))
                 .asJsonObject()
@@ -58,11 +57,10 @@ public class UserManager extends ApiManager {
                 });
     }
 
-    public void getUserInfoByUsername(String user, String username, String sessionId, final FetchCallBack<UserBean> callBack) {
+    public void getUserInfoByUsername(String user, String username, final FetchCallBack<UserBean> callBack) {
         TreeMap<String, String> map = new TreeMap<>();
         map.put("user", user);
         map.put("username", username);
-        map.put("sessionId", sessionId);
         Ion.with(context).load(Constant.API_URL + "/User/getUserInfoByUsername")
                 .setBodyParameters(getFinalMap(map))
                 .asJsonObject()
@@ -81,11 +79,10 @@ public class UserManager extends ApiManager {
                 });
     }
 
-    public void uploadAvatar(String username, String name, String sessionId, File file, final FetchCallBack<String> callBack) {
+    public void uploadAvatar(String username, String name, File file, final FetchCallBack<String> callBack) {
         TreeMap<String, String> map = new TreeMap<>();
         map.put("username", username);
         map.put("name", name);
-        map.put("sessionId", sessionId);
         map.put("host", Constant.API_URL);
         map.put("fileType", file.getName().substring(file.getName().lastIndexOf('.')));
         Ion.with(context).load(Constant.API_URL + "/User/uploadAvatar")
@@ -120,10 +117,9 @@ public class UserManager extends ApiManager {
                 });
     }
 
-    public void getToken(String username, String sessionId, final FetchCallBack<String> callBack) {
+    public void getToken(String username, final FetchCallBack<String> callBack) {
         TreeMap<String, String> map = new TreeMap<>();
         map.put("username", username);
-        map.put("sessionId", sessionId);
         Ion.with(context).load(Constant.API_URL + "/RongIm/getToken")
                 .setMultipartParameters(getFinalMap(map))
                 .asJsonObject()
@@ -143,10 +139,9 @@ public class UserManager extends ApiManager {
                 });
     }
 
-    public void getIntegralDetail(String username, String sessionId, final FetchCallBack<IntegralDetailBean> callBack) {
+    public void getIntegralDetail(String username, final FetchCallBack<IntegralDetailBean> callBack) {
         TreeMap<String, String> map = new TreeMap<>();
         map.put("username", username);
-        map.put("sessionId", sessionId);
         Ion.with(context).load(Constant.API_URL + "/User/getIntegralDetail")
                 .setMultipartParameters(getFinalMap(map))
                 .asJsonObject()
@@ -168,10 +163,9 @@ public class UserManager extends ApiManager {
                 });
     }
 
-    public void signIn(String username, String sessionId, final FetchCallBack<UserBean> callBack) {
+    public void signIn(String username, final FetchCallBack<UserBean> callBack) {
         TreeMap<String, String> map = new TreeMap<>();
         map.put("username", username);
-        map.put("sessionId", sessionId);
         Ion.with(context).load(Constant.API_URL + "/User/signIn")
                 .setMultipartParameters(getFinalMap(map))
                 .asJsonObject()

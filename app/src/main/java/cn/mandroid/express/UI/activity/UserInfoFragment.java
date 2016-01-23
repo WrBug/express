@@ -86,17 +86,22 @@ public class UserInfoFragment extends BasicFragment {
 
     @Click(R.id.howToGetIntegralText)
     void howToGetIntegralText() {
-        UserSubActivity_.intent(getActivity()).action(UserSubActivity.Action.HOWTOGETINTEGRAL).start();
+        subActivityStart(UserSubActivity.Action.HOWTOGETINTEGRAL);
     }
 
     @Click(R.id.userIntegralDetailText)
     void userIntegralDetailText() {
-        UserSubActivity_.intent(getActivity()).action(UserSubActivity.Action.INTEGRALDETAIL).start();
+        subActivityStart(UserSubActivity.Action.INTEGRALDETAIL);
+    }
+
+    @Click(R.id.userReleaseCountText)
+    void userReleaseDetailClick() {
+        subActivityStart(UserSubActivity.Action.RELEASETASK);
     }
 
     @Click(R.id.userSignInText)
     void userSignInClick() {
-        mUserManager.signIn(userBean.getUsername(), userBean.getSessionId(), new FetchCallBack<UserBean>() {
+        mUserManager.signIn(userBean.getUsername(), new FetchCallBack<UserBean>() {
             @Override
             public void onSuccess(int status, int code, UserBean userBean) {
                 if (status == 1) {
@@ -119,6 +124,10 @@ public class UserInfoFragment extends BasicFragment {
                 showToast("网络连接失败,请稍后再试!");
             }
         });
+    }
+
+    private void subActivityStart(UserSubActivity.Action action) {
+        UserSubActivity_.intent(getActivity()).action(action).start();
     }
 
     @OnActivityResult(value = REQUEST_IMAGE)
@@ -146,7 +155,7 @@ public class UserInfoFragment extends BasicFragment {
     private void uploadAvatar(File file) {
         showToast("正在上传");
         final UserBean userBean = preferenceHelper.getUser();
-        mUserManager.uploadAvatar(userBean.getUsername(), userBean.getName(), userBean.getSessionId(), file, new FetchCallBack<String>() {
+        mUserManager.uploadAvatar(userBean.getUsername(), userBean.getName(), file, new FetchCallBack<String>() {
             @Override
             public void onSuccess(int status, int code, String s) {
                 if (status == 1) {
@@ -175,7 +184,7 @@ public class UserInfoFragment extends BasicFragment {
 
     private void updateUser() {
         userBean = preferenceHelper.getUser();
-        mUserManager.updateUser(userBean.getUsername(), userBean.getSessionId(), new FetchCallBack<UserBean>() {
+        mUserManager.updateUser(userBean.getUsername(), new FetchCallBack<UserBean>() {
             @Override
             public void onSuccess(int status, int code, UserBean userBean) {
                 if (status == 1) {

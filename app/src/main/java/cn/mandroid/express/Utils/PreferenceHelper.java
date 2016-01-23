@@ -33,7 +33,9 @@ public class PreferenceHelper {
     public String getUsername() {
         return preference.getString(Preference.USERNAME);
     }
-
+    public String getSessionId() {
+        return preference.getString(Preference.SESSION_ID);
+    }
     public void savePassword(String password) {
         preference.putString(Preference.PASSWORD, password);
     }

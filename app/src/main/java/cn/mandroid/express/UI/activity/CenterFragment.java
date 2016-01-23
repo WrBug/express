@@ -24,7 +24,7 @@ import cn.mandroid.express.UI.widget.LoadMoreListView;
  */
 @EFragment(R.layout.fragment_center)
 public class CenterFragment extends BasicFragment implements PullToRefreshView.OnRefreshListener, LoadMoreListView.PushToLoadListenner {
-    @ViewById(R.id.pull_to_refresh)
+    @ViewById(R.id.pullToRefresh)
     PullToRefreshView pullToRefreshView;
     @ViewById(R.id.list_view)
     LoadMoreListView listView;

@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -17,7 +18,7 @@ import cn.mandroid.express.UI.common.BasicActivity;
 import cn.mandroid.express.UI.widget.ActionBar;
 
 @EActivity(R.layout.activity_user_sub)
-public class UserSubActivity extends BasicActivity {
+public class UserSubActivity extends BasicActivity implements ActionBar.OnHeadImgClickListenner {
     @Extra
     Action action;
     @ViewById
@@ -27,6 +28,8 @@ public class UserSubActivity extends BasicActivity {
 
     @AfterViews
     void afterView() {
+        actionBar.setOnHeadImgClickListenner(this);
+        actionBar.setRigthImgVisible(View.GONE);
         initView();
     }
 
@@ -34,14 +37,17 @@ public class UserSubActivity extends BasicActivity {
         switch (action) {
             case INTEGRALDETAIL:
                 actionBar.setVisibility(View.GONE);
-
                 setFragment(UserIntegralDetailFragment_.builder().build());
                 break;
             case HOWTOGETINTEGRAL:
                 actionBar.setVisibility(View.VISIBLE);
                 actionBar.setTitle("获取积分方式");
 //                setFragment(UserIntegralDetailFragment_.builder().build());
-
+                break;
+            case RELEASETASK:
+                actionBar.setVisibility(View.VISIBLE);
+                actionBar.setTitle("我发布的信息");
+                setFragment(UserTaskDetailFragment_.builder().username(mPreferenceHelper.getUsername()).build());
                 break;
         }
     }
@@ -53,7 +59,17 @@ public class UserSubActivity extends BasicActivity {
         transaction.commit();
     }
 
+    @Override
+    public void leftImgClick(ImageView view) {
+        finish();
+    }
+
+    @Override
+    public void rightImgClick(ImageView view) {
+
+    }
+
     public enum Action {
-        INTEGRALDETAIL, HOWTOGETINTEGRAL
+        INTEGRALDETAIL, HOWTOGETINTEGRAL, RELEASETASK
     }
 }

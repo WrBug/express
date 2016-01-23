@@ -80,7 +80,7 @@ public class RongImManager {
                     return userInfo;
                 }
 
-                new UserManager(context).getUserInfoByUsername(s, myInfo.getUsername(), myInfo.getSessionId(), new FetchCallBack<UserBean>() {
+                new UserManager(context).getUserInfoByUsername(s, myInfo.getUsername(), new FetchCallBack<UserBean>() {
                     @Override
                     public void onSuccess(int status, int code, UserBean userBean) {
                         if (status == 1 && userBean != null && !TextUtils.isEmpty(userBean.getUsername())) {
@@ -112,7 +112,7 @@ public class RongImManager {
 
     private void getToken(final UserBean userBean) {
         UserManager userManager = new UserManager(context);
-        userManager.getToken(userBean.getUsername(), userBean.getSessionId(), new FetchCallBack<String>() {
+        userManager.getToken(userBean.getUsername(),  new FetchCallBack<String>() {
             @Override
             public void onSuccess(int status, int code, String s) {
                 if (status == 1) {

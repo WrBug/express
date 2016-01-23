@@ -24,6 +24,7 @@ import cn.mandroid.express.Model.UserManager;
 import cn.mandroid.express.R;
 import cn.mandroid.express.UI.adapter.IntegralDetailListAdapter;
 import cn.mandroid.express.UI.common.BasicFragment;
+import cn.mandroid.express.UI.dialog.ProgressDialog;
 import cn.mandroid.express.UI.widget.LoadMoreListView;
 
 @EFragment(R.layout.fragment_user_integral_detail)
@@ -41,20 +42,22 @@ public class UserIntegralDetailFragment extends BasicFragment {
     @ViewById
     ViewPager viewPager;
     List<View> viewLists;
+    ProgressDialog dialog;
 
     @AfterViews
     void afterView() {
-        showProgressDialog();
+        dialog = new ProgressDialog(getActivity());
         getData();
     }
 
     private void getData() {
+        dialog.show();
         UserBean userBean = preferenceHelper.getUser();
         integralText.setText(userBean.getIntegral() + "");
-        mUserManager.getIntegralDetail(userBean.getUsername(), userBean.getSessionId(), new FetchCallBack<IntegralDetailBean>() {
+        mUserManager.getIntegralDetail(userBean.getUsername(), new FetchCallBack<IntegralDetailBean>() {
             @Override
             public void onSuccess(int status, int code, IntegralDetailBean integralDetailBean) {
-                hideProgressDialog();
+                dialog.dismiss();
                 if (status == 1) {
                     setData(integralDetailBean);
                 } else {
@@ -66,7 +69,7 @@ public class UserIntegralDetailFragment extends BasicFragment {
 
             @Override
             public void onError() {
-                hideProgressDialog();
+                dialog.dismiss();
                 showToast("网络连接失败");
             }
         });
