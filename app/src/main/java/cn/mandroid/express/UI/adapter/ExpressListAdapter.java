@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import cn.mandroid.express.Model.Bean.ExpressInfo;
+import cn.mandroid.express.Model.Bean.TaskInfoBean;
 import cn.mandroid.express.R;
 import cn.mandroid.express.Utils.DateUtil;
 import cn.mandroid.express.Utils.UiUtil;
@@ -23,11 +23,11 @@ import cn.mandroid.express.Utils.UiUtil;
  */
 public class ExpressListAdapter extends BaseAdapter {
     private Context context;
-    private List<ExpressInfo> list;
+    private List<TaskInfoBean> list;
     private LayoutInflater inflater;
     int[] colors = new int[3];
 
-    public ExpressListAdapter(Context context, List<ExpressInfo> list) {
+    public ExpressListAdapter(Context context, List<TaskInfoBean> list) {
         this.context = context;
         this.list = list;
         inflater = LayoutInflater.from(context);
@@ -58,7 +58,7 @@ public class ExpressListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
-        ExpressInfo info = list.get(position);
+        TaskInfoBean info = list.get(position);
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.item_express_info, null);
             holder = new ViewHolder();
@@ -75,7 +75,7 @@ public class ExpressListAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         holder.container.setBackgroundColor(colors[position % 3]);
-        if(info.getUser()!=null){
+        if (info.getUser() != null) {
             if (TextUtils.isEmpty(info.getUser().getAvatarUrl())) {
                 UiUtil.loadImage(context, holder.userIcoImg, info.getUser().getSex() == 1 ? R.drawable.ic_user_default_man : R.drawable.ic_user_default_woman);
             } else {
@@ -84,7 +84,7 @@ public class ExpressListAdapter extends BaseAdapter {
         }
         holder.whereText.setText(info.getDepository());
         holder.destText.setText(info.getDestination());
-        holder.dateText.setText(DateUtil.timeToStrMDHM_ZH(info.getDate()));
+        holder.dateText.setText(DateUtil.timeToStrMDHM_ZH(info.getDate() * 1000));
         holder.companyText.setText(info.getExpressCompany());
         setStatus(holder.statusText, info.getStatus());
         return convertView;
@@ -92,15 +92,15 @@ public class ExpressListAdapter extends BaseAdapter {
 
     private void setStatus(TextView statusText, int status) {
         switch (status) {
-            case 1:
+            case 0:
                 statusText.setText("待接取");
                 statusText.setTextColor(Color.RED);
                 break;
-            case 2:
+            case 1:
                 statusText.setText("进行中");
                 statusText.setTextColor(Color.BLUE);
                 break;
-            case 3:
+            case 2:
                 statusText.setText("已完成");
                 statusText.setTextColor(Color.GREEN);
                 break;

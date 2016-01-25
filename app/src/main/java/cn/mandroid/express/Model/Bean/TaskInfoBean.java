@@ -1,17 +1,33 @@
 package cn.mandroid.express.Model.Bean;
 
 import java.io.Serializable;
+import java.util.AbstractList;
+import java.util.ArrayList;
+import java.util.List;
+
+import cn.mandroid.express.Model.Dao.TaskInfoDao;
+import cn.mandroid.express.Model.Dao.UserDao;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by Administrator on 2016/1/14 0014.
  */
-public class ExpressInfo implements Serializable {
+public class TaskInfoBean implements Serializable {
+    private int id;
     private UserBean user;
     private String depository;
     private String destination;
     private long date;
     private String expressCompany;
     private int status;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public long getDate() {
         return date;
@@ -59,5 +75,21 @@ public class ExpressInfo implements Serializable {
 
     public void setDestination(String destination) {
         this.destination = destination;
+    }
+
+    public static List<TaskInfoBean> dao2bean(AbstractList<TaskInfoDao> list) {
+        List<TaskInfoBean> beans = new ArrayList<>();
+        for (TaskInfoDao dao : list) {
+            TaskInfoBean bean = new TaskInfoBean();
+            bean.setDate(dao.getDate());
+            bean.setDestination(dao.getDestination());
+            bean.setDepository(dao.getDepository());
+            bean.setExpressCompany(dao.getExpressCompany());
+            bean.setId(dao.getId());
+            bean.setStatus(dao.getStatus());
+            bean.setUser(UserBean.dao2Bean(dao.getUser()));
+            beans.add(bean);
+        }
+        return beans;
     }
 }

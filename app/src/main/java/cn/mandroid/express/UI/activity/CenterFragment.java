@@ -14,8 +14,9 @@ import org.androidannotations.annotations.ViewById;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.mandroid.express.Model.Bean.ExpressInfo;
+import cn.mandroid.express.Model.Bean.TaskInfoBean;
 import cn.mandroid.express.Model.Bean.UserBean;
+import cn.mandroid.express.Model.DaoManager;
 import cn.mandroid.express.Model.FetchCallBack;
 import cn.mandroid.express.Model.TaskManager;
 import cn.mandroid.express.R;
@@ -38,7 +39,7 @@ public class CenterFragment extends BasicFragment implements PullToRefreshView.O
     FloatingActionButton filterFB;
     @ViewById(R.id.searchFB)
     FloatingActionButton searchFB;
-    List<ExpressInfo> list = new ArrayList<>();
+    List<TaskInfoBean> list = new ArrayList<>();
     ExpressListAdapter adapter;
     @Bean
     TaskManager mTaskManager;
@@ -47,17 +48,16 @@ public class CenterFragment extends BasicFragment implements PullToRefreshView.O
     void afterView() {
         pullToRefreshView.setOnRefreshListener(this);
         listView.setOnPushToLoadListenner(this);
+        setAdapter(DaoManager.getTaskList());
         loadInfo();
     }
 
     private void loadInfo() {
-        mTaskManager.getTaskList(new FetchCallBack<List<ExpressInfo>>() {
+        mTaskManager.getTaskList(new FetchCallBack<List<TaskInfoBean>>() {
             @Override
-            public void onSuccess(int status, int code, List<ExpressInfo> expressInfos) {
+            public void onSuccess(int status, int code, List<TaskInfoBean> taskInfoBeans) {
                 pullToRefreshView.setRefreshing(false);
-                list = expressInfos;
-                adapter = new ExpressListAdapter(getActivity(), list);
-                listView.setAdapter(adapter);
+                setAdapter(DaoManager.getTaskList());
             }
 
             @Override
@@ -66,6 +66,16 @@ public class CenterFragment extends BasicFragment implements PullToRefreshView.O
             }
         });
     }
+
+    private void setAdapter(List<TaskInfoBean> taskInfoBeans) {
+        if (taskInfoBeans == null) {
+            return;
+        }
+        list = taskInfoBeans;
+        adapter = new ExpressListAdapter(getActivity(), list);
+        listView.setAdapter(adapter);
+    }
+
     @Click({R.id.releaseFB, R.id.searchFB, R.id.filterFB})
     void floatingButtonClick(View view) {
         switch (view.getId()) {
@@ -74,6 +84,7 @@ public class CenterFragment extends BasicFragment implements PullToRefreshView.O
                 break;
         }
     }
+
     @Override
     public void onRefresh() {
         loadInfo();
@@ -83,7 +94,7 @@ public class CenterFragment extends BasicFragment implements PullToRefreshView.O
     public void pushToLoad() {
         int index = list.size();
         for (int i = 0; i < 3; i++) {
-            ExpressInfo info = new ExpressInfo();
+            TaskInfoBean info = new TaskInfoBean();
             UserBean userBean = new UserBean();
             userBean.setAvatarUrl("http://3.im.guokr.com/PH_23qTq4Yp3Cfg4bhu9lwI2firbTmCFJX_Dpe-vx5MiBAAAwAIAAEpQ.jpg");
             info.setUser(userBean);

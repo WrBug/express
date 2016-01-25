@@ -1,12 +1,7 @@
 package cn.mandroid.express.UI.activity;
 
 
-import android.os.Bundle;
-import android.app.Fragment;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.yalantis.phoenix.PullToRefreshView;
 
@@ -18,11 +13,10 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.List;
 
-import cn.mandroid.express.Model.Bean.ExpressInfo;
+import cn.mandroid.express.Model.Bean.TaskInfoBean;
 import cn.mandroid.express.Model.Bean.UserBean;
 import cn.mandroid.express.Model.FetchCallBack;
 import cn.mandroid.express.Model.TaskManager;
-import cn.mandroid.express.Model.UserManager;
 import cn.mandroid.express.R;
 import cn.mandroid.express.UI.adapter.ExpressListAdapter;
 import cn.mandroid.express.UI.common.BasicFragment;
@@ -40,7 +34,7 @@ public class UserTaskDetailFragment extends BasicFragment {
     @Bean
     TaskManager mTaskManager;
     UserBean user;
-    List<ExpressInfo> list;
+    List<TaskInfoBean> list;
 
     @AfterViews
     void afterView() {
@@ -52,11 +46,11 @@ public class UserTaskDetailFragment extends BasicFragment {
     }
 
     private void getData() {
-        mTaskManager.getTaskListByUsername(username, new FetchCallBack<List<ExpressInfo>>() {
+        mTaskManager.getTaskListByUsername(username, new FetchCallBack<List<TaskInfoBean>>() {
             @Override
-            public void onSuccess(int status, int code, List<ExpressInfo> expressInfos) {
+            public void onSuccess(int status, int code, List<TaskInfoBean> taskInfoBeans) {
                 if (status == 1) {
-                    list = expressInfos;
+                    list = taskInfoBeans;
                     adapter = new ExpressListAdapter(getActivity(), list);
                     listView.setAdapter(adapter);
                 }

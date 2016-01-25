@@ -125,4 +125,5 @@ public class UserBean implements Serializable {
         userBean.setName(dao.getName());
         return userBean;
     }
+
 }

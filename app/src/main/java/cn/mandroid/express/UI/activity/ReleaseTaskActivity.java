@@ -2,7 +2,6 @@ package cn.mandroid.express.UI.activity;
 
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -11,17 +10,19 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ItemSelect;
 import org.androidannotations.annotations.ViewById;
 
-import cn.mandroid.express.Model.Constant;
+import cn.mandroid.express.Model.Bean.TaskDetailBean;
+import cn.mandroid.express.Model.FetchCallBack;
+import cn.mandroid.express.Model.TaskManager;
 import cn.mandroid.express.R;
 import cn.mandroid.express.UI.common.BasicActivity;
 import cn.mandroid.express.UI.widget.ActionBar;
 import cn.mandroid.express.Utils.Const;
-import cn.mandroid.express.Utils.UiUtil;
 
 @EActivity(R.layout.activity_release_task)
 public class ReleaseTaskActivity extends BasicActivity implements ActionBar.OnHeadImgClickListenner {
@@ -55,6 +56,8 @@ public class ReleaseTaskActivity extends BasicActivity implements ActionBar.OnHe
     EditText remarkEdit;
     @ViewById
     Button submit;
+    @Bean
+    TaskManager mTaskManager;
     String expressCompany;
     String cacheEC;
     String courinerNumber;
@@ -62,7 +65,7 @@ public class ReleaseTaskActivity extends BasicActivity implements ActionBar.OnHe
     String phoneNumber;
     int heavy;
     int big;
-    String deposition;
+    String depository;
     String cacheDP;
     String destination;
     String cacheDT;
@@ -109,7 +112,32 @@ public class ReleaseTaskActivity extends BasicActivity implements ActionBar.OnHe
     void submitClick() {
         saveData();
         if (checkData()) {
+            TaskDetailBean bean = new TaskDetailBean();
+            bean.setExpressCompany(expressCompany);
+            bean.setCourinerNumber(courinerNumber);
+            bean.setContactor(contactor);
+            bean.setPhoneNumber(phoneNumber);
+            bean.setHeavy(heavy);
+            bean.setBig(big);
+            bean.setDepository(depository);
+            bean.setDestination(destination);
+            bean.setExpressPassword(expressPassword);
+            bean.setRemark(remark);
+            bean.setDate(System.currentTimeMillis() / 1000);
+            mTaskManager.releaseTask(mPreferenceHelper.getUsername(), bean, new FetchCallBack<Integer>() {
+                @Override
+                public void onSuccess(int status, int code, Integer integer) {
+                    if (status == 1) {
+                        showToast("发布成功");
+                        finish();
+                    }
+                }
 
+                @Override
+                public void onError() {
+                    showToast("网络连接失败");
+                }
+            });
         }
     }
 
@@ -130,10 +158,12 @@ public class ReleaseTaskActivity extends BasicActivity implements ActionBar.OnHe
             showToast("请填写联系号码");
             return false;
         }
-        if (TextUtils.isEmpty(deposition)) {
+        if (TextUtils.isEmpty(depository)) {
+            showToast("请选择/填写快递存放地");
             return false;
         }
         if (TextUtils.isEmpty(destination)) {
+            showToast("请选择/填写送达地点");
             return false;
         }
         return true;
@@ -146,7 +176,7 @@ public class ReleaseTaskActivity extends BasicActivity implements ActionBar.OnHe
         phoneNumber = phoneNumberEdit.getText().toString();
         heavy = heavyCheck.isChecked() ? 1 : 0;
         big = bigCheck.isChecked() ? 1 : 0;
-        deposition = depositoryEdit.getVisibility() == View.VISIBLE ? depositoryEdit.getText().toString() : cacheDP;
+        depository = depositoryEdit.getVisibility() == View.VISIBLE ? depositoryEdit.getText().toString() : cacheDP;
         destination = destinationEdit.getVisibility() == View.VISIBLE ? destinationEdit.getText().toString() : cacheDT;
         expressPassword = expressPasswordEdit.getText().toString();
         remark = remarkEdit.getText().toString();

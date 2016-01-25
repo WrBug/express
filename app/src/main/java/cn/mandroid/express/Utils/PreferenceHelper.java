@@ -2,7 +2,14 @@ package cn.mandroid.express.Utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.TextUtils;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.List;
+
+import cn.mandroid.express.Model.Bean.TaskInfoBean;
 import cn.mandroid.express.Model.Bean.UserBean;
 
 /**
@@ -30,12 +37,28 @@ public class PreferenceHelper {
         preference.putString(Preference.USERNAME, username);
     }
 
+    public void saveTaskList(String taskList) {
+        preference.putString(Preference.TASK_LIST, taskList);
+    }
+
+    public List<TaskInfoBean> getTaskList() {
+        String result = preference.getString(Preference.TASK_LIST);
+        if (TextUtils.isEmpty(result)) {
+            return null;
+        }
+        Gson gson = new Gson();
+        return gson.fromJson(result, new TypeToken<List<TaskInfoBean>>() {
+        }.getType());
+    }
+
     public String getUsername() {
         return preference.getString(Preference.USERNAME);
     }
+
     public String getSessionId() {
         return preference.getString(Preference.SESSION_ID);
     }
+
     public void savePassword(String password) {
         preference.putString(Preference.PASSWORD, password);
     }
@@ -44,9 +67,11 @@ public class PreferenceHelper {
         preference.putInt(Preference.SIGN_IN_COUNT, signInCount);
         preference.putLong(Preference.SIGN_IN_DATE, signInDate);
     }
+
     public void saveIntegral(int integral) {
         preference.putInt(Preference.INTEGRAL, integral);
     }
+
     public String getPassword() {
         return preference.getString(Preference.PASSWORD);
     }

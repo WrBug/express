@@ -1,5 +1,6 @@
 package cn.mandroid.express.Model.Dao;
 
+import cn.mandroid.express.Model.Bean.UserBean;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -43,5 +44,14 @@ public class UserDao extends RealmObject{
 
     public void setUserAvatar(String userAvatar) {
         this.userAvatar = userAvatar;
+    }
+
+    public static UserDao bean2dao(UserBean bean){
+        UserDao dao=new UserDao();
+        dao.setName(bean.getName());
+        dao.setSex(bean.getSex());
+        dao.setUserAvatar(bean.getAvatarUrl());
+        dao.setUsername(bean.getUsername());
+        return  dao;
     }
 }

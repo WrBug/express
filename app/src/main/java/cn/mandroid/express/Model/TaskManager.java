@@ -3,7 +3,6 @@ package cn.mandroid.express.Model;
 import android.content.Context;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.koushikdutta.async.future.FutureCallback;
@@ -11,13 +10,11 @@ import com.koushikdutta.ion.Ion;
 
 import org.androidannotations.annotations.EBean;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.TreeMap;
 
-import cn.mandroid.express.Model.Bean.ExpressInfo;
-import cn.mandroid.express.Model.Bean.UserBean;
+import cn.mandroid.express.Model.Bean.TaskInfoBean;
+import cn.mandroid.express.Model.Bean.TaskDetailBean;
 
 /**
  * Created by Administrator on 2016/1/18 0018.
@@ -31,37 +28,62 @@ public class TaskManager extends ApiManager {
         this.context = context;
     }
 
-    public void getTaskList(final FetchCallBack<List<ExpressInfo>> callBack) {
-        Ion.with(context).load(Constant.API_URL + "/task/getTaskList").asJsonArray().setCallback(new FutureCallback<JsonArray>() {
+    public void getTaskList(final FetchCallBack<List<TaskInfoBean>> callBack) {
+        Ion.with(context).load(Constant.API_URL + "/Task/getTaskList").asJsonObject().setCallback(new FutureCallback<JsonObject>() {
             @Override
-            public void onCompleted(Exception e, JsonArray result) {
+            public void onCompleted(Exception e, JsonObject result) {
                 if (e == null) {
-                    List<ExpressInfo> list;
-                    Gson gson = new Gson();
-                    list = gson.fromJson(result, new TypeToken<List<ExpressInfo>>() {
-                    }.getType());
-                    callBack.onSuccess(1, 1, list);
+                    if (isSuccess(result)) {
+                        List<TaskInfoBean> list;
+                        Gson gson = new Gson();
+                        list = gson.fromJson(result.get("data").getAsJsonArray(), new TypeToken<List<TaskInfoBean>>() {
+                        }.getType());
+                        DaoManager.saveTaskList(list);
+                        callBack.onSuccess(1, 1, list);
+                    }
                 }
             }
         });
     }
 
-    public void getTaskListByUsername(String username, final FetchCallBack<List<ExpressInfo>> callBack) {
+    public void getTaskListByUsername(String username, final FetchCallBack<List<TaskInfoBean>> callBack) {
         TreeMap<String, String> map = new TreeMap<>();
         map.put("username", username);
-        Ion.with(context).load(Constant.API_URL + "/task/getTaskListByUsername").setMultipartParameters(getFinalMap(map)).asJsonObject().setCallback(new FutureCallback<JsonObject>() {
+        Ion.with(context).load(Constant.API_URL + "/Task/getTaskListByUsername").setMultipartParameters(getFinalMap(map)).asJsonObject().setCallback(new FutureCallback<JsonObject>() {
             @Override
             public void onCompleted(Exception e, JsonObject result) {
                 if (e == null) {
-                    if(isSuccess(result)){
-                        List<ExpressInfo> list;
+                    if (isSuccess(result)) {
+                        List<TaskInfoBean> list;
                         Gson gson = new Gson();
-                        list = gson.fromJson(result.get("data").getAsJsonArray(), new TypeToken<List<ExpressInfo>>() {
+                        list = gson.fromJson(result.get("data").getAsJsonArray(), new TypeToken<List<TaskInfoBean>>() {
                         }.getType());
                         callBack.onSuccess(1, 1, list);
-                    }else {
+                    } else {
                         callBack.onSuccess(result.get("status").getAsInt(), result.get("code").getAsInt(), null);
                     }
+                }
+            }
+        });
+    }
+
+    public void releaseTask(String username, TaskDetailBean bean, final FetchCallBack<Integer> callBack) {
+        TreeMap<String, String> map = new TreeMap<>();
+        map.put("username", username);
+        Gson gson = new Gson();
+        String data = gson.toJson(bean);
+        map.put("data", data);
+        Ion.with(context).load(Constant.API_URL + "/Task/releaseTask").setMultipartParameters(getFinalMap(map)).asJsonObject().setCallback(new FutureCallback<JsonObject>() {
+            @Override
+            public void onCompleted(Exception e, JsonObject result) {
+                if (e == null) {
+                    if (isSuccess(result)) {
+                        callBack.onSuccess(1, 1, 1);
+                    } else {
+                        callBack.onSuccess(result.get("status").getAsInt(), result.get("code").getAsInt(), 0);
+                    }
+                } else {
+                    callBack.onError();
                 }
             }
         });
