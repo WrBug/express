@@ -28,7 +28,7 @@ import cn.mandroid.express.Utils.MD5;
 import de.greenrobot.event.EventBus;
 
 @EActivity(R.layout.activity_login)
-public class LoginActivity extends BasicActivity implements ActionBar.OnHeadImgClickListenner {
+public class LoginActivity extends BasicActivity implements ActionBar.OnHeadImgClickListener {
     @ViewById
     ActionBar actionBar;
     @ViewById
@@ -74,7 +74,7 @@ public class LoginActivity extends BasicActivity implements ActionBar.OnHeadImgC
     private void setActionBar() {
         actionBar.setTitle("登录");
         actionBar.setRigthImgVisible(View.GONE);
-        actionBar.setOnHeadImgClickListenner(this);
+        actionBar.setOnHeadImgClickListener(this);
     }
 
     @Click(R.id.submit)

@@ -1,15 +1,12 @@
-package cn.mandroid.express.UI.activity;
+package cn.mandroid.express.UI.activity.user;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import com.getbase.floatingactionbutton.FloatingActionButton;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -27,13 +24,14 @@ import cn.mandroid.express.Model.FetchCallBack;
 import cn.mandroid.express.Model.RongImManager;
 import cn.mandroid.express.Model.UserManager;
 import cn.mandroid.express.R;
+import cn.mandroid.express.UI.activity.LoginActivity_;
+import cn.mandroid.express.UI.activity.MultiImageSelectorActivity;
 import cn.mandroid.express.UI.common.BasicFragment;
 import cn.mandroid.express.UI.dialog.CropDialog;
 import cn.mandroid.express.UI.dialog.CropDialog_;
 import cn.mandroid.express.Utils.Const;
 import cn.mandroid.express.Utils.DateUtil;
 import cn.mandroid.express.Utils.FileUtils;
-import cn.mandroid.express.Utils.PreferenceHelper;
 import cn.mandroid.express.Utils.UiUtil;
 import de.hdodenhof.circleimageview.CircleImageView;
 

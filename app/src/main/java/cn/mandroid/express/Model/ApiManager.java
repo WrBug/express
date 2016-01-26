@@ -34,6 +34,10 @@ public class ApiManager {
         if (!TextUtils.isEmpty(sessionId)) {
             map.put("sessionId", sessionId);
         }
+        String username = preferenceHelper.getUsername();
+        if (!TextUtils.isEmpty(username) && !map.containsKey("username")) {
+            map.put("username", username);
+        }
         Map<String, List<String>> params = new HashMap<>();
         StringBuilder stringBuilder = new StringBuilder();
         List<String> list = null;

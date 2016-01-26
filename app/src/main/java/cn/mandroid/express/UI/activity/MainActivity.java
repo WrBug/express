@@ -26,6 +26,8 @@ import cn.mandroid.express.Model.UserManager;
 import cn.mandroid.express.R;
 import cn.mandroid.express.UI.activity.rongIM.ChatFragment;
 import cn.mandroid.express.UI.activity.rongIM.ChatFragment_;
+import cn.mandroid.express.UI.activity.user.UserInfoFragment;
+import cn.mandroid.express.UI.activity.user.UserInfoFragment_;
 import cn.mandroid.express.UI.common.BasicActivity;
 import cn.mandroid.express.UI.widget.ActionBar;
 import cn.mandroid.express.Utils.CheckUtil;
@@ -33,7 +35,7 @@ import de.greenrobot.event.EventBus;
 import io.rong.imlib.RongIMClient;
 
 @EActivity(R.layout.activity_main)
-public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgClickListenner, RadioGroup.OnCheckedChangeListener {
+public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgClickListener, RadioGroup.OnCheckedChangeListener {
     @Bean
     JwcManager jwcManager;
     @ViewById
@@ -56,10 +58,17 @@ public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgCl
     CenterFragment centerFragment;
     UserInfoFragment userInfoFragment;
     Fragment cacheFragment;
-
+    public static boolean isRunning;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        isRunning=true;
+    }
+
+    @Override
+    protected void onDestroy() {
+        isRunning=false;
+        super.onDestroy();
     }
 
     @AfterViews
@@ -84,7 +93,7 @@ public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgCl
         actionBar.setTitle("发现");
         actionBar.setLeftImgVisible(View.GONE);
         actionBar.setRigthImgVisible(View.GONE);
-        actionBar.setOnHeadImgClickListenner(this);
+        actionBar.setOnHeadImgClickListener(this);
 
     }
 

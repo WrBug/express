@@ -46,9 +46,8 @@ public class TaskManager extends ApiManager {
         });
     }
 
-    public void getTaskListByUsername(String username, final FetchCallBack<List<TaskInfoBean>> callBack) {
+    public void getTaskListByUsername(final FetchCallBack<List<TaskInfoBean>> callBack) {
         TreeMap<String, String> map = new TreeMap<>();
-        map.put("username", username);
         Ion.with(context).load(Constant.API_URL + "/Task/getTaskListByUsername").setMultipartParameters(getFinalMap(map)).asJsonObject().setCallback(new FutureCallback<JsonObject>() {
             @Override
             public void onCompleted(Exception e, JsonObject result) {
@@ -67,9 +66,8 @@ public class TaskManager extends ApiManager {
         });
     }
 
-    public void releaseTask(String username, TaskDetailBean bean, final FetchCallBack<Integer> callBack) {
+    public void releaseTask(TaskDetailBean bean, final FetchCallBack<Integer> callBack) {
         TreeMap<String, String> map = new TreeMap<>();
-        map.put("username", username);
         Gson gson = new Gson();
         String data = gson.toJson(bean);
         map.put("data", data);
@@ -84,6 +82,23 @@ public class TaskManager extends ApiManager {
                     }
                 } else {
                     callBack.onError();
+                }
+            }
+        });
+    }
+
+    public void getTaskDetail(String id, final FetchCallBack<TaskDetailBean> callBack) {
+        TreeMap<String, String> map = new TreeMap<>();
+        map.put("id", id);
+        Ion.with(context).load(Constant.API_URL + "/Task/getTaskDetail").setMultipartParameters(getFinalMap(map)).asJsonObject().setCallback(new FutureCallback<JsonObject>() {
+            @Override
+            public void onCompleted(Exception e, JsonObject result) {
+                if (e == null) {
+                    if (isSuccess(result)) {
+                        Gson gson = new Gson();
+                        TaskDetailBean bean = gson.fromJson(result.get("data").getAsJsonObject(), TaskDetailBean.class);
+                        callBack.onSuccess(1, 1, bean);
+                    }
                 }
             }
         });

@@ -25,7 +25,7 @@ import cn.mandroid.express.UI.widget.ActionBar;
 import cn.mandroid.express.Utils.Const;
 
 @EActivity(R.layout.activity_release_task)
-public class ReleaseTaskActivity extends BasicActivity implements ActionBar.OnHeadImgClickListenner {
+public class ReleaseTaskActivity extends BasicActivity implements ActionBar.OnHeadImgClickListener {
     @ViewById
     ActionBar actionBar;
     @ViewById(R.id.expressCompanySpinner)
@@ -47,6 +47,8 @@ public class ReleaseTaskActivity extends BasicActivity implements ActionBar.OnHe
     @ViewById
     EditText depositoryEdit;
     @ViewById
+    EditText depositoryDetailEdit;
+    @ViewById
     Spinner destinationSpinner;
     @ViewById
     EditText destinationEdit;
@@ -61,6 +63,7 @@ public class ReleaseTaskActivity extends BasicActivity implements ActionBar.OnHe
     String expressCompany;
     String cacheEC;
     String courinerNumber;
+    String depositoryDetail;
     String contactor;
     String phoneNumber;
     int heavy;
@@ -120,11 +123,12 @@ public class ReleaseTaskActivity extends BasicActivity implements ActionBar.OnHe
             bean.setHeavy(heavy);
             bean.setBig(big);
             bean.setDepository(depository);
+            bean.setDepositoryDetail(depositoryDetail);
             bean.setDestination(destination);
             bean.setExpressPassword(expressPassword);
             bean.setRemark(remark);
             bean.setDate(System.currentTimeMillis() / 1000);
-            mTaskManager.releaseTask(mPreferenceHelper.getUsername(), bean, new FetchCallBack<Integer>() {
+            mTaskManager.releaseTask(bean, new FetchCallBack<Integer>() {
                 @Override
                 public void onSuccess(int status, int code, Integer integer) {
                     if (status == 1) {
@@ -177,6 +181,7 @@ public class ReleaseTaskActivity extends BasicActivity implements ActionBar.OnHe
         heavy = heavyCheck.isChecked() ? 1 : 0;
         big = bigCheck.isChecked() ? 1 : 0;
         depository = depositoryEdit.getVisibility() == View.VISIBLE ? depositoryEdit.getText().toString() : cacheDP;
+        depositoryDetail = depositoryDetailEdit.getText().toString();
         destination = destinationEdit.getVisibility() == View.VISIBLE ? destinationEdit.getText().toString() : cacheDT;
         expressPassword = expressPasswordEdit.getText().toString();
         remark = remarkEdit.getText().toString();
@@ -195,7 +200,7 @@ public class ReleaseTaskActivity extends BasicActivity implements ActionBar.OnHe
     private void setActionBar() {
         actionBar.setTitle("发布");
         actionBar.setRigthImgVisible(View.GONE);
-        actionBar.setOnHeadImgClickListenner(this);
+        actionBar.setOnHeadImgClickListener(this);
     }
 
     @Override

@@ -32,6 +32,7 @@ public class BasicActivity extends FragmentActivity implements RongIMClient.Conn
     protected Preference mPreference;
     protected PreferenceHelper mPreferenceHelper;
     protected static RongIMClient.ConnectionStatusListener.ConnectionStatus rongIMstatus;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,7 @@ public class BasicActivity extends FragmentActivity implements RongIMClient.Conn
         mPreferenceHelper = PreferenceHelper.instance(this);
         EventBus.getDefault().register(this);
     }
+
     public void onEvent(UnreadEvent event) {
         MLog.i("basicUnread");
     }
@@ -84,11 +86,16 @@ public class BasicActivity extends FragmentActivity implements RongIMClient.Conn
     }
 
     protected void showProgressDialog() {
-        ProgressDialog.instance(context).show();
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(context);
+        }
+        progressDialog.show();
     }
 
     protected void hideProgressDialog() {
-        ProgressDialog.instance(context).dismiss();
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
     }
 
     @Override

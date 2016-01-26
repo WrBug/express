@@ -31,10 +31,10 @@ public class ProgressDialog extends BaseDialog {
 
     }
 
-    public static ProgressDialog instance(Context context){
-        if(dialog==null){
-            dialog=new ProgressDialog(context);
-        }
-        return dialog;
-    }
+//    public static ProgressDialog instance(Context context){
+//        if(dialog==null){
+//            dialog=new ProgressDialog(context);
+//        }
+//        return dialog;
+//    }
 }

@@ -2,13 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/ashy_bg"
     android:orientation="vertical">
 
     <cn.mandroid.express.UI.widget.ActionBar
         android:id="@+id/actionBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        app:title="发布"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -112,7 +114,13 @@
                     android:layout_marginTop="10dp"
                     android:hint="存放地点"
                     android:visibility="gone" />
-
+                <EditText
+                    android:id="@+id/depositoryDetailEdit"
+                    style="@style/edit_main_bg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:hint="具体存放位置（A区1号架）"/>
                 <Spinner
                     android:id="@+id/destinationSpinner"
                     android:layout_width="match_parent"

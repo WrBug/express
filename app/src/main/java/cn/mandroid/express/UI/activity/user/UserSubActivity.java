@@ -1,10 +1,8 @@
-package cn.mandroid.express.UI.activity;
+package cn.mandroid.express.UI.activity.user;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -18,7 +16,7 @@ import cn.mandroid.express.UI.common.BasicActivity;
 import cn.mandroid.express.UI.widget.ActionBar;
 
 @EActivity(R.layout.activity_user_sub)
-public class UserSubActivity extends BasicActivity implements ActionBar.OnHeadImgClickListenner {
+public class UserSubActivity extends BasicActivity implements ActionBar.OnHeadImgClickListener {
     @Extra
     Action action;
     @ViewById
@@ -28,7 +26,7 @@ public class UserSubActivity extends BasicActivity implements ActionBar.OnHeadIm
 
     @AfterViews
     void afterView() {
-        actionBar.setOnHeadImgClickListenner(this);
+        actionBar.setOnHeadImgClickListener(this);
         actionBar.setRigthImgVisible(View.GONE);
         initView();
     }

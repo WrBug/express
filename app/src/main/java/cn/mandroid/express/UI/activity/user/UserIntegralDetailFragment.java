@@ -1,4 +1,4 @@
-package cn.mandroid.express.UI.activity;
+package cn.mandroid.express.UI.activity.user;
 
 import android.graphics.Color;
 import android.support.v4.view.PagerAdapter;
@@ -42,22 +42,20 @@ public class UserIntegralDetailFragment extends BasicFragment {
     @ViewById
     ViewPager viewPager;
     List<View> viewLists;
-    ProgressDialog dialog;
 
     @AfterViews
     void afterView() {
-        dialog = new ProgressDialog(getActivity());
         getData();
     }
 
     private void getData() {
-        dialog.show();
+        showProgressDialog();
         UserBean userBean = preferenceHelper.getUser();
         integralText.setText(userBean.getIntegral() + "");
         mUserManager.getIntegralDetail(userBean.getUsername(), new FetchCallBack<IntegralDetailBean>() {
             @Override
             public void onSuccess(int status, int code, IntegralDetailBean integralDetailBean) {
-                dialog.dismiss();
+                hideProgressDialog();
                 if (status == 1) {
                     setData(integralDetailBean);
                 } else {
@@ -69,7 +67,7 @@ public class UserIntegralDetailFragment extends BasicFragment {
 
             @Override
             public void onError() {
-                dialog.dismiss();
+                hideProgressDialog();
                 showToast("网络连接失败");
             }
         });

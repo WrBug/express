@@ -1,4 +1,4 @@
-package cn.mandroid.express.UI.activity;
+package cn.mandroid.express.UI.activity.user;
 
 
 import android.text.TextUtils;
@@ -35,7 +35,6 @@ public class UserTaskDetailFragment extends BasicFragment {
     TaskManager mTaskManager;
     UserBean user;
     List<TaskInfoBean> list;
-
     @AfterViews
     void afterView() {
         if (TextUtils.isEmpty(username)) {
@@ -46,9 +45,11 @@ public class UserTaskDetailFragment extends BasicFragment {
     }
 
     private void getData() {
-        mTaskManager.getTaskListByUsername(username, new FetchCallBack<List<TaskInfoBean>>() {
+        showProgressDialog();
+        mTaskManager.getTaskListByUsername(new FetchCallBack<List<TaskInfoBean>>() {
             @Override
             public void onSuccess(int status, int code, List<TaskInfoBean> taskInfoBeans) {
+                hideProgressDialog();
                 if (status == 1) {
                     list = taskInfoBeans;
                     adapter = new ExpressListAdapter(getActivity(), list);
@@ -58,7 +59,7 @@ public class UserTaskDetailFragment extends BasicFragment {
 
             @Override
             public void onError() {
-
+                hideProgressDialog();
             }
         });
     }

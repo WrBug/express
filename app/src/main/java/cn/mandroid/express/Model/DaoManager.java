@@ -8,6 +8,7 @@ import cn.mandroid.express.Model.Dao.TaskInfoDao;
 import cn.mandroid.express.Model.Dao.UserDao;
 import io.realm.Realm;
 import io.realm.RealmResults;
+import io.realm.Sort;
 
 /**
  * Created by Administrator on 2015/12/18.
@@ -34,7 +35,7 @@ public class DaoManager {
 
     public static List<TaskInfoBean> getTaskList() {
         Realm realm = Realm.getDefaultInstance();
-        RealmResults<TaskInfoDao> taskInfoDaos = realm.where(TaskInfoDao.class).findAll();
+        RealmResults<TaskInfoDao> taskInfoDaos = realm.where(TaskInfoDao.class).findAllSorted("id", Sort.DESCENDING);
         if (taskInfoDaos.isLoaded()) {
             return TaskInfoBean.dao2bean(taskInfoDaos);
         }

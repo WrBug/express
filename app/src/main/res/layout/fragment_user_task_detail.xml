@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="cn.mandroid.express.UI.activity.UserTaskDetailFragment">
+    tools:context="cn.mandroid.express.UI.activity.user.UserTaskDetailFragment">
 
     <com.yalantis.phoenix.PullToRefreshView
         android:id="@+id/pullToRefresh"

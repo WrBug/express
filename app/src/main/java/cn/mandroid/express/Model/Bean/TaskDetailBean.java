@@ -6,6 +6,8 @@ import java.io.Serializable;
  * Created by Administrator on 2016/1/25 0025.
  */
 public class TaskDetailBean implements Serializable {
+    int id;
+    String username;
     String expressCompany;
     String courinerNumber;
     String phoneNumber;
@@ -13,12 +15,36 @@ public class TaskDetailBean implements Serializable {
     int heavy;
     int big;
     String depository;
+    String depositoryDetail;
     String destination;
     String expressPassword;
     String remark;
     String receiveUser;
     long date;
     int status;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getDepositoryDetail() {
+        return depositoryDetail;
+    }
+
+    public void setDepositoryDetail(String depositoryDetail) {
+        this.depositoryDetail = depositoryDetail;
+    }
 
     public String getContactor() {
         return contactor;

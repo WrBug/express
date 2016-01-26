@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.mandroid.express.Model.Dao.TaskInfoDao;
-import cn.mandroid.express.Model.Dao.UserDao;
-import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by Administrator on 2016/1/14 0014.

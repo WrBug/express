@@ -7,6 +7,8 @@ import android.os.Bundle;
 import java.util.Locale;
 
 import cn.mandroid.express.R;
+import cn.mandroid.express.UI.activity.MainActivity;
+import cn.mandroid.express.UI.activity.MainActivity_;
 import cn.mandroid.express.UI.common.BasicActivity;
 import io.rong.imkit.fragment.ConversationFragment;
 import io.rong.imlib.model.Conversation;
@@ -40,7 +42,6 @@ public class ConversationActivity extends BasicActivity {
         mTargetIds = intent.getData().getQueryParameter("targetIds");
         //intent.getDate().getLastPathSegment();//获得当前会话类型
         mConversationType = Conversation.ConversationType.valueOf(intent.getData().getLastPathSegment().toUpperCase(Locale.getDefault()));
-
         enterFragment(mConversationType, mTargetId);
     }
 
@@ -52,5 +53,13 @@ public class ConversationActivity extends BasicActivity {
                 .appendQueryParameter("targetId", mTargetId).build();
 
         fragment.setUri(uri);
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (!MainActivity.isRunning) {
+            MainActivity_.intent(context).start();
+        }
+        super.onDestroy();
     }
 }

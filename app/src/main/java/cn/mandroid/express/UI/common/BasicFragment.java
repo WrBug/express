@@ -14,6 +14,7 @@ import cn.mandroid.express.Utils.UiUtil;
  */
 public class BasicFragment extends Fragment {
     protected PreferenceHelper preferenceHelper;
+    private ProgressDialog progressDialog;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -27,11 +28,16 @@ public class BasicFragment extends Fragment {
     }
 
     protected void showProgressDialog() {
-        ProgressDialog.instance(getActivity()).show();
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(getActivity());
+        }
+        progressDialog.show();
     }
 
     protected void hideProgressDialog() {
-        ProgressDialog.instance(getActivity()).hide();
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
     }
 
 }
