@@ -82,10 +82,15 @@ public class RongImManager {
 
                 new UserManager(context).getUserInfoByUsername(s, myInfo.getUsername(), new FetchCallBack<UserBean>() {
                     @Override
-                    public void onSuccess(int status, int code, UserBean userBean) {
-                        if (status == 1 && userBean != null && !TextUtils.isEmpty(userBean.getUsername())) {
+                    public void onSuccess(int code, UserBean userBean) {
+                        if (userBean != null && !TextUtils.isEmpty(userBean.getUsername())) {
                             DaoManager.saveUserInfo(userBean.getUsername(), userBean.getSex(), userBean.getName(), userBean.getAvatarUrl());
                         }
+                    }
+
+                    @Override
+                    public void onFail(int code, UserBean bean) {
+
                     }
 
                     @Override
@@ -114,12 +119,15 @@ public class RongImManager {
         UserManager userManager = new UserManager(context);
         userManager.getToken(userBean.getUsername(),  new FetchCallBack<String>() {
             @Override
-            public void onSuccess(int status, int code, String s) {
-                if (status == 1) {
+            public void onSuccess( int code, String s) {
                     userBean.setToken(s);
                     PreferenceHelper.instance(context).saveUser(userBean);
                     connectIm(PreferenceHelper.instance(context).getUser(), false);
-                }
+            }
+
+            @Override
+            public void onFail(int code, String s) {
+
             }
 
             @Override

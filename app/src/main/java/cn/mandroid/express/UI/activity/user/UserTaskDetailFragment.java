@@ -48,13 +48,16 @@ public class UserTaskDetailFragment extends BasicFragment {
         showProgressDialog();
         mTaskManager.getTaskListByUsername(new FetchCallBack<List<TaskInfoBean>>() {
             @Override
-            public void onSuccess(int status, int code, List<TaskInfoBean> taskInfoBeans) {
+            public void onSuccess(int code, List<TaskInfoBean> taskInfoBeans) {
                 hideProgressDialog();
-                if (status == 1) {
                     list = taskInfoBeans;
                     adapter = new ExpressListAdapter(getActivity(), list);
                     listView.setAdapter(adapter);
-                }
+            }
+
+            @Override
+            public void onFail(int code, List<TaskInfoBean> list) {
+                hideProgressDialog();
             }
 
             @Override

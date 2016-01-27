@@ -104,29 +104,27 @@ public class UserInfoFragment extends BasicFragment {
     void userSignInClick() {
         mUserManager.signIn(userBean.getUsername(), new FetchCallBack<UserBean>() {
             @Override
-            public void onSuccess(int status, int code, UserBean userBean) {
-                if (status == 1) {
-                    preferenceHelper.saveSignInfo(userBean.getSignInCount(), userBean.getSignInDate());
-                    preferenceHelper.saveIntegral(userBean.getIntegral());
-                    setSignInInfo(userBean);
-                    userIntegralText.setText(userBean.getIntegral() + "");
+            public void onSuccess(int code, UserBean userBean) {
+                preferenceHelper.saveSignInfo(userBean.getSignInCount(), userBean.getSignInDate());
+                preferenceHelper.saveIntegral(userBean.getIntegral());
+                setSignInInfo(userBean);
+                userIntegralText.setText(userBean.getIntegral() + "");
+            }
 
-                } else {
-                    if (code == Constant.Code.SESSION_ERROR) {
-                        showToast("身份已过期，请重新登录！");
-                    } else if (code == Constant.Code.SING_IN_ERROR) {
-                        showToast("签到失败");
-                    }
+            @Override
+            public void onFail(int code, UserBean bean) {
+                if (code == Constant.Code.SESSION_ERROR) {
+                    showToast("身份已过期，请重新登录！");
+                } else if (code == Constant.Code.SING_IN_ERROR) {
+                    showToast("签到失败");
                 }
             }
 
             @Override
             public void onError() {
-                showToast("网络连接失败,请稍后再试!");
             }
         });
     }
-
 
 
     private void subActivityStart(UserSubActivity.Action action) {
@@ -160,15 +158,16 @@ public class UserInfoFragment extends BasicFragment {
         final UserBean userBean = preferenceHelper.getUser();
         mUserManager.uploadAvatar(userBean.getUsername(), userBean.getName(), file, new FetchCallBack<String>() {
             @Override
-            public void onSuccess(int status, int code, String s) {
-                if (status == 1) {
-                    showToast("上传成功！");
-                    UiUtil.loadImage(getActivity(), userIcoImg, s);
-                    mRongImManager.refreshUserInfoCache(userBean.getUsername(), userBean.getName(), s);
-                } else {
-                    if (code == Constant.Code.SESSION_ERROR) {
-                        showToast("身份已过期，请重新登录！");
-                    }
+            public void onSuccess(int code, String s) {
+                showToast("上传成功！");
+                UiUtil.loadImage(getActivity(), userIcoImg, s);
+                mRongImManager.refreshUserInfoCache(userBean.getUsername(), userBean.getName(), s);
+            }
+
+            @Override
+            public void onFail(int code, String s) {
+                if (code == Constant.Code.SESSION_ERROR) {
+                    showToast("身份已过期，请重新登录！");
                 }
             }
 
@@ -189,14 +188,15 @@ public class UserInfoFragment extends BasicFragment {
         userBean = preferenceHelper.getUser();
         mUserManager.updateUser(userBean.getUsername(), new FetchCallBack<UserBean>() {
             @Override
-            public void onSuccess(int status, int code, UserBean userBean) {
-                if (status == 1) {
-                    preferenceHelper.saveUser(userBean);
-                    updateUI();
-                } else {
-                    if (code == Constant.Code.SESSION_ERROR) {
-                        LoginActivity_.intent(getActivity()).start();
-                    }
+            public void onSuccess(int code, UserBean userBean) {
+                preferenceHelper.saveUser(userBean);
+                updateUI();
+            }
+
+            @Override
+            public void onFail(int code, UserBean bean) {
+                if (code == Constant.Code.SESSION_ERROR) {
+                    LoginActivity_.intent(getActivity()).start();
                 }
             }
 

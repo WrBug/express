@@ -130,16 +130,18 @@ public class ReleaseTaskActivity extends BasicActivity implements ActionBar.OnHe
             bean.setDate(System.currentTimeMillis() / 1000);
             mTaskManager.releaseTask(bean, new FetchCallBack<Integer>() {
                 @Override
-                public void onSuccess(int status, int code, Integer integer) {
-                    if (status == 1) {
+                public void onSuccess( int code, Integer integer) {
                         showToast("发布成功");
                         finish();
-                    }
+                }
+
+                @Override
+                public void onFail(int code, Integer integer) {
+
                 }
 
                 @Override
                 public void onError() {
-                    showToast("网络连接失败");
                 }
             });
         }

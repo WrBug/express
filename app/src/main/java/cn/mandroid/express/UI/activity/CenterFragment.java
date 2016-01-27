@@ -57,9 +57,14 @@ public class CenterFragment extends BasicFragment implements PullToRefreshView.O
     private void loadInfo() {
         mTaskManager.getTaskList(new FetchCallBack<List<TaskInfoBean>>() {
             @Override
-            public void onSuccess(int status, int code, List<TaskInfoBean> taskInfoBeans) {
+            public void onSuccess(int code, List<TaskInfoBean> taskInfoBeans) {
                 pullToRefreshView.setRefreshing(false);
                 setAdapter(DaoManager.getTaskList());
+            }
+
+            @Override
+            public void onFail(int code, List<TaskInfoBean> list) {
+                pullToRefreshView.setRefreshing(false);
             }
 
             @Override

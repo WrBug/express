@@ -54,21 +54,21 @@ public class UserIntegralDetailFragment extends BasicFragment {
         integralText.setText(userBean.getIntegral() + "");
         mUserManager.getIntegralDetail(userBean.getUsername(), new FetchCallBack<IntegralDetailBean>() {
             @Override
-            public void onSuccess(int status, int code, IntegralDetailBean integralDetailBean) {
+            public void onSuccess(int code, IntegralDetailBean integralDetailBean) {
                 hideProgressDialog();
-                if (status == 1) {
-                    setData(integralDetailBean);
-                } else {
-                    if (code == Constant.Code.SESSION_ERROR) {
-                        showToast("身份已过期，请重新登录！");
-                    }
-                }
-            }
+                setData(integralDetailBean);
+          }
 
+        @Override
+        public void onFail ( int code, IntegralDetailBean integralDetailBean) {
+            hideProgressDialog();
+            if (code == Constant.Code.SESSION_ERROR) {
+                showToast("身份已过期，请重新登录！");
+            }
+        }
             @Override
-            public void onError() {
+            public void onError () {
                 hideProgressDialog();
-                showToast("网络连接失败");
             }
         });
     }

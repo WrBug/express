@@ -48,10 +48,12 @@ public class JwcManager extends ApiManager {
                 .asJsonObject().setCallback(new FutureCallback<JsonObject>() {
             @Override
             public void onCompleted(Exception e, JsonObject result) {
-                if (e == null) {
-                    callBack.onSuccess(result.get("status").getAsInt(), result.get("code").getAsInt(), result);
-                } else {
-                    callBack.onError();
+                if (isExceptionNull(e, callBack)) {
+                    if (isSuccess(result)) {
+                        callBack.onSuccess(getCode(result), result);
+                    } else {
+                        callBack.onFail(getCode(result), result);
+                    }
                 }
             }
         });
@@ -76,7 +78,7 @@ public class JwcManager extends ApiManager {
                             Multimap multimap = result.getHeaders().getHeaders().getMultiMap();
                             String session = multimap.get("set-cookie").get(0);
                             String route = multimap.get("set-cookie").get(1);
-                            callBack.onSuccess(1, 1, session.substring(0, session.indexOf(';') + 1) + route.substring(0, route.indexOf(';')));
+                            callBack.onSuccess(1, session.substring(0, session.indexOf(';') + 1) + route.substring(0, route.indexOf(';')));
                         }
                     }
                 });
@@ -97,8 +99,12 @@ public class JwcManager extends ApiManager {
                 .setCallback(new FutureCallback<JsonObject>() {
                     @Override
                     public void onCompleted(Exception e, JsonObject result) {
-                        if (e == null) {
-                            callBack.onSuccess(result.get("status").getAsInt(), result.get("code").getAsInt(), result.get("data")==null|| TextUtils.isEmpty(result.get("data").getAsString())?0:result.get("data").getAsInt());
+                        if (isExceptionNull(e, callBack)) {
+                            if (isSuccess(result)) {
+                                callBack.onSuccess(getCode(result), getData(result) == null || TextUtils.isEmpty(getData(result).getAsString()) ? 0 : getData(result).getAsInt());
+                            } else {
+                                callBack.onFail(getCode(result), null);
+                            }
                         }
                     }
                 });
@@ -117,12 +123,14 @@ public class JwcManager extends ApiManager {
                 .setCallback(new FutureCallback<JsonObject>() {
                     @Override
                     public void onCompleted(Exception e, JsonObject result) {
-                        if (e == null) {
-                            Gson gson = new Gson();
-                            UserBean userBean = gson.fromJson(result.get("data"), UserBean.class);
-                            callback.onSuccess(result.get("status").getAsInt(), result.get("code").getAsInt(), userBean);
-                        } else {
-                            callback.onError();
+                        if (isExceptionNull(e,callback)) {
+                            if (isSuccess(result)) {
+                                Gson gson = new Gson();
+                                UserBean userBean = gson.fromJson(getData(result), UserBean.class);
+                                callback.onSuccess(getCode(result), userBean);
+                            } else {
+                                callback.onFail(getCode(result), null);
+                            }
                         }
                     }
                 });

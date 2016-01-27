@@ -58,11 +58,14 @@ public class TaskDetailActivity extends BasicActivity {
         showProgressDialog();
         mTaskManager.getTaskDetail(id + "", new FetchCallBack<TaskDetailBean>() {
             @Override
-            public void onSuccess(int status, int code, TaskDetailBean bean) {
+            public void onSuccess(int code, TaskDetailBean bean) {
                 hideProgressDialog();
-                if (status == 1) {
-                    setData(bean);
-                }
+                setData(bean);
+            }
+
+            @Override
+            public void onFail(int code, TaskDetailBean bean) {
+                hideProgressDialog();
             }
 
             @Override

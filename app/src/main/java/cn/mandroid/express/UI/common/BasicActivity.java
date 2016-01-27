@@ -81,7 +81,7 @@ public class BasicActivity extends FragmentActivity implements RongIMClient.Conn
         EventBus.getDefault().post(new ExitApp());
     }
 
-    protected void showToast(String content) {
+    public void showToast(String content) {
         MToast.show(context, content);
     }
 

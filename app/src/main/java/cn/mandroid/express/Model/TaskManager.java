@@ -32,14 +32,16 @@ public class TaskManager extends ApiManager {
         Ion.with(context).load(Constant.API_URL + "/Task/getTaskList").asJsonObject().setCallback(new FutureCallback<JsonObject>() {
             @Override
             public void onCompleted(Exception e, JsonObject result) {
-                if (e == null) {
+                if (isExceptionNull(e, callBack)) {
                     if (isSuccess(result)) {
                         List<TaskInfoBean> list;
                         Gson gson = new Gson();
-                        list = gson.fromJson(result.get("data").getAsJsonArray(), new TypeToken<List<TaskInfoBean>>() {
+                        list = gson.fromJson(getDataAsJsonArray(result), new TypeToken<List<TaskInfoBean>>() {
                         }.getType());
                         DaoManager.saveTaskList(list);
-                        callBack.onSuccess(1, 1, list);
+                        callBack.onSuccess(getCode(result), list);
+                    } else {
+                        callBack.onFail(getCode(result), null);
                     }
                 }
             }
@@ -51,15 +53,15 @@ public class TaskManager extends ApiManager {
         Ion.with(context).load(Constant.API_URL + "/Task/getTaskListByUsername").setMultipartParameters(getFinalMap(map)).asJsonObject().setCallback(new FutureCallback<JsonObject>() {
             @Override
             public void onCompleted(Exception e, JsonObject result) {
-                if (e == null) {
+                if (isExceptionNull(e, callBack)) {
                     if (isSuccess(result)) {
                         List<TaskInfoBean> list;
                         Gson gson = new Gson();
-                        list = gson.fromJson(result.get("data").getAsJsonArray(), new TypeToken<List<TaskInfoBean>>() {
+                        list = gson.fromJson(getDataAsJsonArray(result), new TypeToken<List<TaskInfoBean>>() {
                         }.getType());
-                        callBack.onSuccess(1, 1, list);
+                        callBack.onSuccess(getCode(result), list);
                     } else {
-                        callBack.onSuccess(result.get("status").getAsInt(), result.get("code").getAsInt(), null);
+                        callBack.onFail(getCode(result), null);
                     }
                 }
             }
@@ -74,14 +76,12 @@ public class TaskManager extends ApiManager {
         Ion.with(context).load(Constant.API_URL + "/Task/releaseTask").setMultipartParameters(getFinalMap(map)).asJsonObject().setCallback(new FutureCallback<JsonObject>() {
             @Override
             public void onCompleted(Exception e, JsonObject result) {
-                if (e == null) {
+                if (isExceptionNull(e, callBack)) {
                     if (isSuccess(result)) {
-                        callBack.onSuccess(1, 1, 1);
+                        callBack.onSuccess(getCode(result), 1);
                     } else {
-                        callBack.onSuccess(result.get("status").getAsInt(), result.get("code").getAsInt(), 0);
+                        callBack.onFail(getCode(result), 0);
                     }
-                } else {
-                    callBack.onError();
                 }
             }
         });
@@ -93,11 +93,13 @@ public class TaskManager extends ApiManager {
         Ion.with(context).load(Constant.API_URL + "/Task/getTaskDetail").setMultipartParameters(getFinalMap(map)).asJsonObject().setCallback(new FutureCallback<JsonObject>() {
             @Override
             public void onCompleted(Exception e, JsonObject result) {
-                if (e == null) {
+                if (isExceptionNull(e, callBack)) {
                     if (isSuccess(result)) {
                         Gson gson = new Gson();
-                        TaskDetailBean bean = gson.fromJson(result.get("data").getAsJsonObject(), TaskDetailBean.class);
-                        callBack.onSuccess(1, 1, bean);
+                        TaskDetailBean bean = gson.fromJson(getDataAsJsonObject(result), TaskDetailBean.class);
+                        callBack.onSuccess(getCode(result), bean);
+                    } else {
+                        callBack.onFail(getCode(result), null);
                     }
                 }
             }
