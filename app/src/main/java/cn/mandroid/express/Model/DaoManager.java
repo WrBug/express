@@ -42,6 +42,16 @@ public class DaoManager {
         return null;
     }
 
+    public static void deleteTaskFormList(int id) {
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        RealmResults<TaskInfoDao> daos = realm.where(TaskInfoDao.class).equalTo("id", id).findAll();
+        if (daos.isLoaded() && daos.size() == 1) {
+            daos.get(0).removeFromRealm();
+        }
+        realm.commitTransaction();
+    }
+
     public static UserBean getUserInfoByUsername(String username) {
         Realm realm = Realm.getDefaultInstance();
         RealmResults<UserDao> userDaos = realm.where(UserDao.class).equalTo("username", username).findAll();

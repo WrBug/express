@@ -18,5 +18,6 @@ public class Constant {
         public static final int UPLOAD_FAILED = 7;
         public static final int GET_TOKEN_ERROR = 8;
         public static final int SING_IN_ERROR = 9;
+        public static final int TASK_IS_DELETE=10;
     }
 }

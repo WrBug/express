@@ -22,6 +22,7 @@ import cn.mandroid.express.Model.TaskManager;
 import cn.mandroid.express.R;
 import cn.mandroid.express.UI.common.BasicActivity;
 import cn.mandroid.express.UI.widget.ActionBar;
+import cn.mandroid.express.Utils.Base64;
 import cn.mandroid.express.Utils.Const;
 
 @EActivity(R.layout.activity_release_task)
@@ -130,9 +131,9 @@ public class ReleaseTaskActivity extends BasicActivity implements ActionBar.OnHe
             bean.setDate(System.currentTimeMillis() / 1000);
             mTaskManager.releaseTask(bean, new FetchCallBack<Integer>() {
                 @Override
-                public void onSuccess( int code, Integer integer) {
-                        showToast("发布成功");
-                        finish();
+                public void onSuccess(int code, Integer integer) {
+                    showToast("发布成功");
+                    finish();
                 }
 
                 @Override
@@ -186,7 +187,7 @@ public class ReleaseTaskActivity extends BasicActivity implements ActionBar.OnHe
         depositoryDetail = depositoryDetailEdit.getText().toString();
         destination = destinationEdit.getVisibility() == View.VISIBLE ? destinationEdit.getText().toString() : cacheDT;
         expressPassword = expressPasswordEdit.getText().toString();
-        remark = remarkEdit.getText().toString();
+        remark = Base64.encode(remarkEdit.getText().toString());
     }
 
     private void setSpinner() {

@@ -14,6 +14,7 @@ public class TaskDetailBean implements Serializable {
     String contactor;
     int heavy;
     int big;
+    boolean isReceived;
     String depository;
     String depositoryDetail;
     String destination;
@@ -22,6 +23,15 @@ public class TaskDetailBean implements Serializable {
     String receiveUser;
     long date;
     int status;
+
+    public boolean isReceived() {
+        return isReceived;
+    }
+
+    public void setIsReceived(boolean isReceived) {
+        this.isReceived = isReceived;
+    }
+
     public int getId() {
         return id;
     }
