@@ -45,7 +45,12 @@ public class UserSubActivity extends BasicActivity implements ActionBar.OnHeadIm
             case RELEASETASK:
                 actionBar.setVisibility(View.VISIBLE);
                 actionBar.setTitle("我发布的信息");
-                setFragment(UserTaskDetailFragment_.builder().username(mPreferenceHelper.getUsername()).build());
+                setFragment(UserTaskDetailFragment_.builder().username(mPreferenceHelper.getUsername()).action(Action.RELEASETASK).build());
+                break;
+            case RECEIVETASK:
+                actionBar.setVisibility(View.VISIBLE);
+                actionBar.setTitle("我领取的任务");
+                setFragment(UserTaskDetailFragment_.builder().username(mPreferenceHelper.getUsername()).action(Action.RECEIVETASK).build());
                 break;
         }
     }
@@ -68,6 +73,6 @@ public class UserSubActivity extends BasicActivity implements ActionBar.OnHeadIm
     }
 
     public enum Action {
-        INTEGRALDETAIL, HOWTOGETINTEGRAL, RELEASETASK
+        INTEGRALDETAIL, HOWTOGETINTEGRAL, RELEASETASK, RECEIVETASK
     }
 }

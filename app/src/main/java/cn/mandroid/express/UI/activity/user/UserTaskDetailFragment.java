@@ -33,8 +33,11 @@ public class UserTaskDetailFragment extends BasicFragment {
     String username;
     @Bean
     TaskManager mTaskManager;
+    @FragmentArg
+    UserSubActivity.Action action;
     UserBean user;
     List<TaskInfoBean> list;
+
     @AfterViews
     void afterView() {
         if (TextUtils.isEmpty(username)) {
@@ -46,13 +49,20 @@ public class UserTaskDetailFragment extends BasicFragment {
 
     private void getData() {
         showProgressDialog();
-        mTaskManager.getTaskListByUsername(new FetchCallBack<List<TaskInfoBean>>() {
+        if (action == UserSubActivity.Action.RELEASETASK) {
+            getReleaseTaskList();
+        } else if (action == UserSubActivity.Action.RECEIVETASK) {
+            getReceiveTaskList();
+        }
+
+    }
+
+    private void getReceiveTaskList() {
+        mTaskManager.getReceiveTaskList(new FetchCallBack<List<TaskInfoBean>>() {
             @Override
             public void onSuccess(int code, List<TaskInfoBean> taskInfoBeans) {
                 hideProgressDialog();
-                    list = taskInfoBeans;
-                    adapter = new ExpressListAdapter(getActivity(),listView, list);
-                    listView.setAdapter(adapter);
+                setView(taskInfoBeans);
             }
 
             @Override
@@ -65,5 +75,31 @@ public class UserTaskDetailFragment extends BasicFragment {
                 hideProgressDialog();
             }
         });
+    }
+
+    private void getReleaseTaskList() {
+        mTaskManager.getTaskListByUsername(new FetchCallBack<List<TaskInfoBean>>() {
+            @Override
+            public void onSuccess(int code, List<TaskInfoBean> taskInfoBeans) {
+                hideProgressDialog();
+                setView(taskInfoBeans);
+            }
+
+            @Override
+            public void onFail(int code, List<TaskInfoBean> list) {
+                hideProgressDialog();
+            }
+
+            @Override
+            public void onError() {
+                hideProgressDialog();
+            }
+        });
+    }
+
+    private void setView(List<TaskInfoBean> taskInfoBeans) {
+        list = taskInfoBeans;
+        adapter = new ExpressListAdapter(getActivity(), listView, list);
+        listView.setAdapter(adapter);
     }
 }

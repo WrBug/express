@@ -102,7 +102,10 @@ public class UserInfoFragment extends BasicFragment {
     void userReleaseDetailClick() {
         subActivityStart(UserSubActivity.Action.RELEASETASK);
     }
-
+    @Click(R.id.userReceiveCountText)
+    void userReceiveDetailClick() {
+        subActivityStart(UserSubActivity.Action.RECEIVETASK);
+    }
     @Click(R.id.userSignInText)
     void userSignInClick() {
         progressDialog = new ProgressDialog(getActivity(), "正在签到");
