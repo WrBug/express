@@ -1,7 +1,6 @@
 package cn.mandroid.express.UI.common;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
@@ -20,6 +19,7 @@ import cn.mandroid.express.Utils.Preference;
 import cn.mandroid.express.Utils.PreferenceHelper;
 import cn.mandroid.express.Utils.UiUtil;
 import de.greenrobot.event.EventBus;
+import dmax.dialog.SpotsDialog;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Message;
@@ -87,7 +87,7 @@ public class BasicActivity extends FragmentActivity implements RongIMClient.Conn
 
     protected void showProgressDialog() {
         if (progressDialog == null) {
-            progressDialog = new ProgressDialog(context);
+            progressDialog = new ProgressDialog(context, "加载中");
         }
         progressDialog.show();
     }

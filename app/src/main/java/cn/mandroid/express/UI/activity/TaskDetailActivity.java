@@ -97,7 +97,6 @@ public class TaskDetailActivity extends BasicActivity {
             @Override
             public void onSuccess(int code, TaskDetailBean bean) {
                 hideProgressDialog();
-                taskDetailBean = bean;
                 setData(bean);
             }
 
@@ -123,10 +122,35 @@ public class TaskDetailActivity extends BasicActivity {
         RongIM.getInstance().startPrivateChat(context, taskDetailBean.getUsername(), "");
     }
 
+    @Click(R.id.receiveTaskBut)
+    void receiveTaskButClick() {
+        showProgressDialog();
+        mTaskManager.receiveTask(id + "", new FetchCallBack<TaskDetailBean>() {
+            @Override
+            public void onSuccess(int code, TaskDetailBean bean) {
+                hideProgressDialog();
+                showToast("您已领取该任务！");
+                setData(bean);
+            }
+
+            @Override
+            public void onFail(int code, TaskDetailBean bean) {
+                hideProgressDialog();
+
+            }
+
+            @Override
+            public void onError() {
+                hideProgressDialog();
+            }
+        });
+    }
+
     private void setData(TaskDetailBean bean) {
+        taskDetailBean = bean;
         setBottomButton(bean);
         initStep(bean.getStatus());
-        isReceived = bean.isReceived() && (TextUtils.isEmpty(bean.getReceiveUser()) || (!bean.getReceiveUser().equals(mPreferenceHelper.getUsername())));
+        isReceived = bean.isReceived() && (TextUtils.isEmpty(bean.getReceiveUser()) || (bean.getReceiveUser().equals(mPreferenceHelper.getUsername())) || (bean.getUsername().equals(mPreferenceHelper.getUsername())));
         expressCompanyText.setText(bean.getExpressCompany());
         courinerNumberText.setText(isReceived ? TextUtils.isEmpty(bean.getCourinerNumber()) ? "无" : bean.getCourinerNumber() : receiveToWatch);
         contactorText.setText(isReceived ? TextUtils.isEmpty(bean.getContactor()) ? "无" : bean.getContactor() : receiveToWatch);
@@ -141,20 +165,19 @@ public class TaskDetailActivity extends BasicActivity {
     }
 
     private void setBottomButton(TaskDetailBean bean) {
-        if (TextUtils.isEmpty(bean.getReceiveUser())) {
-            if (bean.getUsername().equals(mPreferenceHelper.getUsername())) {
-                if (bean.getStatus() == 2) {
-                    setViewVisibility(View.VISIBLE, releaseUserButContainer, deleteTaskBut);
-                    setViewVisibility(View.GONE, receiveUserButContainer, editTaskBut, closeTaskBut, saveTaskBut);
-                } else {
-                    setViewVisibility(View.VISIBLE, releaseUserButContainer, editTaskBut, closeTaskBut, deleteTaskBut);
-                    setViewVisibility(View.GONE, receiveUserButContainer, saveTaskBut);
-                }
-
+        if (bean.getUsername().equals(mPreferenceHelper.getUsername())) {
+            if (bean.getStatus() == 2) {
+                setViewVisibility(View.VISIBLE, releaseUserButContainer, deleteTaskBut);
+                setViewVisibility(View.GONE, receiveUserButContainer, editTaskBut, closeTaskBut, saveTaskBut);
             } else {
-                setViewVisibility(View.VISIBLE, receiveUserButContainer, receiveTaskBut, chatBut);
-                setViewVisibility(View.GONE, releaseUserButContainer, finishTaskBut);
+                setViewVisibility(View.VISIBLE, releaseUserButContainer, editTaskBut, closeTaskBut, deleteTaskBut);
+                setViewVisibility(View.GONE, receiveUserButContainer, saveTaskBut);
             }
+            return;
+        }
+        if (TextUtils.isEmpty(bean.getReceiveUser())) {
+            setViewVisibility(View.VISIBLE, receiveUserButContainer, receiveTaskBut, chatBut);
+            setViewVisibility(View.GONE, releaseUserButContainer, finishTaskBut);
         } else {
             if (bean.getReceiveUser().equals(mPreferenceHelper.getUsername())) {
                 if (bean.getStatus() == 1) {
@@ -169,6 +192,7 @@ public class TaskDetailActivity extends BasicActivity {
                 setViewVisibility(View.GONE, releaseUserButContainer, receiveTaskBut, finishTaskBut);
             }
         }
+
     }
 
     private void setViewVisibility(int visibility, View... views) {

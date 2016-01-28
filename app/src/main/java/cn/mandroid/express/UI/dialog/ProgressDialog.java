@@ -5,30 +5,34 @@ import android.os.Handler;
 import android.os.Message;
 
 import cn.mandroid.express.R;
+import dmax.dialog.SpotsDialog;
 
 /**
  * Created by Administrator on 2015-12-12.
  */
-public class ProgressDialog extends BaseDialog {
+public class ProgressDialog extends SpotsDialog {
     private static ProgressDialog dialog;
+
+    public ProgressDialog(Context context, CharSequence message) {
+        super(context, message);
+    }
+
     public ProgressDialog(Context context) {
         super(context);
-        setContentView(R.layout.dialog_progress);
     }
 
     @Override
     public void show() {
         setCancelable(false);
-        Handler handler=new Handler(new Handler.Callback() {
+        Handler handler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
                 setCancelable(true);
                 return false;
             }
         });
-        handler.sendEmptyMessageDelayed(0,8000);
+        handler.sendEmptyMessageDelayed(0, 8000);
         super.show();
-
     }
 
 //    public static ProgressDialog instance(Context context){

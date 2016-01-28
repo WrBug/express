@@ -51,7 +51,7 @@ public class UserTaskDetailFragment extends BasicFragment {
             public void onSuccess(int code, List<TaskInfoBean> taskInfoBeans) {
                 hideProgressDialog();
                     list = taskInfoBeans;
-                    adapter = new ExpressListAdapter(getActivity(), list);
+                    adapter = new ExpressListAdapter(getActivity(),listView, list);
                     listView.setAdapter(adapter);
             }
 

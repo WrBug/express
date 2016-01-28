@@ -27,9 +27,8 @@ public class LoadMoreListView extends ListView implements View.OnTouchListener {
         setVerticalScrollBarEnabled(false);
         setDivider(null);
         setDividerHeight(0);
-        TextView textView=new TextView(context);
-        textView.setText("暂无数据");
-        setEmptyView(textView);
+        View view = LayoutInflater.from(context).inflate(R.layout.list_view_empty_view, null);
+        setEmptyView(view);
         addFooterView(footView);
     }
 
@@ -46,6 +45,7 @@ public class LoadMoreListView extends ListView implements View.OnTouchListener {
                     footView.setVisibility(VISIBLE);
                 } else {
                     if (footView.getVisibility() == VISIBLE) {
+
                         footView.setVisibility(GONE);
                     }
                 }

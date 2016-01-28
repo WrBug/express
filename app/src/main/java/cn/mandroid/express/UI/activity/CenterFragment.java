@@ -1,7 +1,6 @@
 package cn.mandroid.express.UI.activity;
 
 import android.view.View;
-import android.widget.AdapterView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.yalantis.phoenix.PullToRefreshView;
@@ -10,7 +9,6 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.ItemClick;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
@@ -73,18 +71,12 @@ public class CenterFragment extends BasicFragment implements PullToRefreshView.O
             }
         });
     }
-
-    @ItemClick(R.id.list_view)
-    void itemClick(int position) {
-        TaskDetailActivity_.intent(getActivity()).id(list.get(position).getId()).start();
-    }
-
     private void setAdapter(List<TaskInfoBean> taskInfoBeans) {
         if (taskInfoBeans == null) {
             return;
         }
         list = taskInfoBeans;
-        adapter = new ExpressListAdapter(getActivity(), list);
+        adapter = new ExpressListAdapter(getActivity(),listView, list);
         listView.setAdapter(adapter);
     }
 
@@ -93,6 +85,8 @@ public class CenterFragment extends BasicFragment implements PullToRefreshView.O
         switch (view.getId()) {
             case R.id.releaseFB:
                 ReleaseTaskActivity_.intent(getActivity()).start();
+                break;
+            case R.id.searchFB:
                 break;
         }
     }
@@ -118,7 +112,7 @@ public class CenterFragment extends BasicFragment implements PullToRefreshView.O
             list.add(info);
         }
         if (adapter == null) {
-            adapter = new ExpressListAdapter(getActivity(), list);
+            adapter = new ExpressListAdapter(getActivity(),listView, list);
             listView.setAdapter(adapter);
         } else {
             adapter.notifyDataSetChanged();

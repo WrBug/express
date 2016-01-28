@@ -6,30 +6,37 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.List;
 
 import cn.mandroid.express.Model.Bean.TaskInfoBean;
 import cn.mandroid.express.R;
+import cn.mandroid.express.UI.activity.TaskDetailActivity_;
 import cn.mandroid.express.Utils.DateUtil;
 import cn.mandroid.express.Utils.UiUtil;
 
 /**
  * Created by Administrator on 2016/1/14 0014.
  */
-public class ExpressListAdapter extends BaseAdapter {
+public class ExpressListAdapter extends BaseAdapter implements OnItemClickListener {
     private Context context;
     private List<TaskInfoBean> list;
     private LayoutInflater inflater;
     int[] colors = new int[3];
+    private ListView listView;
 
-    public ExpressListAdapter(Context context, List<TaskInfoBean> list) {
+    public ExpressListAdapter(Context context, ListView listView, List<TaskInfoBean> list) {
         this.context = context;
         this.list = list;
+        this.listView = listView;
+        this.listView.setOnItemClickListener(this);
         inflater = LayoutInflater.from(context);
         setColor();
     }
@@ -109,6 +116,11 @@ public class ExpressListAdapter extends BaseAdapter {
                 statusText.setTextColor(Color.WHITE);
                 break;
         }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        TaskDetailActivity_.intent(context).id(list.get(position).getId()).start();
     }
 
     class ViewHolder {

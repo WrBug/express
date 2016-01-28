@@ -29,7 +29,7 @@ public class BasicFragment extends Fragment {
 
     protected void showProgressDialog() {
         if (progressDialog == null) {
-            progressDialog = new ProgressDialog(getActivity());
+            progressDialog = new ProgressDialog(getActivity(), "加载中");
         }
         progressDialog.show();
     }
