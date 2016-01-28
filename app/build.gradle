@@ -41,7 +41,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     apt "org.androidannotations:androidannotations:$AAVersion"
     compile "org.androidannotations:androidannotations-api:$AAVersion"
-    compile project(':IMKitWithVoIP')
+    compile project(':IMKit')
     compile project(':SweetAlertDialog')
     compile project(':PullToRefresh')
     compile 'com.koushikdutta.ion:ion:2.+'

@@ -120,7 +120,7 @@ public class ExpressListAdapter extends BaseAdapter implements OnItemClickListen
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        TaskDetailActivity_.intent(context).id(list.get(position).getId()).start();
+        TaskDetailActivity_.intent(context).id(list.get(position).getId()).taskInfoBean(list.get(position)).start();
     }
 
     class ViewHolder {

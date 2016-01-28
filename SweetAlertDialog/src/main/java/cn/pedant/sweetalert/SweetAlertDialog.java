@@ -175,6 +175,7 @@ public class SweetAlertDialog extends Dialog implements View.OnClickListener {
                     mErrorFrame.setVisibility(View.VISIBLE);
                     break;
                 case SUCCESS_TYPE:
+                    isCancelable(false);
                     mSuccessFrame.setVisibility(View.VISIBLE);
                     // initial rotate layout of success mask
                     mSuccessLeftMask.startAnimation(mSuccessLayoutAnimSet.getAnimations().get(0));
@@ -203,7 +204,10 @@ public class SweetAlertDialog extends Dialog implements View.OnClickListener {
         return this;
     }
 
-
+    public SweetAlertDialog isCancelable(boolean cancelable){
+        super.setCancelable(cancelable);
+        return this;
+    }
     public String getTitleText () {
         return mTitleText;
     }

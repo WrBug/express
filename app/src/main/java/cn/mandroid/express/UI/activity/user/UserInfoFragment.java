@@ -29,10 +29,12 @@ import cn.mandroid.express.UI.activity.MultiImageSelectorActivity;
 import cn.mandroid.express.UI.common.BasicFragment;
 import cn.mandroid.express.UI.dialog.CropDialog;
 import cn.mandroid.express.UI.dialog.CropDialog_;
+import cn.mandroid.express.UI.dialog.ProgressDialog;
 import cn.mandroid.express.Utils.Const;
 import cn.mandroid.express.Utils.DateUtil;
 import cn.mandroid.express.Utils.FileUtils;
 import cn.mandroid.express.Utils.UiUtil;
+import cn.pedant.sweetalert.SweetAlertDialog;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 @EFragment(R.layout.fragment_user_info)
@@ -66,6 +68,7 @@ public class UserInfoFragment extends BasicFragment {
     Bitmap photo;
     UserBean userBean;
     final int REQUEST_IMAGE = 1;
+    private ProgressDialog progressDialog;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,9 +105,18 @@ public class UserInfoFragment extends BasicFragment {
 
     @Click(R.id.userSignInText)
     void userSignInClick() {
+        progressDialog = new ProgressDialog(getActivity(), "正在签到");
+        progressDialog.show();
         mUserManager.signIn(userBean.getUsername(), new FetchCallBack<UserBean>() {
             @Override
             public void onSuccess(int code, UserBean userBean) {
+                progressDialog.dismiss();
+                new SweetAlertDialog(getActivity()).setTitleText("签到成功").changeAlertType(SweetAlertDialog.SUCCESS_TYPE).setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        sweetAlertDialog.dismiss();
+                    }
+                }).show();
                 preferenceHelper.saveSignInfo(userBean.getSignInCount(), userBean.getSignInDate());
                 preferenceHelper.saveIntegral(userBean.getIntegral());
                 setSignInInfo(userBean);
@@ -113,15 +125,23 @@ public class UserInfoFragment extends BasicFragment {
 
             @Override
             public void onFail(int code, UserBean bean) {
+                progressDialog.dismiss();
                 if (code == Constant.Code.SESSION_ERROR) {
                     showToast("身份已过期，请重新登录！");
+                    LoginActivity_.intent(getActivity()).start();
                 } else if (code == Constant.Code.SING_IN_ERROR) {
-                    showToast("签到失败");
+                    new SweetAlertDialog(getActivity()).setTitleText("签到失败").changeAlertType(SweetAlertDialog.ERROR_TYPE).setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.dismiss();
+                        }
+                    }).show();
                 }
             }
 
             @Override
             public void onError() {
+                progressDialog.dismiss();
             }
         });
     }

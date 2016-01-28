@@ -24,6 +24,7 @@ import cn.mandroid.express.UI.common.BasicActivity;
 import cn.mandroid.express.UI.widget.ActionBar;
 import cn.mandroid.express.Utils.Base64;
 import cn.mandroid.express.Utils.Const;
+import cn.pedant.sweetalert.SweetAlertDialog;
 
 @EActivity(R.layout.activity_release_task)
 public class ReleaseTaskActivity extends BasicActivity implements ActionBar.OnHeadImgClickListener {
@@ -129,20 +130,28 @@ public class ReleaseTaskActivity extends BasicActivity implements ActionBar.OnHe
             bean.setExpressPassword(expressPassword);
             bean.setRemark(remark);
             bean.setDate(System.currentTimeMillis() / 1000);
+            showProgressDialog();
             mTaskManager.releaseTask(bean, new FetchCallBack<Integer>() {
                 @Override
                 public void onSuccess(int code, Integer integer) {
-                    showToast("发布成功");
-                    finish();
+                    hideProgressDialog();
+                    new SweetAlertDialog(context).changeAlertType(SweetAlertDialog.SUCCESS_TYPE).setConfirmText("ok").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            finish();
+                        }
+                    }).show();
                 }
 
                 @Override
                 public void onFail(int code, Integer integer) {
+                    hideProgressDialog();
 
                 }
 
                 @Override
                 public void onError() {
+                    hideProgressDialog();
                 }
             });
         }

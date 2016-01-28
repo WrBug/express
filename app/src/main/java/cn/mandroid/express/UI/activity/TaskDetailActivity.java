@@ -1,10 +1,14 @@
 package cn.mandroid.express.UI.activity;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
+
+import com.google.gson.Gson;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -14,16 +18,24 @@ import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 import cn.mandroid.express.Model.Bean.TaskDetailBean;
+import cn.mandroid.express.Model.Bean.TaskInfoBean;
 import cn.mandroid.express.Model.Constant;
 import cn.mandroid.express.Model.Dao.TaskInfoDao;
 import cn.mandroid.express.Model.DaoManager;
 import cn.mandroid.express.Model.FetchCallBack;
+import cn.mandroid.express.Model.RongIMMessage.TaskInfoMessage;
 import cn.mandroid.express.Model.TaskManager;
 import cn.mandroid.express.R;
 import cn.mandroid.express.UI.common.BasicActivity;
 import cn.mandroid.express.UI.widget.StepView;
 import cn.mandroid.express.Utils.Base64;
+import cn.mandroid.express.Utils.Cache;
+import cn.mandroid.express.Utils.MLog;
+import cn.pedant.sweetalert.SweetAlertDialog;
 import io.rong.imkit.RongIM;
+import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Conversation;
+import io.rong.imlib.model.Message;
 
 @EActivity(R.layout.activity_task_detail)
 public class TaskDetailActivity extends BasicActivity {
@@ -79,6 +91,8 @@ public class TaskDetailActivity extends BasicActivity {
     TaskManager mTaskManager;
     @Extra
     int id;
+    @Extra
+    TaskInfoBean taskInfoBean;
     String receiveToWatch;
     boolean isReceived;
     TaskDetailBean taskDetailBean;
@@ -119,17 +133,78 @@ public class TaskDetailActivity extends BasicActivity {
 
     @Click(R.id.chatBut)
     void chatClick() {
-        RongIM.getInstance().startPrivateChat(context, taskDetailBean.getUsername(), "");
+        if (rongIMstatus == ConnectionStatus.CONNECTED) {
+            if (!Cache.isSendTaskInfoWhenChat.contains(taskInfoBean.getId())) {
+                Gson gson = new Gson();
+                String taskInfo = gson.toJson(taskInfoBean);
+                RongIM.getInstance().getRongIMClient().sendMessage(Conversation.ConversationType.PRIVATE, taskDetailBean.getUsername(), new TaskInfoMessage("该用户正在浏览:", taskInfo), null, null, new RongIMClient.SendMessageCallback() {
+                    @Override
+                    public void onSuccess(Integer integer) {
+                        Cache.isSendTaskInfoWhenChat.add(taskInfoBean.getId());
+                    }
+
+                    @Override
+                    public void onError(Integer integer, RongIMClient.ErrorCode errorCode) {
+
+                    }
+                });
+            }
+            RongIM.getInstance().startPrivateChat(context, taskDetailBean.getUsername(), taskInfoBean.getUser().getName());
+        } else {
+            switch (rongIMstatus) {
+                case NETWORK_UNAVAILABLE:
+                    showToast("无可用网络");
+                    break;
+                case CONNECTING:
+                    showToast("请稍后");
+                    break;
+                case KICKED_OFFLINE_BY_OTHER_CLIENT:
+                    LoginActivity_.intent(context).start();
+                    break;
+            }
+        }
     }
 
     @Click(R.id.receiveTaskBut)
     void receiveTaskButClick() {
+        new SweetAlertDialog(context)
+                .changeAlertType(SweetAlertDialog.WARNING_TYPE)
+                .setTitleText("确认领取，领取后不可取消")
+                .setConfirmText("领取")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        receiveTask();
+                        sweetAlertDialog.dismiss();
+                    }
+                })
+                .setCancelText("返回")
+                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        sweetAlertDialog.dismiss();
+                    }
+                })
+                .show();
+    }
+
+    private void receiveTask() {
         showProgressDialog();
         mTaskManager.receiveTask(id + "", new FetchCallBack<TaskDetailBean>() {
             @Override
             public void onSuccess(int code, TaskDetailBean bean) {
                 hideProgressDialog();
-                showToast("您已领取该任务！");
+                new SweetAlertDialog(context)
+                        .changeAlertType(SweetAlertDialog.SUCCESS_TYPE)
+                        .setConfirmText("ok")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertDialog.dismiss();
+                            }
+                        })
+                        .setTitleText("您已成功领取该任务")
+                        .show();
                 setData(bean);
             }
 

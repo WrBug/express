@@ -46,7 +46,6 @@ public class BasicActivity extends FragmentActivity implements RongIMClient.Conn
     }
 
     public void onEvent(UnreadEvent event) {
-        MLog.i("basicUnread");
     }
 
     public void onEvent(ExitApp exit) {
@@ -86,9 +85,11 @@ public class BasicActivity extends FragmentActivity implements RongIMClient.Conn
     }
 
     protected void showProgressDialog() {
-        if (progressDialog == null) {
-            progressDialog = new ProgressDialog(context, "加载中");
-        }
+        showProgressDialog("加载中");
+    }
+
+    protected void showProgressDialog(String title) {
+        progressDialog = new ProgressDialog(context, title);
         progressDialog.show();
     }
 

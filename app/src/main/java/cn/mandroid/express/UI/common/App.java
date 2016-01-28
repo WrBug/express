@@ -3,15 +3,12 @@ package cn.mandroid.express.UI.common;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.koushikdutta.ion.Ion;
 
-import org.androidannotations.annotations.EApplication;
-
 import cn.mandroid.express.Model.Bean.UserBean;
-import cn.mandroid.express.Model.RongImManager;
+import cn.mandroid.express.Model.RongIMMessage.TaskInfoMessage;
 import cn.mandroid.express.Utils.PreferenceHelper;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -37,6 +34,7 @@ public class App extends Application {
         if (getApplicationInfo().packageName.equals(getCurProcessName(getApplicationContext())) ||
                 "io.rong.push".equals(getCurProcessName(getApplicationContext()))) {
             RongIM.init(this);
+            RongIM.registerMessageType(TaskInfoMessage.class);
         }
     }
 

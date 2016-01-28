@@ -1,1 +1,1 @@
-include ':app', ':IMKitWithVoIP', ':PullToRefresh', ':SweetAlertDialog'
+include ':app', ':PullToRefresh', ':SweetAlertDialog', ':IMKit'
