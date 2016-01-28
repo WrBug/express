@@ -31,5 +31,5 @@ proguard/
 /.gradle
 /build
 /.gradle
-IMKitWithVoIP/build/
-/IMKitWithVoIP/build
+IMKit/build/
+/IMKit/build
