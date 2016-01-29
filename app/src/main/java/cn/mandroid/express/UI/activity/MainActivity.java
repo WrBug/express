@@ -59,15 +59,16 @@ public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgCl
     UserInfoFragment userInfoFragment;
     Fragment cacheFragment;
     public static boolean isRunning;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        isRunning=true;
+        isRunning = true;
     }
 
     @Override
     protected void onDestroy() {
-        isRunning=false;
+        isRunning = false;
         super.onDestroy();
     }
 
@@ -97,7 +98,11 @@ public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgCl
 
     }
 
-    private void setFragment(Fragment fragment) {
+    public void setActionBarTitle(String title) {
+        actionBar.setTitle(title);
+    }
+
+    public void setFragment(Fragment fragment) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         if (cacheFragment != null) {
@@ -167,7 +172,7 @@ public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgCl
                 if (rongIMstatus == RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTED) {
                     lastCheckedRb = rbChat;
                     ChatFragment chatFragment = ChatFragment_.builder().build();
-                    actionBar.setTitle("聊天");
+                    actionBar.setTitle("最近联系人");
                     setFragment(chatFragment);
                 } else {
                     if (rongIMstatus != RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTING) {

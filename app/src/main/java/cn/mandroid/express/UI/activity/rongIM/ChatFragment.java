@@ -2,8 +2,12 @@ package cn.mandroid.express.UI.activity.rongIM;
 
 import android.net.Uri;
 
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.ViewById;
 
 import cn.mandroid.express.R;
 import cn.mandroid.express.UI.common.BasicFragment;
@@ -14,7 +18,10 @@ import io.rong.imlib.model.Conversation;
  * Created by Administrator on 2015/12/17.
  */
 @EFragment(R.layout.fragment_conversation)
-public class ChatFragment extends BasicFragment {
+public class ChatFragment extends BasicChatFragment {
+    @ViewById
+    FloatingActionsMenu chatActionsMenu;
+
     @AfterViews
     void afterView() {
         ConversationListFragment fragment = (ConversationListFragment) getChildFragmentManager().findFragmentById(R.id.conversationlist);
@@ -28,4 +35,8 @@ public class ChatFragment extends BasicFragment {
         fragment.setUri(uri);
     }
 
+    @Override
+    protected FloatingActionsMenu setActionMenu() {
+        return chatActionsMenu;
+    }
 }
