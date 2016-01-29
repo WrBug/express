@@ -36,6 +36,7 @@ import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
+import io.rong.message.TextMessage;
 
 @EActivity(R.layout.activity_task_detail)
 public class TaskDetailActivity extends BasicActivity {
@@ -102,6 +103,7 @@ public class TaskDetailActivity extends BasicActivity {
         receiveToWatch = getResources().getString(R.string.receive_to_watch);
         heavyCheck.setClickable(false);
         bigCheck.setClickable(false);
+        chatBut.setText("联系" + (taskInfoBean.getUser().getSex() == 1 ? "她" : "他"));
         getTaskDetail();
     }
 
@@ -137,14 +139,14 @@ public class TaskDetailActivity extends BasicActivity {
             if (!Cache.isSendTaskInfoWhenChat.contains(taskInfoBean.getId())) {
                 Gson gson = new Gson();
                 String taskInfo = gson.toJson(taskInfoBean);
-                RongIM.getInstance().getRongIMClient().sendMessage(Conversation.ConversationType.PRIVATE, taskDetailBean.getUsername(), new TaskInfoMessage("该用户正在浏览:", taskInfo), null, null, new RongIMClient.SendMessageCallback() {
+                TaskInfoMessage.sendMessage(taskDetailBean.getUsername(), "该用户正在浏览：", taskInfo, new RongIMClient.SendMessageCallback() {
                     @Override
-                    public void onSuccess(Integer integer) {
+                    public void onError(Integer integer, RongIMClient.ErrorCode errorCode) {
                         Cache.isSendTaskInfoWhenChat.add(taskInfoBean.getId());
                     }
 
                     @Override
-                    public void onError(Integer integer, RongIMClient.ErrorCode errorCode) {
+                    public void onSuccess(Integer integer) {
 
                     }
                 });
@@ -196,7 +198,6 @@ public class TaskDetailActivity extends BasicActivity {
                 hideProgressDialog();
                 new SweetAlertDialog(context)
                         .changeAlertType(SweetAlertDialog.SUCCESS_TYPE)
-                        .setConfirmText("ok")
                         .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                             @Override
                             public void onClick(SweetAlertDialog sweetAlertDialog) {
@@ -205,13 +206,28 @@ public class TaskDetailActivity extends BasicActivity {
                         })
                         .setTitleText("您已成功领取该任务")
                         .show();
+                if (rongIMstatus == ConnectionStatus.CONNECTED) {
+                    Gson gson = new Gson();
+                    String taskInfo = gson.toJson(taskInfoBean);
+                    TaskInfoMessage.sendMessage(bean.getUsername(), "我领取你的任务啦", taskInfo, null);
+                }
                 setData(bean);
             }
 
             @Override
             public void onFail(int code, TaskDetailBean bean) {
                 hideProgressDialog();
-
+                if (code == Constant.Code.SESSION_ERROR) {
+                    showToast("身份已过期，请重新登录！");
+                    LoginActivity_.intent(context).start();
+                } else if (code == Constant.Code.TASK_IS_DELETE) {
+                    showToast("该信息不存在!");
+                    DaoManager.deleteTaskFormList(id);
+                    finish();
+                } else if (code == Constant.Code.TASK_IS_RECEIVED) {
+                    showToast("该任务已被其他人领取");
+                    setData(bean);
+                }
             }
 
             @Override

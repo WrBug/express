@@ -74,7 +74,7 @@ public class RongImManager {
                 if (userBean != null) {
                     Uri uri;
                     if (TextUtils.isEmpty(userBean.getAvatarUrl())) {
-                        uri = userBean.getSex() == 2 ? FileUtils.getDefalutWomanIco(context) : FileUtils.getDefalutManIco(context);
+                        uri = userBean.getSex() == 1 ? FileUtils.getDefalutWomanIco(context) : FileUtils.getDefalutManIco(context);
                     } else {
                         uri = Uri.parse(userBean.getAvatarUrl());
                     }
@@ -108,7 +108,7 @@ public class RongImManager {
     public void setUserinfo(UserBean userBean) {
         Uri uri;
         if (TextUtils.isEmpty(userBean.getAvatarUrl())) {
-            uri = FileUtils.res2Uri(context, userBean.getSex() == 2 ? R.drawable.ic_user_default_woman : R.drawable.ic_user_default_man);
+            uri = FileUtils.res2Uri(context, userBean.getSex() == 1 ? R.drawable.ic_user_default_woman : R.drawable.ic_user_default_man);
         } else {
             uri = Uri.parse(userBean.getAvatarUrl());
         }

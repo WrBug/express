@@ -8,15 +8,19 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 
+import cn.mandroid.express.Utils.Cache;
 import io.rong.common.ParcelUtils;
 import io.rong.imkit.RLog;
+import io.rong.imkit.RongIM;
 import io.rong.imlib.MessageTag;
+import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.MessageContent;
 
 /**
  * Created by Administrator on 2016/1/28 0028.
  */
-@MessageTag(value = "app:custom", flag =MessageTag.ISPERSISTED)
+@MessageTag(value = "app:custom", flag = MessageTag.ISPERSISTED)
 public class TaskInfoMessage extends MessageContent {
     private String content;//消息属性，可随意定义
     private String taskInfo;
@@ -109,5 +113,9 @@ public class TaskInfoMessage extends MessageContent {
     public void writeToParcel(Parcel dest, int flags) {
         ParcelUtils.writeToParcel(dest, content);//该类为工具类，对消息中属性进行序列化
         ParcelUtils.writeToParcel(dest, taskInfo);//该类为工具类，对消息中属性进行序列化
+    }
+
+    public static void sendMessage(String targetId, String title, String json, RongIMClient.SendMessageCallback callback) {
+        RongIM.getInstance().getRongIMClient().sendMessage(Conversation.ConversationType.PRIVATE, targetId, new TaskInfoMessage(title, json), null, null, callback);
     }
 }

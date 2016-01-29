@@ -232,11 +232,11 @@ public class UserInfoFragment extends BasicFragment {
 
     private void updateUI() {
         UserBean userBean = preferenceHelper.getUser();
-        userIcoImg.setImageResource(userBean.getSex() == 2 ? R.drawable.ic_user_default_woman : R.drawable.ic_user_default_man);
+        userIcoImg.setImageResource(userBean.getSex() == 1? R.drawable.ic_user_default_woman : R.drawable.ic_user_default_man);
         if (!TextUtils.isEmpty(userBean.getAvatarUrl())) {
             UiUtil.loadImage(getActivity(), userIcoImg, userBean.getAvatarUrl());
         }
-        userSexImg.setImageResource(userBean.getSex() == 2 ? R.drawable.ic_user_sex_female : R.drawable.ic_user_sex_male);
+        userSexImg.setImageResource(userBean.getSex() ==1 ? R.drawable.ic_user_sex_female : R.drawable.ic_user_sex_male);
         userNameText.setText(userBean.getName());
         int level = getLevel(userBean);
         userLevelText.setText(Const.LEVEL[level]);
