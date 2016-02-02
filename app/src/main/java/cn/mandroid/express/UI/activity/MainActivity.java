@@ -26,8 +26,7 @@ import cn.mandroid.express.Model.UserManager;
 import cn.mandroid.express.R;
 import cn.mandroid.express.UI.activity.rongIM.BasicChatFragment;
 import cn.mandroid.express.UI.activity.rongIM.ChatFragment;
-import cn.mandroid.express.UI.activity.rongIM.ChatFragment_;
-import cn.mandroid.express.UI.activity.rongIM.FriendsFragment;
+import cn.mandroid.express.UI.activity.rongIM.FriendFragment;
 import cn.mandroid.express.UI.activity.user.UserInfoFragment;
 import cn.mandroid.express.UI.activity.user.UserInfoFragment_;
 import cn.mandroid.express.UI.common.BasicActivity;
@@ -177,7 +176,7 @@ public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgCl
                     if(fragment instanceof ChatFragment){
                         actionBar.setTitle("最近联系人");
 
-                    }else if(fragment instanceof FriendsFragment){
+                    }else if(fragment instanceof FriendFragment){
                         actionBar.setTitle("好友");
                     }
                     setFragment(BasicChatFragment.lastChatFragment);

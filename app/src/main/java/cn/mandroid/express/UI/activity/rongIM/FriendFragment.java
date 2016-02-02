@@ -28,7 +28,7 @@ import cn.mandroid.express.UI.widget.SideBar;
 import cn.mandroid.express.Utils.PinyinComparator;
 
 @EFragment(R.layout.fragment_friends)
-public class FriendsFragment extends BasicChatFragment {
+public class FriendFragment extends BasicChatFragment {
     @ViewById
     FloatingActionsMenu chatActionsMenu;
     @ViewById
