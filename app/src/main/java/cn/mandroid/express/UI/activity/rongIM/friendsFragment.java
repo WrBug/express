@@ -3,6 +3,7 @@ package cn.mandroid.express.UI.activity.rongIM;
 
 import android.content.Context;
 import android.graphics.PixelFormat;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -27,7 +28,7 @@ import cn.mandroid.express.UI.widget.SideBar;
 import cn.mandroid.express.Utils.PinyinComparator;
 
 @EFragment(R.layout.fragment_friends)
-public class friendsFragment extends BasicChatFragment {
+public class FriendsFragment extends BasicChatFragment {
     @ViewById
     FloatingActionsMenu chatActionsMenu;
     @ViewById
@@ -75,5 +76,10 @@ public class friendsFragment extends BasicChatFragment {
     @Override
     protected FloatingActionsMenu setActionMenu() {
         return chatActionsMenu;
+    }
+
+    @Override
+    protected Fragment register() {
+        return this;
     }
 }

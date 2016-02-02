@@ -1,6 +1,7 @@
 package cn.mandroid.express.UI.activity.rongIM;
 
 import android.net.Uri;
+import android.support.v4.app.Fragment;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
@@ -38,5 +39,10 @@ public class ChatFragment extends BasicChatFragment {
     @Override
     protected FloatingActionsMenu setActionMenu() {
         return chatActionsMenu;
+    }
+
+    @Override
+    protected Fragment register() {
+        return this;
     }
 }

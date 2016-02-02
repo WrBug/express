@@ -1,6 +1,7 @@
 package cn.mandroid.express.UI.activity.rongIM;
 
 import android.content.Context;
+import android.support.v4.app.Fragment;
 import android.view.View;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
@@ -18,12 +19,13 @@ public abstract class BasicChatFragment extends BasicFragment implements View.On
     private FloatingActionButton conversationFB;
     private FloatingActionButton friendsFB;
     private MainActivity_ activity;
-
+    public static Fragment lastChatFragment=ChatFragment_.builder().build();
     protected abstract FloatingActionsMenu setActionMenu();
-
+    protected abstract Fragment register();
     @Override
     public void onStart() {
         actionMenu = setActionMenu();
+        lastChatFragment=register();
         Context context = getActivity();
         if (context instanceof MainActivity_) {
             activity = (MainActivity_) context;
@@ -47,7 +49,7 @@ public abstract class BasicChatFragment extends BasicFragment implements View.On
                 activity.setActionBarTitle("最近联系人");
                 break;
             case R.id.friendsFB:
-                activity.setFragment(friendsFragment_.builder().build());
+                activity.setFragment(FriendsFragment_.builder().build());
                 activity.setActionBarTitle("好友");
                 break;
         }

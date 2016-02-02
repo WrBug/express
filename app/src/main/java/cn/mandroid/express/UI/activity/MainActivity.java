@@ -24,8 +24,10 @@ import cn.mandroid.express.Event.UnreadEvent;
 import cn.mandroid.express.Model.JwcManager;
 import cn.mandroid.express.Model.UserManager;
 import cn.mandroid.express.R;
+import cn.mandroid.express.UI.activity.rongIM.BasicChatFragment;
 import cn.mandroid.express.UI.activity.rongIM.ChatFragment;
 import cn.mandroid.express.UI.activity.rongIM.ChatFragment_;
+import cn.mandroid.express.UI.activity.rongIM.FriendsFragment;
 import cn.mandroid.express.UI.activity.user.UserInfoFragment;
 import cn.mandroid.express.UI.activity.user.UserInfoFragment_;
 import cn.mandroid.express.UI.common.BasicActivity;
@@ -171,9 +173,14 @@ public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgCl
                 }
                 if (rongIMstatus == RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTED) {
                     lastCheckedRb = rbChat;
-                    ChatFragment chatFragment = ChatFragment_.builder().build();
-                    actionBar.setTitle("最近联系人");
-                    setFragment(chatFragment);
+                    Fragment fragment = BasicChatFragment.lastChatFragment;
+                    if(fragment instanceof ChatFragment){
+                        actionBar.setTitle("最近联系人");
+
+                    }else if(fragment instanceof FriendsFragment){
+                        actionBar.setTitle("好友");
+                    }
+                    setFragment(BasicChatFragment.lastChatFragment);
                 } else {
                     if (rongIMstatus != RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTING) {
                         EventBus.getDefault().post(new ChatEvent(ChatEvent.Action.CONNECT));
