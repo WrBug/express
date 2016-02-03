@@ -3,6 +3,7 @@ package cn.mandroid.express.UI.activity.user;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -35,11 +36,13 @@ import cn.pedant.sweetalert.SweetAlertDialog;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 @EFragment(R.layout.fragment_user_info)
-public class UserInfoFragment extends BasicFragment {
+public class UserInfoFragment extends BasicFragment implements SwipeRefreshLayout.OnRefreshListener {
     @Bean
     UserManager mUserManager;
     @Bean
     RongImManager mRongImManager;
+    @ViewById
+    SwipeRefreshLayout swipeRefreshLayout;
     @ViewById
     CircleImageView userIcoImg;
     @ViewById
@@ -62,12 +65,10 @@ public class UserInfoFragment extends BasicFragment {
     TextView userReleaseCountText;
     @ViewById
     TextView userReceiveCountText;
-    Bitmap photo;
     UserBean userBean;
     public static final int CROP_IMAGE = 2;
     final int REQUEST_IMAGE = 1;
     private ProgressDialog progressDialog;
-    File avatarFile;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +76,8 @@ public class UserInfoFragment extends BasicFragment {
 
     @AfterViews
     void afterVew() {
+        swipeRefreshLayout.setOnRefreshListener(this);
+        updateUser();
         updateUI();
     }
 
@@ -168,16 +171,6 @@ public class UserInfoFragment extends BasicFragment {
         }
     }
 
-    //    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        switch (requestCode){
-//            case REQUEST_IMAGE:
-//                break;
-//            case CROP_IMAGE:
-//                break;
-//        }
-//    }
     @OnActivityResult(REQUEST_IMAGE)
     void onResult(Intent data) {
         if (data != null) {
@@ -189,18 +182,7 @@ public class UserInfoFragment extends BasicFragment {
     }
 
     private void cropIco(String path) {
-//        avatarFile = new File(getActivity().getCacheDir(), "avatar");
-//        Crop.of(Uri.fromFile(new File(path)), Uri.fromFile(avatarFile)).asSquare().start(getActivity());
         CropImageActivity_.intent(this).imagePath(path).startForResult(CROP_IMAGE);
-//        CropDialog cropDialog = CropDialog_.builder().icoPath(path).build();
-//        cropDialog.setCropCallback(new CropDialog.CropCallback() {
-//            @Override
-//            public void onComplete(Bitmap bitmap) {
-//                File path = FileUtils.saveBitmapFile(getActivity(), bitmap, System.currentTimeMillis() + "");
-//                uploadAvatar(path);
-//            }
-//        });
-//        cropDialog.show(getFragmentManager(), "CropDialog");
     }
 
     private void uploadAvatar(File file) {
@@ -229,23 +211,19 @@ public class UserInfoFragment extends BasicFragment {
         });
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        updateUser();
-    }
-
     private void updateUser() {
         userBean = preferenceHelper.getUser();
         mUserManager.updateUser(userBean.getUsername(), new FetchCallBack<UserBean>() {
             @Override
             public void onSuccess(int code, UserBean userBean) {
+                swipeRefreshLayout.setRefreshing(false);
                 preferenceHelper.saveUser(userBean);
                 updateUI();
             }
 
             @Override
             public void onFail(int code, UserBean bean) {
+                swipeRefreshLayout.setRefreshing(false);
                 if (code == Constant.Code.SESSION_ERROR) {
                     LoginActivity_.intent(getActivity()).start();
                 }
@@ -253,6 +231,7 @@ public class UserInfoFragment extends BasicFragment {
 
             @Override
             public boolean onError() {
+                swipeRefreshLayout.setRefreshing(false);
                 return true;
             }
         });
@@ -302,5 +281,10 @@ public class UserInfoFragment extends BasicFragment {
             }
         }
         return 3;
+    }
+
+    @Override
+    public void onRefresh() {
+        updateUser();
     }
 }
