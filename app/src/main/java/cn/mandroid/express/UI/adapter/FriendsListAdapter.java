@@ -5,13 +5,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
 import java.util.List;
 
 import cn.mandroid.express.Model.Bean.Content;
+import cn.mandroid.express.Model.RongImManager;
 import cn.mandroid.express.R;
+import cn.mandroid.express.Utils.UiUtil;
+import io.rong.imkit.RongIM;
 
 /**
  * Created by Administrator on 2016/1/29 0029.
@@ -47,6 +51,7 @@ public class FriendsListAdapter extends BaseAdapter implements SectionIndexer {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_friends, null);
             viewHolder.tvTitle = (TextView) view.findViewById(R.id.title);
             viewHolder.tvLetter = (TextView) view.findViewById(R.id.catalog);
+            viewHolder.tvImg = (ImageView) view.findViewById(R.id.img);
             view.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) view.getTag();
@@ -66,7 +71,13 @@ public class FriendsListAdapter extends BaseAdapter implements SectionIndexer {
         }
 
         viewHolder.tvTitle.setText(this.list.get(position).getName());
-
+        UiUtil.loadImage(mContext, viewHolder.tvImg, list.get(position).getAvatarUrl());
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RongIM.getInstance().startPrivateChat(mContext, list.get(position).getUsername(), list.get(position).getName());
+            }
+        });
         return view;
 
     }
@@ -75,6 +86,7 @@ public class FriendsListAdapter extends BaseAdapter implements SectionIndexer {
     final static class ViewHolder {
         TextView tvTitle;
         TextView tvLetter;
+        ImageView tvImg;
     }
 
 

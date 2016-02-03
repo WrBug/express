@@ -27,12 +27,9 @@ import cn.mandroid.express.R;
 import cn.mandroid.express.UI.activity.LoginActivity_;
 import cn.mandroid.express.UI.activity.MultiImageSelectorActivity;
 import cn.mandroid.express.UI.common.BasicFragment;
-import cn.mandroid.express.UI.dialog.CropDialog;
-import cn.mandroid.express.UI.dialog.CropDialog_;
 import cn.mandroid.express.UI.dialog.ProgressDialog;
 import cn.mandroid.express.Utils.Const;
 import cn.mandroid.express.Utils.DateUtil;
-import cn.mandroid.express.Utils.FileUtils;
 import cn.mandroid.express.Utils.UiUtil;
 import cn.pedant.sweetalert.SweetAlertDialog;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -67,8 +64,10 @@ public class UserInfoFragment extends BasicFragment {
     TextView userReceiveCountText;
     Bitmap photo;
     UserBean userBean;
+    public static final int CROP_IMAGE = 2;
     final int REQUEST_IMAGE = 1;
     private ProgressDialog progressDialog;
+    File avatarFile;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,10 +101,12 @@ public class UserInfoFragment extends BasicFragment {
     void userReleaseDetailClick() {
         subActivityStart(UserSubActivity.Action.RELEASETASK);
     }
+
     @Click(R.id.userReceiveCountText)
     void userReceiveDetailClick() {
         subActivityStart(UserSubActivity.Action.RECEIVETASK);
     }
+
     @Click(R.id.userSignInText)
     void userSignInClick() {
         progressDialog = new ProgressDialog(getActivity(), "正在签到");
@@ -143,8 +144,9 @@ public class UserInfoFragment extends BasicFragment {
             }
 
             @Override
-            public void onError() {
+            public boolean onError() {
                 progressDialog.dismiss();
+                return true;
             }
         });
     }
@@ -154,7 +156,29 @@ public class UserInfoFragment extends BasicFragment {
         UserSubActivity_.intent(getActivity()).action(action).start();
     }
 
-    @OnActivityResult(value = REQUEST_IMAGE)
+    @OnActivityResult(value = CROP_IMAGE)
+    void onCropResult(int resultCode, Intent data) {
+        if (resultCode == getActivity().RESULT_OK) {
+            if (data != null) {
+                File file = (File) data.getSerializableExtra("file");
+                if (file != null) {
+                    uploadAvatar(file);
+                }
+            }
+        }
+    }
+
+    //    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        switch (requestCode){
+//            case REQUEST_IMAGE:
+//                break;
+//            case CROP_IMAGE:
+//                break;
+//        }
+//    }
+    @OnActivityResult(REQUEST_IMAGE)
     void onResult(Intent data) {
         if (data != null) {
             List<String> path = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
@@ -165,15 +189,18 @@ public class UserInfoFragment extends BasicFragment {
     }
 
     private void cropIco(String path) {
-        CropDialog cropDialog = CropDialog_.builder().icoPath(path).build();
-        cropDialog.setCropCallback(new CropDialog.CropCallback() {
-            @Override
-            public void onComplete(Bitmap bitmap) {
-                File path = FileUtils.saveBitmapFile(getActivity(), bitmap, System.currentTimeMillis() + "");
-                uploadAvatar(path);
-            }
-        });
-        cropDialog.show(getFragmentManager(), "CropDialog");
+//        avatarFile = new File(getActivity().getCacheDir(), "avatar");
+//        Crop.of(Uri.fromFile(new File(path)), Uri.fromFile(avatarFile)).asSquare().start(getActivity());
+        CropImageActivity_.intent(this).imagePath(path).startForResult(CROP_IMAGE);
+//        CropDialog cropDialog = CropDialog_.builder().icoPath(path).build();
+//        cropDialog.setCropCallback(new CropDialog.CropCallback() {
+//            @Override
+//            public void onComplete(Bitmap bitmap) {
+//                File path = FileUtils.saveBitmapFile(getActivity(), bitmap, System.currentTimeMillis() + "");
+//                uploadAvatar(path);
+//            }
+//        });
+//        cropDialog.show(getFragmentManager(), "CropDialog");
     }
 
     private void uploadAvatar(File file) {
@@ -195,8 +222,9 @@ public class UserInfoFragment extends BasicFragment {
             }
 
             @Override
-            public void onError() {
+            public boolean onError() {
                 showToast("上传失败！");
+                return false;
             }
         });
     }
@@ -224,19 +252,19 @@ public class UserInfoFragment extends BasicFragment {
             }
 
             @Override
-            public void onError() {
-
+            public boolean onError() {
+                return true;
             }
         });
     }
 
     private void updateUI() {
         UserBean userBean = preferenceHelper.getUser();
-        userIcoImg.setImageResource(userBean.getSex() == 1? R.drawable.ic_user_default_woman : R.drawable.ic_user_default_man);
+        userIcoImg.setImageResource(userBean.getSex() == 1 ? R.drawable.ic_user_default_woman : R.drawable.ic_user_default_man);
         if (!TextUtils.isEmpty(userBean.getAvatarUrl())) {
             UiUtil.loadImage(getActivity(), userIcoImg, userBean.getAvatarUrl());
         }
-        userSexImg.setImageResource(userBean.getSex() ==1 ? R.drawable.ic_user_sex_female : R.drawable.ic_user_sex_male);
+        userSexImg.setImageResource(userBean.getSex() == 1 ? R.drawable.ic_user_sex_female : R.drawable.ic_user_sex_male);
         userNameText.setText(userBean.getName());
         int level = getLevel(userBean);
         userLevelText.setText(Const.LEVEL[level]);

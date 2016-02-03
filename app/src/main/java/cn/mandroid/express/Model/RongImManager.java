@@ -45,14 +45,14 @@ public class RongImManager {
 
             @Override
             public void onSuccess(String s) {
-                Conversation.ConversationType[] types=new Conversation.ConversationType[7];
-                types[0]= Conversation.ConversationType.PRIVATE;
-                types[1]= Conversation.ConversationType.APP_PUBLIC_SERVICE;
-                types[2]= Conversation.ConversationType.CHATROOM;
-                types[3]= Conversation.ConversationType.CUSTOMER_SERVICE;
-                types[4]= Conversation.ConversationType.DISCUSSION;
-                types[5]= Conversation.ConversationType.GROUP;
-                types[6]= Conversation.ConversationType.PUSH_SERVICE;
+                Conversation.ConversationType[] types = new Conversation.ConversationType[7];
+                types[0] = Conversation.ConversationType.PRIVATE;
+                types[1] = Conversation.ConversationType.APP_PUBLIC_SERVICE;
+                types[2] = Conversation.ConversationType.CHATROOM;
+                types[3] = Conversation.ConversationType.CUSTOMER_SERVICE;
+                types[4] = Conversation.ConversationType.DISCUSSION;
+                types[5] = Conversation.ConversationType.GROUP;
+                types[6] = Conversation.ConversationType.PUSH_SERVICE;
                 RongIM.getInstance().setOnReceiveUnreadCountChangedListener(new UnreadCountChangedListener(), types);
                 RongIM.getInstance().registerMessageTemplate(new TaskInfoMessageItemProvider());
                 setUserinfo(userBean);
@@ -96,8 +96,8 @@ public class RongImManager {
                     }
 
                     @Override
-                    public void onError() {
-
+                    public boolean onError() {
+                        return false;
                     }
                 });
                 return null;
@@ -119,12 +119,12 @@ public class RongImManager {
 
     private void getToken(final UserBean userBean) {
         UserManager userManager = new UserManager(context);
-        userManager.getToken(userBean.getUsername(),  new FetchCallBack<String>() {
+        userManager.getToken(userBean.getUsername(), new FetchCallBack<String>() {
             @Override
-            public void onSuccess( int code, String s) {
-                    userBean.setToken(s);
-                    PreferenceHelper.instance(context).saveUser(userBean);
-                    connectIm(PreferenceHelper.instance(context).getUser(), false);
+            public void onSuccess(int code, String s) {
+                userBean.setToken(s);
+                PreferenceHelper.instance(context).saveUser(userBean);
+                connectIm(PreferenceHelper.instance(context).getUser(), false);
             }
 
             @Override
@@ -133,8 +133,8 @@ public class RongImManager {
             }
 
             @Override
-            public void onError() {
-
+            public boolean onError() {
+                return false;
             }
         });
     }

@@ -52,6 +52,7 @@
         <activity
             android:name=".UI.activity.TaskDetailActivity_"
             android:launchMode="singleInstance" />
+        <activity android:name=".UI.activity.user.CropImageActivity_"/>
     </application>
 
 </manifest>

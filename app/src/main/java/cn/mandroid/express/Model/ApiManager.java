@@ -65,14 +65,14 @@ public class ApiManager {
 
     protected boolean isExceptionNull(Exception e, FetchCallBack callBack) {
         if (e != null) {
-            if (context instanceof BasicActivity) {
+            if (context instanceof BasicActivity && callBack.onError()
+                    ) {
                 if (e instanceof TimeoutException) {
                     ((BasicActivity) context).showToast("连接超时,请稍后再试!");
                 } else {
                     ((BasicActivity) context).showToast("网络连接失败,请稍后再试!");
                 }
             }
-            callBack.onError();
             return false;
         }
         return true;
@@ -85,9 +85,11 @@ public class ApiManager {
     protected JsonObject getDataAsJsonObject(JsonObject result) {
         return getData(result).getAsJsonObject();
     }
+
     protected JsonArray getDataAsJsonArray(JsonObject result) {
         return getData(result).getAsJsonArray();
     }
+
     protected JsonElement getData(JsonObject result) {
         return result.get("data");
     }

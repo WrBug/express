@@ -150,8 +150,9 @@ public class ReleaseTaskActivity extends BasicActivity implements ActionBar.OnHe
                 }
 
                 @Override
-                public void onError() {
+                public boolean onError() {
                     hideProgressDialog();
+                    return true;
                 }
             });
         }

@@ -71,8 +71,9 @@ public class UserTaskDetailFragment extends BasicFragment {
             }
 
             @Override
-            public void onError() {
+            public boolean onError() {
                 hideProgressDialog();
+                return true;
             }
         });
     }
@@ -91,8 +92,9 @@ public class UserTaskDetailFragment extends BasicFragment {
             }
 
             @Override
-            public void onError() {
+            public boolean onError() {
                 hideProgressDialog();
+                return true;
             }
         });
     }

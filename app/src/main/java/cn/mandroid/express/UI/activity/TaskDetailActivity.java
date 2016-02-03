@@ -127,8 +127,9 @@ public class TaskDetailActivity extends BasicActivity {
             }
 
             @Override
-            public void onError() {
+            public boolean onError() {
                 hideProgressDialog();
+                return true;
             }
         });
     }
@@ -231,8 +232,9 @@ public class TaskDetailActivity extends BasicActivity {
             }
 
             @Override
-            public void onError() {
+            public boolean onError() {
                 hideProgressDialog();
+                return true;
             }
         });
     }

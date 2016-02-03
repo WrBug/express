@@ -32,6 +32,7 @@ public class ActionBar extends RelativeLayout implements OnClickListener {
         TypedArray tArray = context.obtainStyledAttributes(attr,
                 R.styleable.ActionBar);
         String title = tArray.getString(R.styleable.ActionBar_title);
+        leftImg.setImageResource(tArray.getResourceId(R.styleable.ActionBar_leftImg, R.drawable.ic_head_back));
         if (!TextUtils.isEmpty(title)) {
             titleText.setText(title);
         }
@@ -40,7 +41,7 @@ public class ActionBar extends RelativeLayout implements OnClickListener {
         }
         if (tArray.getBoolean(R.styleable.ActionBar_hideBackView, false)) {
             leftImg.setVisibility(GONE);
-        }else {
+        } else {
             setOnLeftImgClickListener();
         }
     }

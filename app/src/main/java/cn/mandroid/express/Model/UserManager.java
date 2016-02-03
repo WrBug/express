@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.koushikdutta.ion.ProgressCallback;
@@ -12,9 +13,11 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 
 import java.io.File;
+import java.util.List;
 import java.util.TreeMap;
 
 import cn.mandroid.express.Model.Bean.IntegralDetailBean;
+import cn.mandroid.express.Model.Bean.TaskInfoBean;
 import cn.mandroid.express.Model.Bean.UserBean;
 import cn.mandroid.express.UI.common.App;
 import cn.mandroid.express.Utils.MLog;
@@ -169,6 +172,28 @@ public class UserManager extends ApiManager {
                                 Gson gson = new Gson();
                                 UserBean userBean = gson.fromJson(getData(result), UserBean.class);
                                 callBack.onSuccess(getCode(result), userBean);
+                            } else {
+                                callBack.onFail(getCode(result), null);
+                            }
+                        }
+                    }
+                });
+    }
+
+    public void getFriendList(final FetchCallBack<List<UserBean>> callBack) {
+        Ion.with(context).load(Constant.API_URL + "/User/getFriendsList")
+                .setMultipartParameters(getFinalMap(new TreeMap<String, String>()))
+                .asJsonObject()
+                .setCallback(new FutureCallback<JsonObject>() {
+                    @Override
+                    public void onCompleted(Exception e, JsonObject result) {
+                        if (isExceptionNull(e, callBack)) {
+                            if (isSuccess(result)) {
+                                List<UserBean> list;
+                                Gson gson = new Gson();
+                                list = gson.fromJson(getDataAsJsonArray(result), new TypeToken<List<UserBean>>() {
+                                }.getType());
+                                callBack.onSuccess(getCode(result), list);
                             } else {
                                 callBack.onFail(getCode(result), null);
                             }

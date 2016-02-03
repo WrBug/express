@@ -128,8 +128,9 @@ public class LoginActivity extends BasicActivity implements ActionBar.OnHeadImgC
             }
 
             @Override
-            public void onError() {
+            public boolean onError() {
                 hideProgressDialog();
+                return true;
             }
         });
     }
@@ -157,9 +158,10 @@ public class LoginActivity extends BasicActivity implements ActionBar.OnHeadImgC
             }
 
             @Override
-            public void onError() {
+            public boolean onError() {
                 hideProgressDialog();
                 showToast("网络连接失败,请稍后再试!");
+                return false;
             }
         });
     }
@@ -195,8 +197,9 @@ public class LoginActivity extends BasicActivity implements ActionBar.OnHeadImgC
             }
 
             @Override
-            public void onError() {
+            public boolean onError() {
                 hideProgressDialog();
+                return true;
             }
         });
     }
@@ -264,9 +267,10 @@ public class LoginActivity extends BasicActivity implements ActionBar.OnHeadImgC
             }
 
             @Override
-            public void onError() {
+            public boolean onError() {
                 hideProgressDialog();
                 showToast("网络连接失败,请稍后再试!");
+                return false;
             }
         });
     }

@@ -43,7 +43,7 @@ public class CenterFragment extends BasicFragment implements PullToRefreshView.O
     ExpressListAdapter adapter;
     @Bean
     TaskManager mTaskManager;
-
+    boolean isRefresh;
     @AfterViews
     void afterView() {
         pullToRefreshView.setOnRefreshListener(this);
@@ -66,8 +66,9 @@ public class CenterFragment extends BasicFragment implements PullToRefreshView.O
             }
 
             @Override
-            public void onError() {
+            public boolean onError() {
                 pullToRefreshView.setRefreshing(false);
+                return isRefresh;
             }
         });
     }
@@ -93,6 +94,7 @@ public class CenterFragment extends BasicFragment implements PullToRefreshView.O
 
     @Override
     public void onRefresh() {
+        isRefresh=true;
         loadInfo();
     }
 
