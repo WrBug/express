@@ -1,5 +1,8 @@
 package cn.mandroid.express.UI.activity;
 
+import android.content.Intent;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.View;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
@@ -9,11 +12,13 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.mandroid.express.Event.RefreshEvent;
 import cn.mandroid.express.Model.Bean.TaskInfoBean;
 import cn.mandroid.express.Model.Bean.UserBean;
 import cn.mandroid.express.Model.DaoManager;
@@ -44,20 +49,23 @@ public class CenterFragment extends BasicFragment implements PullToRefreshView.O
     @Bean
     TaskManager mTaskManager;
     boolean isRefresh;
+    public final int TASK_DETAIL_REQUEST = 1;
+    private final int RELEASE_TASK_REQUEST = 2;
+
     @AfterViews
     void afterView() {
         pullToRefreshView.setOnRefreshListener(this);
         listView.setOnPushToLoadListenner(this);
-        setAdapter(DaoManager.getTaskList());
+        setAdapter();
         loadInfo();
     }
 
-    private void loadInfo() {
+    public void loadInfo() {
         mTaskManager.getTaskList(new FetchCallBack<List<TaskInfoBean>>() {
             @Override
             public void onSuccess(int code, List<TaskInfoBean> taskInfoBeans) {
                 pullToRefreshView.setRefreshing(false);
-                setAdapter(DaoManager.getTaskList());
+                setAdapter(taskInfoBeans);
             }
 
             @Override
@@ -72,12 +80,17 @@ public class CenterFragment extends BasicFragment implements PullToRefreshView.O
             }
         });
     }
+
+    public void setAdapter() {
+        setAdapter(DaoManager.getTaskList());
+    }
+
     private void setAdapter(List<TaskInfoBean> taskInfoBeans) {
         if (taskInfoBeans == null) {
             return;
         }
         list = taskInfoBeans;
-        adapter = new ExpressListAdapter(getActivity(),listView, list);
+        adapter = new ExpressListAdapter(this, listView, list);
         listView.setAdapter(adapter);
     }
 
@@ -85,16 +98,46 @@ public class CenterFragment extends BasicFragment implements PullToRefreshView.O
     void floatingButtonClick(View view) {
         switch (view.getId()) {
             case R.id.releaseFB:
-                ReleaseTaskActivity_.intent(getActivity()).start();
+                ReleaseTaskActivity_.intent(this).startForResult(RELEASE_TASK_REQUEST);
                 break;
             case R.id.searchFB:
                 break;
         }
     }
 
+    @OnActivityResult(TASK_DETAIL_REQUEST)
+    void onDetailResult(int resultCode, Intent data) {
+        if (resultCode == getActivity().RESULT_OK) {
+            RefreshEvent event = (RefreshEvent) data.getSerializableExtra("action");
+            updateEvent(event);
+        }
+    }
+
+    @OnActivityResult(RELEASE_TASK_REQUEST)
+    void onReleaseResult(int resultCode, Intent data) {
+        if (resultCode == getActivity().RESULT_OK) {
+            RefreshEvent event = (RefreshEvent) data.getSerializableExtra("action");
+            updateEvent(event);
+        }
+    }
+
+    public void updateEvent(RefreshEvent event) {
+        if (event == null) {
+            return;
+        }
+        switch (event.getAction()) {
+            case REFRESHTASKLIST:
+                loadInfo();
+                break;
+            case UPDATELOCALTASKLIST:
+                setAdapter();
+                break;
+        }
+    }
+
     @Override
     public void onRefresh() {
-        isRefresh=true;
+        isRefresh = true;
         loadInfo();
     }
 
@@ -114,7 +157,7 @@ public class CenterFragment extends BasicFragment implements PullToRefreshView.O
             list.add(info);
         }
         if (adapter == null) {
-            adapter = new ExpressListAdapter(getActivity(),listView, list);
+            adapter = new ExpressListAdapter(this, listView, list);
             listView.setAdapter(adapter);
         } else {
             adapter.notifyDataSetChanged();

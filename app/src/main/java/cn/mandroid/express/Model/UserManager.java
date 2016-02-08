@@ -20,6 +20,7 @@ import cn.mandroid.express.Model.Bean.IntegralDetailBean;
 import cn.mandroid.express.Model.Bean.TaskInfoBean;
 import cn.mandroid.express.Model.Bean.UserBean;
 import cn.mandroid.express.UI.common.App;
+import cn.mandroid.express.Utils.FileUtils;
 import cn.mandroid.express.Utils.MLog;
 
 /**
@@ -191,6 +192,7 @@ public class UserManager extends ApiManager {
                             if (isSuccess(result)) {
                                 List<UserBean> list;
                                 Gson gson = new Gson();
+                                FileUtils.writeFile(context, FileUtils.FRIEND_LIST, getData(result).toString());
                                 list = gson.fromJson(getDataAsJsonArray(result), new TypeToken<List<UserBean>>() {
                                 }.getType());
                                 callBack.onSuccess(getCode(result), list);

@@ -8,6 +8,7 @@ import cn.mandroid.express.UI.dialog.ProgressDialog;
 import cn.mandroid.express.Utils.MToast;
 import cn.mandroid.express.Utils.PreferenceHelper;
 import cn.mandroid.express.Utils.UiUtil;
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by Administrator on 2015/12/15.

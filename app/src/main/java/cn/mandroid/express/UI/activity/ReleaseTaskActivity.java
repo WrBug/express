@@ -1,7 +1,9 @@
 package cn.mandroid.express.UI.activity;
 
+import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ActionMenuView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -16,6 +18,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ItemSelect;
 import org.androidannotations.annotations.ViewById;
 
+import cn.mandroid.express.Event.RefreshEvent;
 import cn.mandroid.express.Model.Bean.TaskDetailBean;
 import cn.mandroid.express.Model.FetchCallBack;
 import cn.mandroid.express.Model.TaskManager;
@@ -25,6 +28,7 @@ import cn.mandroid.express.UI.widget.ActionBar;
 import cn.mandroid.express.Utils.Base64;
 import cn.mandroid.express.Utils.Const;
 import cn.pedant.sweetalert.SweetAlertDialog;
+import de.greenrobot.event.EventBus;
 
 @EActivity(R.layout.activity_release_task)
 public class ReleaseTaskActivity extends BasicActivity implements ActionBar.OnHeadImgClickListener {
@@ -135,9 +139,12 @@ public class ReleaseTaskActivity extends BasicActivity implements ActionBar.OnHe
                 @Override
                 public void onSuccess(int code, Integer integer) {
                     hideProgressDialog();
-                    new SweetAlertDialog(context).changeAlertType(SweetAlertDialog.SUCCESS_TYPE).setConfirmText("ok").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    new SweetAlertDialog(context).changeAlertType(SweetAlertDialog.SUCCESS_TYPE).setContentText("发布成功").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            Intent intent = new Intent();
+                            intent.putExtra("action", new RefreshEvent(RefreshEvent.Action.REFRESHTASKLIST));
+                            setResult(RESULT_OK, intent);
                             finish();
                         }
                     }).show();

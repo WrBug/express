@@ -17,6 +17,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
+import cn.mandroid.express.Event.RefreshEvent;
 import cn.mandroid.express.Model.Bean.TaskDetailBean;
 import cn.mandroid.express.Model.Bean.TaskInfoBean;
 import cn.mandroid.express.Model.Constant;
@@ -32,6 +33,7 @@ import cn.mandroid.express.Utils.Base64;
 import cn.mandroid.express.Utils.Cache;
 import cn.mandroid.express.Utils.MLog;
 import cn.pedant.sweetalert.SweetAlertDialog;
+import de.greenrobot.event.EventBus;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
@@ -224,6 +226,9 @@ public class TaskDetailActivity extends BasicActivity {
                 } else if (code == Constant.Code.TASK_IS_DELETE) {
                     showToast("该信息不存在!");
                     DaoManager.deleteTaskFormList(id);
+                    Intent intent = new Intent();
+                    intent.putExtra("action", new RefreshEvent(RefreshEvent.Action.UPDATELOCALTASKLIST));
+                    setResult(RESULT_OK, intent);
                     finish();
                 } else if (code == Constant.Code.TASK_IS_RECEIVED) {
                     showToast("该任务已被其他人领取");

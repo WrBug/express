@@ -6,8 +6,11 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 
+import org.apache.http.util.EncodingUtils;
+
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -23,6 +26,7 @@ import cn.mandroid.express.UI.common.App;
  * Created by Nereo on 2015/4/8.
  */
 public class FileUtils {
+    public static String FRIEND_LIST="friendsList";
     public static String getDiskCacheDir(Context context) {
         String cachePath = null;
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
@@ -72,7 +76,30 @@ public class FileUtils {
         }
         return null;
     }
-
+    public static String readFile(Context context,String fileName)  {
+        String res = "";
+        try {
+            FileInputStream fin = context.openFileInput(MD5.encode(fileName));
+            int length = fin.available();
+            byte[] buffer = new byte[length];
+            fin.read(buffer);
+            res = EncodingUtils.getString(buffer, "UTF-8");
+            fin.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
+    public static void writeFile(Context context,String fileName,String writestr)  {
+        try {
+            FileOutputStream fout = context.openFileOutput(MD5.encode(fileName), Context.MODE_PRIVATE);
+            byte[] bytes = writestr.getBytes();
+            fout.write(bytes);
+            fout.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     public static Uri res2Uri(Context context, int res) {
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), res);
         File file = saveBitmapFile(context, bitmap, res + "");

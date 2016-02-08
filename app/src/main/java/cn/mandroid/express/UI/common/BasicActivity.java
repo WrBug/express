@@ -2,14 +2,17 @@ package cn.mandroid.express.UI.common;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 
 import cn.mandroid.express.Event.ChatEvent;
 import cn.mandroid.express.Event.ExitApp;
+import cn.mandroid.express.Event.RefreshEvent;
 import cn.mandroid.express.Event.UnreadEvent;
 import cn.mandroid.express.Model.Bean.UserBean;
 import cn.mandroid.express.Model.RongIMListener.ReceiveMeassageListener;
 import cn.mandroid.express.Model.RongImManager;
+import cn.mandroid.express.UI.activity.CenterFragment;
 import cn.mandroid.express.UI.activity.MainActivity;
 import cn.mandroid.express.UI.dialog.ProgressDialog;
 import cn.mandroid.express.Utils.CheckUtil;
@@ -65,7 +68,9 @@ public class BasicActivity extends FragmentActivity implements RongIMClient.Conn
                 break;
         }
     }
-
+    public void onEvent(RefreshEvent event) {
+        MLog.i("a");
+    }
     private void initIm() {
         RongIM.getInstance().getRongIMClient().setConnectionStatusListener(this);
         RongIM.setOnReceiveMessageListener(new ReceiveMeassageListener());

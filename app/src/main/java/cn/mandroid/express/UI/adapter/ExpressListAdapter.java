@@ -2,6 +2,7 @@ package cn.mandroid.express.UI.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import java.util.List;
 
 import cn.mandroid.express.Model.Bean.TaskInfoBean;
 import cn.mandroid.express.R;
+import cn.mandroid.express.UI.activity.CenterFragment;
 import cn.mandroid.express.UI.activity.TaskDetailActivity_;
 import cn.mandroid.express.Utils.DateUtil;
 import cn.mandroid.express.Utils.UiUtil;
@@ -29,8 +31,14 @@ public class ExpressListAdapter extends BaseAdapter implements OnItemClickListen
     private Context context;
     private List<TaskInfoBean> list;
     private LayoutInflater inflater;
+    private CenterFragment fragment;
     int[] colors = new int[3];
     private ListView listView;
+
+    public ExpressListAdapter(CenterFragment fragment, ListView listView, List<TaskInfoBean> list) {
+        this(fragment.getActivity(), listView, list);
+        this.fragment = fragment;
+    }
 
     public ExpressListAdapter(Context context, ListView listView, List<TaskInfoBean> list) {
         this.context = context;
@@ -120,7 +128,11 @@ public class ExpressListAdapter extends BaseAdapter implements OnItemClickListen
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        TaskDetailActivity_.intent(context).id(list.get(position).getId()).taskInfoBean(list.get(position)).start();
+        if (fragment == null) {
+            TaskDetailActivity_.intent(context).id(list.get(position).getId()).taskInfoBean(list.get(position)).start();
+        } else {
+            TaskDetailActivity_.intent(fragment).id(list.get(position).getId()).taskInfoBean(list.get(position)).startForResult(fragment.TASK_DETAIL_REQUEST);
+        }
     }
 
     class ViewHolder {

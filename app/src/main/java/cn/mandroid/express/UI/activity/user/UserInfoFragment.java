@@ -1,7 +1,6 @@
 package cn.mandroid.express.UI.activity.user;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;

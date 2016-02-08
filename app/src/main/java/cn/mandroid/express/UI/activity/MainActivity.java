@@ -20,6 +20,7 @@ import java.util.List;
 
 import cn.mandroid.express.Event.ChatEvent;
 import cn.mandroid.express.Event.ExitApp;
+import cn.mandroid.express.Event.RefreshEvent;
 import cn.mandroid.express.Event.UnreadEvent;
 import cn.mandroid.express.Model.JwcManager;
 import cn.mandroid.express.Model.UserManager;
@@ -112,7 +113,7 @@ public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgCl
         if (fragment.isAdded()) {
             transaction.show(fragment);
         } else {
-            transaction.add(R.id.fragmentContainer, fragment);
+            transaction.add(R.id.fragmentContainer, fragment, fragment.getClass().getName());
         }
 //        transaction.replace(R.id.fragmentContainer, fragment);
         transaction.commit();
@@ -136,7 +137,8 @@ public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgCl
             rbChat.setCompoundDrawables(null, drawable, null, null);
         }
     }
-//    public void onEvent(AcountStatusEvent event) {
+
+    //    public void onEvent(AcountStatusEvent event) {
 //        super.onEvent(event);
 //        if (event.getStatus() == RongIMClient.ConnectionStatusListener.ConnectionStatus.KICKED_OFFLINE_BY_OTHER_CLIENT) {
 //            rbCenter.setChecked(true);
@@ -145,7 +147,6 @@ public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgCl
 //            LoginActivity_.intent(context).start();
 //        }
 //    }
-
     @Override
     public void rightImgClick(ImageView view) {
         LoginActivity_.intent(context).start();
@@ -173,10 +174,10 @@ public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgCl
                 if (rongIMstatus == RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTED) {
                     lastCheckedRb = rbChat;
                     Fragment fragment = BasicChatFragment.lastChatFragment;
-                    if(fragment instanceof ChatFragment){
+                    if (fragment instanceof ChatFragment) {
                         actionBar.setTitle("最近联系人");
 
-                    }else if(fragment instanceof FriendsFragment){
+                    } else if (fragment instanceof FriendsFragment) {
                         actionBar.setTitle("好友");
                     }
                     setFragment(BasicChatFragment.lastChatFragment);
