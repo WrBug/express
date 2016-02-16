@@ -113,8 +113,8 @@ public class BasicActivity extends FragmentActivity implements RongIMClient.Conn
     }
 
     @Override
-    public void startActivity(Intent intent,Bundle options) {
-        super.startActivity(intent,options);
+    public void startActivityForResult(Intent intent, int requestCode, Bundle options) {
+        super.startActivityForResult(intent, requestCode, options);
         overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
     }
 
