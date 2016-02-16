@@ -8,7 +8,6 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 
-import cn.mandroid.express.Utils.Cache;
 import io.rong.common.ParcelUtils;
 import io.rong.imkit.RLog;
 import io.rong.imkit.RongIM;
@@ -20,8 +19,8 @@ import io.rong.imlib.model.MessageContent;
 /**
  * Created by Administrator on 2016/1/28 0028.
  */
-@MessageTag(value = "app:TaskInfoMessage", flag = MessageTag.ISCOUNTED | MessageTag.ISPERSISTED)
-public class TaskInfoMessage extends MessageContent {
+@MessageTag(value = "app:TaskInfoNoNoticeMessage", flag = MessageTag.ISPERSISTED)
+public class TaskInfoNoNoticeMessage extends MessageContent {
     private String content;//消息属性，可随意定义
     private String taskInfo;
 
@@ -42,12 +41,12 @@ public class TaskInfoMessage extends MessageContent {
     }
 
 
-    public TaskInfoMessage(String content, String taskInfo) {
+    public TaskInfoNoNoticeMessage(String content, String taskInfo) {
         this.content = content;
         this.taskInfo = taskInfo;
     }
 
-    public TaskInfoMessage(byte[] data) {
+    public TaskInfoNoNoticeMessage(byte[] data) {
         String jsonStr = null;
         try {
             jsonStr = new String(data, "UTF-8");
@@ -67,21 +66,21 @@ public class TaskInfoMessage extends MessageContent {
         }
     }
 
-    public TaskInfoMessage(Parcel in) {
+    public TaskInfoNoNoticeMessage(Parcel in) {
         content = ParcelUtils.readFromParcel(in);//该类为工具类，消息属性
         taskInfo = ParcelUtils.readFromParcel(in);//该类为工具类，消息属性
     }
 
-    public static final Creator<TaskInfoMessage> CREATOR = new Creator<TaskInfoMessage>() {
+    public static final Creator<TaskInfoNoNoticeMessage> CREATOR = new Creator<TaskInfoNoNoticeMessage>() {
 
         @Override
-        public TaskInfoMessage createFromParcel(Parcel source) {
-            return new TaskInfoMessage(source);
+        public TaskInfoNoNoticeMessage createFromParcel(Parcel source) {
+            return new TaskInfoNoNoticeMessage(source);
         }
 
         @Override
-        public TaskInfoMessage[] newArray(int size) {
-            return new TaskInfoMessage[size];
+        public TaskInfoNoNoticeMessage[] newArray(int size) {
+            return new TaskInfoNoNoticeMessage[size];
         }
     };
 
@@ -116,6 +115,6 @@ public class TaskInfoMessage extends MessageContent {
     }
 
     public static void sendMessage(String targetId, String title, String json, RongIMClient.SendMessageCallback callback) {
-        RongIM.getInstance().getRongIMClient().sendMessage(Conversation.ConversationType.PRIVATE, targetId, new TaskInfoMessage(title, json), null, null, callback);
+        RongIM.getInstance().getRongIMClient().sendMessage(Conversation.ConversationType.PRIVATE, targetId, new TaskInfoNoNoticeMessage(title, json), null, null, callback);
     }
 }

@@ -9,6 +9,7 @@ import com.koushikdutta.ion.Ion;
 
 import cn.mandroid.express.Model.Bean.UserBean;
 import cn.mandroid.express.Model.RongIMMessage.TaskInfoMessage;
+import cn.mandroid.express.Model.RongIMMessage.TaskInfoNoNoticeMessage;
 import cn.mandroid.express.Utils.PreferenceHelper;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -27,7 +28,7 @@ public class App extends Application {
         RealmConfiguration config = new RealmConfiguration.Builder(this).build();
         Realm.setDefaultConfiguration(config);
 //        Ion.getDefault(this).configure().setLogging("ion-sample", Log.DEBUG).proxy("192.168.1.195", 8888);
-        Ion.getDefault(this).configure().setLogging("ion-sample", Log.DEBUG).proxy("192.168.0.101", 8888);
+        Ion.getDefault(this).configure().setLogging("ion-sample", Log.DEBUG).proxy("10.1.51.53", 8888);
         rongImInit();
     }
 
@@ -36,6 +37,7 @@ public class App extends Application {
                 "io.rong.push".equals(getCurProcessName(getApplicationContext()))) {
             RongIM.init(this);
             RongIM.registerMessageType(TaskInfoMessage.class);
+            RongIM.registerMessageType(TaskInfoNoNoticeMessage.class);
         }
     }
 

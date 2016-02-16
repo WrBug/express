@@ -25,6 +25,7 @@ import cn.mandroid.express.Model.Dao.TaskInfoDao;
 import cn.mandroid.express.Model.DaoManager;
 import cn.mandroid.express.Model.FetchCallBack;
 import cn.mandroid.express.Model.RongIMMessage.TaskInfoMessage;
+import cn.mandroid.express.Model.RongIMMessage.TaskInfoNoNoticeMessage;
 import cn.mandroid.express.Model.TaskManager;
 import cn.mandroid.express.R;
 import cn.mandroid.express.UI.common.BasicActivity;
@@ -142,7 +143,7 @@ public class TaskDetailActivity extends BasicActivity {
             if (!Cache.isSendTaskInfoWhenChat.contains(taskInfoBean.getId())) {
                 Gson gson = new Gson();
                 String taskInfo = gson.toJson(taskInfoBean);
-                TaskInfoMessage.sendMessage(taskDetailBean.getUsername(), "该用户正在浏览：", taskInfo, new RongIMClient.SendMessageCallback() {
+                TaskInfoNoNoticeMessage.sendMessage(taskDetailBean.getUsername(), "该用户正在浏览：", taskInfo, new RongIMClient.SendMessageCallback() {
                     @Override
                     public void onError(Integer integer, RongIMClient.ErrorCode errorCode) {
                         Cache.isSendTaskInfoWhenChat.add(taskInfoBean.getId());

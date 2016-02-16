@@ -13,6 +13,7 @@ import java.util.List;
 import cn.mandroid.express.Model.Bean.UserBean;
 import cn.mandroid.express.Model.RongIMListener.UnreadCountChangedListener;
 import cn.mandroid.express.Model.RongIMMessage.TaskInfoMessageItemProvider;
+import cn.mandroid.express.Model.RongIMMessage.TaskInfoNoNoticeMessageItemProvider;
 import cn.mandroid.express.R;
 import cn.mandroid.express.Utils.FileUtils;
 import cn.mandroid.express.Utils.MLog;
@@ -55,6 +56,7 @@ public class RongImManager {
                 types[6] = Conversation.ConversationType.PUSH_SERVICE;
                 RongIM.getInstance().setOnReceiveUnreadCountChangedListener(new UnreadCountChangedListener(), types);
                 RongIM.getInstance().registerMessageTemplate(new TaskInfoMessageItemProvider());
+                RongIM.getInstance().registerMessageTemplate(new TaskInfoNoNoticeMessageItemProvider());
                 setUserinfo(userBean);
                 getUserInfo(userBean);
             }
