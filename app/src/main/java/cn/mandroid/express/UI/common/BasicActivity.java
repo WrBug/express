@@ -1,6 +1,7 @@
 package cn.mandroid.express.UI.common;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -12,6 +13,7 @@ import cn.mandroid.express.Event.UnreadEvent;
 import cn.mandroid.express.Model.Bean.UserBean;
 import cn.mandroid.express.Model.RongIMListener.ReceiveMeassageListener;
 import cn.mandroid.express.Model.RongImManager;
+import cn.mandroid.express.R;
 import cn.mandroid.express.UI.activity.CenterFragment;
 import cn.mandroid.express.UI.activity.MainActivity;
 import cn.mandroid.express.UI.dialog.ProgressDialog;
@@ -108,6 +110,12 @@ public class BasicActivity extends FragmentActivity implements RongIMClient.Conn
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
         super.onDestroy();
+    }
+
+    @Override
+    public void startActivity(Intent intent,Bundle options) {
+        super.startActivity(intent,options);
+        overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
     }
 
     @Override
