@@ -87,6 +87,10 @@ public class TaskDetailActivity extends BasicActivity implements SwipeRefreshLay
     @ViewById
     Button saveTaskBut;
     @ViewById
+    Button evaluteBut;
+    @ViewById
+    Button problemBut;
+    @ViewById
     View receiveUserButContainer;
     @ViewById
     Button receiveTaskBut;
@@ -347,11 +351,14 @@ public class TaskDetailActivity extends BasicActivity implements SwipeRefreshLay
     private void setBottomButton(TaskDetailBean bean) {
         if (bean.getUsername().equals(mPreferenceHelper.getUsername())) {
             if (bean.getStatus() == 2) {
-                setViewVisibility(View.VISIBLE, releaseUserButContainer, deleteTaskBut);
-                setViewVisibility(View.GONE, receiveUserButContainer, editTaskBut, closeTaskBut, saveTaskBut);
-            } else {
+                setViewVisibility(View.VISIBLE, releaseUserButContainer, evaluteBut, deleteTaskBut);
+                setViewVisibility(View.GONE, receiveUserButContainer, editTaskBut, closeTaskBut, saveTaskBut, deleteTaskBut);
+            } else if (bean.getStatus() == 1) {
+                setViewVisibility(View.VISIBLE, releaseUserButContainer, editTaskBut);
+                setViewVisibility(View.GONE, receiveUserButContainer, saveTaskBut, closeTaskBut, deleteTaskBut, evaluteBut, problemBut);
+            } else if (bean.getStatus() == 0) {
                 setViewVisibility(View.VISIBLE, releaseUserButContainer, editTaskBut, closeTaskBut, deleteTaskBut);
-                setViewVisibility(View.GONE, receiveUserButContainer, saveTaskBut);
+                setViewVisibility(View.GONE, receiveUserButContainer, saveTaskBut, evaluteBut, problemBut);
             }
             return;
         }
