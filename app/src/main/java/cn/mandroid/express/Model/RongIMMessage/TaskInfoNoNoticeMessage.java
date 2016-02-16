@@ -19,7 +19,7 @@ import io.rong.imlib.model.MessageContent;
 /**
  * Created by Administrator on 2016/1/28 0028.
  */
-@MessageTag(value = "app:TaskInfoNoNoticeMessage", flag = MessageTag.ISPERSISTED)
+@MessageTag(value = "app:taskinfononotice", flag = MessageTag.ISPERSISTED)
 public class TaskInfoNoNoticeMessage extends MessageContent {
     private String content;//消息属性，可随意定义
     private String taskInfo;

@@ -4,7 +4,7 @@ package cn.mandroid.express.Model;
  * Created by Administrator on 2015-12-11.
  */
 public class Constant {
-        public static  String API_URL="http://192.168.0.101";
+        public static  String API_URL="http://10.1.51.53";
 //    public static String API_URL = "http://192.168.1.195";
 
     public static class Code {
@@ -20,6 +20,6 @@ public class Constant {
         public static final int SING_IN_ERROR = 9;
         public static final int TASK_IS_DELETE=10;
         public static final int TASK_IS_RECEIVED=11;
-
+        public static final int TASK_IS_NOT_RECEIVED=12;
     }
 }

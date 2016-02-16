@@ -14,371 +14,376 @@
         app:hideMoreView="true"
         app:title="详情" />
 
-    <ScrollView
-        android:id="@+id/scrollView"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <ScrollView
+            android:id="@+id/scrollView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="3dp">
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_white_color_shape"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_task_detail_sub_title"
-                    android:drawablePadding="10dp"
-                    android:gravity="center_vertical"
-                    android:padding="10dp"
-                    android:text="当前进度"
-                    android:textColor="@android:color/black"
-                    android:textSize="20sp" />
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="3dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/bg_white_color_shape"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_task_detail_sub_title"
+                        android:drawablePadding="10dp"
+                        android:gravity="center_vertical"
+                        android:padding="10dp"
+                        android:text="当前进度"
+                        android:textColor="@android:color/black"
+                        android:textSize="20sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="10dp">
+
+                        <cn.mandroid.express.UI.widget.StepView
+                            android:id="@+id/stepView1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:bottomText="发布"
+                            app:count="1" />
+
+                        <cn.mandroid.express.UI.widget.StepView
+                            android:id="@+id/stepView2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:bottomText="待领取"
+                            app:count="2" />
+
+                        <cn.mandroid.express.UI.widget.StepView
+                            android:id="@+id/stepView3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:bottomText="进行中"
+                            app:count="3" />
+
+                        <cn.mandroid.express.UI.widget.StepView
+                            android:id="@+id/stepView4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:bottomText="已完成"
+                            app:count="4" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_white_color_shape"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_task_detail_sub_title"
+                        android:drawablePadding="10dp"
+                        android:gravity="center_vertical"
+                        android:padding="10dp"
+                        android:text="快递信息"
+                        android:textColor="@android:color/black"
+                        android:textSize="20sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/expressCompanyText"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:drawableLeft="@drawable/ic_express_car_black"
+                            android:drawablePadding="10dp"
+                            android:gravity="center_vertical"
+                            android:padding="10dp"
+                            android:singleLine="true"
+                            android:text="物流公司" />
+
+                        <TextView
+                            android:id="@+id/courinerNumberText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawableLeft="@drawable/ic_couriner_black"
+                            android:drawablePadding="10dp"
+                            android:gravity="center_vertical"
+                            android:padding="10dp"
+                            android:singleLine="true"
+                            android:text="快递单号" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/contactorText"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:drawableLeft="@drawable/ic_user_black"
+                            android:drawablePadding="10dp"
+                            android:gravity="center_vertical"
+                            android:padding="10dp"
+                            android:singleLine="true"
+                            android:text="联系人" />
+
+                        <TextView
+                            android:id="@+id/phoneNumberText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawableLeft="@drawable/ic_phone_black"
+                            android:drawablePadding="10dp"
+                            android:gravity="center_vertical"
+                            android:padding="10dp"
+                            android:singleLine="true"
+                            android:text="联系方式" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <CheckBox
+                            android:id="@+id/heavyCheck"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="5dp"
+                            android:layout_weight="1"
+                            android:checked="true"
+                            android:paddingLeft="5dp"
+                            android:text="是否为重物"
+                            android:textColor="@color/trans_50_black" />
+
+                        <CheckBox
+                            android:id="@+id/bigCheck"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="5dp"
+                            android:layout_weight="1"
+                            android:checked="true"
+                            android:paddingLeft="5dp"
+                            android:text="是否为大件物品"
+                            android:textColor="@color/trans_50_black" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_white_color_shape"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_task_detail_sub_title"
+                        android:drawablePadding="10dp"
+                        android:gravity="center_vertical"
+                        android:padding="10dp"
+                        android:text="取件信息"
+                        android:textColor="@android:color/black"
+                        android:textSize="20sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/depositoryText"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:drawableLeft="@drawable/ic_location_black"
+                            android:drawablePadding="10dp"
+                            android:gravity="center_vertical"
+                            android:padding="10dp"
+                            android:singleLine="true"
+                            android:text="快递存放点" />
+
+                        <TextView
+                            android:id="@+id/destinationText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawableLeft="@drawable/ic_location_black"
+                            android:drawablePadding="10dp"
+                            android:gravity="center_vertical"
+                            android:padding="10dp"
+                            android:singleLine="true"
+                            android:text="快递送达点" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/depositoryDetailText"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:drawableLeft="@drawable/ic_item_black"
+                            android:drawablePadding="10dp"
+                            android:gravity="center_vertical"
+                            android:padding="10dp"
+                            android:singleLine="true"
+                            android:text="快递存放位置" />
+
+                        <TextView
+                            android:id="@+id/expressPasswordText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawableLeft="@drawable/ic_ticket_black"
+                            android:drawablePadding="10dp"
+                            android:gravity="center_vertical"
+                            android:padding="10dp"
+                            android:singleLine="true"
+                            android:text="提取密码" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_white_color_shape"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_task_detail_sub_title"
+                        android:drawablePadding="10dp"
+                        android:gravity="center_vertical"
+                        android:padding="10dp"
+                        android:text="备注"
+                        android:textColor="@android:color/black"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/remarkText"
+                        style="@style/edit_main_bg"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="无"
+                        android:textColor="@color/trans_50_black" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/releaseUserButContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@android:color/white"
                     android:orientation="horizontal"
-                    android:padding="10dp">
+                    android:visibility="gone">
 
-                    <cn.mandroid.express.UI.widget.StepView
-                        android:id="@+id/stepView1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        app:bottomText="发布"
-                        app:count="1" />
-
-                    <cn.mandroid.express.UI.widget.StepView
-                        android:id="@+id/stepView2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        app:bottomText="待领取"
-                        app:count="2" />
-
-                    <cn.mandroid.express.UI.widget.StepView
-                        android:id="@+id/stepView3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        app:bottomText="进行中"
-                        app:count="3" />
-
-                    <cn.mandroid.express.UI.widget.StepView
-                        android:id="@+id/stepView4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        app:bottomText="已完成"
-                        app:count="4" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/bg_white_color_shape"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_task_detail_sub_title"
-                    android:drawablePadding="10dp"
-                    android:gravity="center_vertical"
-                    android:padding="10dp"
-                    android:text="快递信息"
-                    android:textColor="@android:color/black"
-                    android:textSize="20sp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/expressCompanyText"
+                    <Button
+                        android:id="@+id/editTaskBut"
+                        style="@style/btn_no_shape_bg"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_margin="1dp"
                         android:layout_weight="1"
-                        android:drawableLeft="@drawable/ic_express_car_black"
-                        android:drawablePadding="10dp"
-                        android:gravity="center_vertical"
-                        android:padding="10dp"
-                        android:singleLine="true"
-                        android:text="物流公司" />
+                        android:text="编辑" />
 
-                    <TextView
-                        android:id="@+id/courinerNumberText"
+                    <Button
+                        android:id="@+id/closeTaskBut"
+                        style="@style/btn_no_shape_bg"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_margin="1dp"
                         android:layout_weight="1"
-                        android:drawableLeft="@drawable/ic_couriner_black"
-                        android:drawablePadding="10dp"
-                        android:gravity="center_vertical"
-                        android:padding="10dp"
-                        android:singleLine="true"
-                        android:text="快递单号" />
+                        android:text="关闭任务" />
+
+                    <Button
+                        android:id="@+id/deleteTaskBut"
+                        style="@style/btn_no_shape_bg"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:text="删除" />
+
+                    <Button
+                        android:id="@+id/saveTaskBut"
+                        style="@style/btn_no_shape_bg"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:text="保存" />
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/receiveUserButContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="10dp"
+                    android:background="@android:color/white"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
-                    <TextView
-                        android:id="@+id/contactorText"
+                    <Button
+                        android:id="@+id/chatBut"
+                        style="@style/btn_no_shape_bg"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_margin="1dp"
                         android:layout_weight="1"
-                        android:drawableLeft="@drawable/ic_user_black"
-                        android:drawablePadding="10dp"
-                        android:gravity="center_vertical"
-                        android:padding="10dp"
-                        android:singleLine="true"
-                        android:text="联系人" />
+                        android:text="联系TA" />
 
-                    <TextView
-                        android:id="@+id/phoneNumberText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:drawableLeft="@drawable/ic_phone_black"
-                        android:drawablePadding="10dp"
-                        android:gravity="center_vertical"
-                        android:padding="10dp"
-                        android:singleLine="true"
-                        android:text="联系方式" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <CheckBox
-                        android:id="@+id/heavyCheck"
+                    <Button
+                        android:id="@+id/receiveTaskBut"
+                        style="@style/btn_no_shape_bg"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="5dp"
+                        android:layout_margin="1dp"
                         android:layout_weight="1"
-                        android:checked="true"
-                        android:paddingLeft="5dp"
-                        android:text="是否为重物"
-                        android:textColor="@color/trans_50_black" />
+                        android:text="领取任务" />
 
-                    <CheckBox
-                        android:id="@+id/bigCheck"
+                    <Button
+                        android:id="@+id/finishTaskBut"
+                        style="@style/btn_no_shape_bg"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="5dp"
+                        android:layout_margin="1dp"
                         android:layout_weight="1"
-                        android:checked="true"
-                        android:paddingLeft="5dp"
-                        android:text="是否为大件物品"
-                        android:textColor="@color/trans_50_black" />
+                        android:text="完成任务" />
                 </LinearLayout>
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/bg_white_color_shape"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_task_detail_sub_title"
-                    android:drawablePadding="10dp"
-                    android:gravity="center_vertical"
-                    android:padding="10dp"
-                    android:text="取件信息"
-                    android:textColor="@android:color/black"
-                    android:textSize="20sp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/depositoryText"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:drawableLeft="@drawable/ic_location_black"
-                        android:drawablePadding="10dp"
-                        android:gravity="center_vertical"
-                        android:padding="10dp"
-                        android:singleLine="true"
-                        android:text="快递存放点" />
-
-                    <TextView
-                        android:id="@+id/destinationText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:drawableLeft="@drawable/ic_location_black"
-                        android:drawablePadding="10dp"
-                        android:gravity="center_vertical"
-                        android:padding="10dp"
-                        android:singleLine="true"
-                        android:text="快递送达点" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/depositoryDetailText"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:drawableLeft="@drawable/ic_item_black"
-                        android:drawablePadding="10dp"
-                        android:gravity="center_vertical"
-                        android:padding="10dp"
-                        android:singleLine="true"
-                        android:text="快递存放位置" />
-
-                    <TextView
-                        android:id="@+id/expressPasswordText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:drawableLeft="@drawable/ic_ticket_black"
-                        android:drawablePadding="10dp"
-                        android:gravity="center_vertical"
-                        android:padding="10dp"
-                        android:singleLine="true"
-                        android:text="提取密码" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/bg_white_color_shape"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_task_detail_sub_title"
-                    android:drawablePadding="10dp"
-                    android:gravity="center_vertical"
-                    android:padding="10dp"
-                    android:text="备注"
-                    android:textColor="@android:color/black"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:id="@+id/remarkText"
-                    style="@style/edit_main_bg"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:text="无"
-                    android:textColor="@color/trans_50_black" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/releaseUserButContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@android:color/white"
-                android:orientation="horizontal"
-                android:visibility="gone">
-
-                <Button
-                    android:id="@+id/editTaskBut"
-                    style="@style/btn_no_shape_bg"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="1dp"
-                    android:layout_weight="1"
-                    android:text="编辑" />
-
-                <Button
-                    android:id="@+id/closeTaskBut"
-                    style="@style/btn_no_shape_bg"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="1dp"
-                    android:layout_weight="1"
-                    android:text="关闭任务" />
-
-                <Button
-                    android:id="@+id/deleteTaskBut"
-                    style="@style/btn_no_shape_bg"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="1dp"
-                    android:layout_weight="1"
-                    android:text="删除" />
-
-                <Button
-                    android:id="@+id/saveTaskBut"
-                    style="@style/btn_no_shape_bg"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="1dp"
-                    android:layout_weight="1"
-                    android:text="保存" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/receiveUserButContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@android:color/white"
-                android:orientation="horizontal"
-                android:visibility="gone">
-
-                <Button
-                    android:id="@+id/chatBut"
-                    style="@style/btn_no_shape_bg"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="1dp"
-                    android:layout_weight="1"
-                    android:text="联系TA" />
-
-                <Button
-                    android:id="@+id/receiveTaskBut"
-                    style="@style/btn_no_shape_bg"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="1dp"
-                    android:layout_weight="1"
-                    android:text="领取任务" />
-
-                <Button
-                    android:id="@+id/finishTaskBut"
-                    style="@style/btn_no_shape_bg"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="1dp"
-                    android:layout_weight="1"
-                    android:text="完成任务" />
-            </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
-
+        </ScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

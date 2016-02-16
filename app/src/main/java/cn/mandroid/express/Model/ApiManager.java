@@ -65,8 +65,7 @@ public class ApiManager {
 
     protected boolean isExceptionNull(Exception e, FetchCallBack callBack) {
         if (e != null) {
-            if (context instanceof BasicActivity && callBack.onError()
-                    ) {
+            if (callBack.onError() && context instanceof BasicActivity) {
                 if (e instanceof TimeoutException) {
                     ((BasicActivity) context).showToast("连接超时,请稍后再试!");
                 } else {

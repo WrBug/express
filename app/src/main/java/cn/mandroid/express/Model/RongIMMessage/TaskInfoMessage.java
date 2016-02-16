@@ -20,7 +20,7 @@ import io.rong.imlib.model.MessageContent;
 /**
  * Created by Administrator on 2016/1/28 0028.
  */
-@MessageTag(value = "app:TaskInfoMessage", flag = MessageTag.ISCOUNTED | MessageTag.ISPERSISTED)
+@MessageTag(value = "app:taskinfo", flag = MessageTag.ISCOUNTED | MessageTag.ISPERSISTED)
 public class TaskInfoMessage extends MessageContent {
     private String content;//消息属性，可随意定义
     private String taskInfo;

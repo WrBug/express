@@ -2,6 +2,7 @@ package cn.mandroid.express.UI.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -42,7 +43,7 @@ import io.rong.imlib.model.Message;
 import io.rong.message.TextMessage;
 
 @EActivity(R.layout.activity_task_detail)
-public class TaskDetailActivity extends BasicActivity {
+public class TaskDetailActivity extends BasicActivity implements SwipeRefreshLayout.OnRefreshListener {
     @ViewById
     StepView stepView1;
     @ViewById
@@ -51,6 +52,8 @@ public class TaskDetailActivity extends BasicActivity {
     StepView stepView3;
     @ViewById
     StepView stepView4;
+    @ViewById
+    SwipeRefreshLayout swipeRefreshLayout;
     @ViewById
     TextView expressCompanyText;
     @ViewById
@@ -103,6 +106,7 @@ public class TaskDetailActivity extends BasicActivity {
 
     @AfterViews
     void afterView() {
+        swipeRefreshLayout.setOnRefreshListener(this);
         receiveToWatch = getResources().getString(R.string.receive_to_watch);
         heavyCheck.setClickable(false);
         bigCheck.setClickable(false);
@@ -110,8 +114,10 @@ public class TaskDetailActivity extends BasicActivity {
         getTaskDetail();
     }
 
-    private void getTaskDetail() {
-        showProgressDialog();
+    private void getTaskDetail(boolean showProgress) {
+        if (showProgress) {
+            showProgressDialog();
+        }
         mTaskManager.getTaskDetail(id + "", new FetchCallBack<TaskDetailBean>() {
             @Override
             public void onSuccess(int code, TaskDetailBean bean) {
@@ -137,6 +143,10 @@ public class TaskDetailActivity extends BasicActivity {
         });
     }
 
+    private void getTaskDetail() {
+        getTaskDetail(true);
+    }
+
     @Click(R.id.chatBut)
     void chatClick() {
         if (rongIMstatus == ConnectionStatus.CONNECTED) {
@@ -146,12 +156,11 @@ public class TaskDetailActivity extends BasicActivity {
                 TaskInfoNoNoticeMessage.sendMessage(taskDetailBean.getUsername(), "该用户正在浏览：", taskInfo, new RongIMClient.SendMessageCallback() {
                     @Override
                     public void onError(Integer integer, RongIMClient.ErrorCode errorCode) {
-                        Cache.isSendTaskInfoWhenChat.add(taskInfoBean.getId());
                     }
 
                     @Override
                     public void onSuccess(Integer integer) {
-
+                        Cache.isSendTaskInfoWhenChat.add(taskInfoBean.getId());
                     }
                 });
             }
@@ -194,8 +203,80 @@ public class TaskDetailActivity extends BasicActivity {
                 .show();
     }
 
+    @Click(R.id.finishTaskBut)
+    void finishTaskButClick() {
+        new SweetAlertDialog(context)
+                .changeAlertType(SweetAlertDialog.WARNING_TYPE)
+                .setTitleText("请确认已送达？")
+                .setConfirmText("确定")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        finishTask();
+                        sweetAlertDialog.dismiss();
+                    }
+                })
+                .setCancelText("返回")
+                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        sweetAlertDialog.dismiss();
+                    }
+                })
+                .show();
+    }
+
+    private void finishTask() {
+        showProgressDialog("请稍后");
+        mTaskManager.finishTask(id + "", new FetchCallBack<TaskDetailBean>() {
+            @Override
+            public void onSuccess(int code, TaskDetailBean bean) {
+                hideProgressDialog();
+                new SweetAlertDialog(context)
+                        .changeAlertType(SweetAlertDialog.SUCCESS_TYPE)
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertDialog.dismiss();
+                            }
+                        })
+                        .setTitleText("提交成功")
+                        .show();
+                Gson gson = new Gson();
+                String taskInfo = gson.toJson(taskInfoBean);
+                TaskInfoMessage.sendMessage(taskDetailBean.getUsername(), "您的快递已送达，请确认", taskInfo, null);
+                setData(bean);
+            }
+
+            @Override
+            public void onFail(int code, TaskDetailBean bean) {
+                hideProgressDialog();
+                if (code == Constant.Code.SESSION_ERROR) {
+                    showToast("身份已过期，请重新登录！");
+                    LoginActivity_.intent(context).start();
+                } else if (code == Constant.Code.TASK_IS_DELETE) {
+                    showToast("该信息不存在!");
+                    DaoManager.deleteTaskFormList(id);
+                    Intent intent = new Intent();
+                    intent.putExtra("action", new RefreshEvent(RefreshEvent.Action.UPDATELOCALTASKLIST));
+                    setResult(RESULT_OK, intent);
+                    finish();
+                } else if (code == Constant.Code.TASK_IS_NOT_RECEIVED) {
+                    showToast("数据错误!");
+                    getTaskDetail(false);
+                }
+            }
+
+            @Override
+            public boolean onError() {
+                hideProgressDialog();
+                return true;
+            }
+        });
+    }
+
     private void receiveTask() {
-        showProgressDialog();
+        showProgressDialog("请稍后");
         mTaskManager.receiveTask(id + "", new FetchCallBack<TaskDetailBean>() {
             @Override
             public void onSuccess(int code, TaskDetailBean bean) {
@@ -313,5 +394,11 @@ public class TaskDetailActivity extends BasicActivity {
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        getTaskDetail(false);
+        swipeRefreshLayout.setRefreshing(false);
     }
 }

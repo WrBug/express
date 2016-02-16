@@ -151,4 +151,29 @@ public class TaskManager extends ApiManager {
             }
         });
     }
+    public void finishTask(String id,final FetchCallBack<TaskDetailBean> callBack){
+        TreeMap<String, String> map = new TreeMap<>();
+        map.put("id", id);
+        Ion.with(context).load(Constant.API_URL + "/Task/finishTask").setMultipartParameters(getFinalMap(map)).asJsonObject().setCallback(new FutureCallback<JsonObject>() {
+            @Override
+            public void onCompleted(Exception e, JsonObject result) {
+                if (isExceptionNull(e, callBack)) {
+                    if (isSuccess(result)) {
+                        Gson gson = new Gson();
+                        TaskDetailBean bean = gson.fromJson(getDataAsJsonObject(result), TaskDetailBean.class);
+                        callBack.onSuccess(getCode(result), bean);
+                    } else {
+                        JsonObject object = getDataAsJsonObject(result);
+                        if (object.isJsonNull()) {
+                            callBack.onFail(getCode(result), null);
+                        } else {
+                            Gson gson = new Gson();
+                            TaskDetailBean bean = gson.fromJson(object, TaskDetailBean.class);
+                            callBack.onFail(getCode(result), bean);
+                        }
+                    }
+                }
+            }
+        });
+    }
 }
