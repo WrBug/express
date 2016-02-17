@@ -110,10 +110,11 @@ public class JwcManager extends ApiManager {
                 });
     }
 
-    public void register(String username, String password, String name, String idcard, String sex, final FetchCallBack<UserBean> callback) {
+    public void register(String username, String password, String name, String phone,String idcard, String sex, final FetchCallBack<UserBean> callback) {
         TreeMap<String, String> map = new TreeMap<>();
         map.put("username", username);
         map.put("password", password);
+        map.put("phone", phone);
         map.put("name", name);
         map.put("sex", sex);
         map.put("idcard", idcard);

@@ -1,6 +1,8 @@
 package cn.mandroid.express.UI.activity;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +16,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import cn.mandroid.express.Event.ChatEvent;
@@ -24,7 +27,10 @@ import cn.mandroid.express.Model.JwcManager;
 import cn.mandroid.express.R;
 import cn.mandroid.express.UI.common.BasicActivity;
 import cn.mandroid.express.UI.widget.ActionBar;
+import cn.mandroid.express.Utils.CheckUtil;
 import cn.mandroid.express.Utils.MD5;
+import cn.smssdk.EventHandler;
+import cn.smssdk.SMSSDK;
 import de.greenrobot.event.EventBus;
 
 @EActivity(R.layout.activity_login)
@@ -46,6 +52,14 @@ public class LoginActivity extends BasicActivity implements ActionBar.OnHeadImgC
     @ViewById
     EditText idcardEdit;
     @ViewById
+    EditText setPhoneEdit;
+    @ViewById
+    EditText verfyEdit;
+    @ViewById
+    Button getVerifyBut;
+    @ViewById
+    View verifyContainer;
+    @ViewById
     EditText setPasswordEdit;
     @ViewById
     Button submit;
@@ -58,6 +72,9 @@ public class LoginActivity extends BasicActivity implements ActionBar.OnHeadImgC
     String sex;
     String idcard;
     int showContainerNum = 1;
+    EventHandler eventHandler;
+    String phone;
+    boolean isVerification;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +92,65 @@ public class LoginActivity extends BasicActivity implements ActionBar.OnHeadImgC
         actionBar.setTitle("登录");
         actionBar.setRigthImgVisible(View.GONE);
         actionBar.setOnHeadImgClickListener(this);
+    }
+
+    @Click(R.id.getVerifyBut)
+    void getVerifyButClick() {
+        isVerification = false;
+        phone = setPhoneEdit.getText().toString();
+        if (!CheckUtil.isMobileNumber(phone)) {
+            showToast("手机号码有误");
+            return;
+        }
+        showProgressDialog("请稍后");
+        getVerifyBut.setClickable(false);
+        eventHandler = new EventHandler() {
+            @Override
+            public void afterEvent(int event, int result, Object data) {
+                Message message = new Message();
+                message.what = result;
+                message.arg1 = event;
+                message.obj = data;
+                handler.sendMessage(message);
+            }
+        };
+        SMSSDK.registerEventHandler(eventHandler);
+        SMSSDK.getVerificationCode("86", phone);
+    }
+
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            int result = msg.what;
+            int event = msg.arg1;
+            Object data = msg.obj;
+            if (result == SMSSDK.RESULT_COMPLETE) {
+                //回调完成
+                if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
+                    isVerification = true;
+                    showToast("验证成功");
+                    //提交验证码成功
+                } else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
+                    showToast("验证码已发送到您手机，请注意查收");
+                    setPhoneEdit.setEnabled(false);
+                    verifyContainer.setVisibility(View.VISIBLE);
+                    //获取验证码成功
+                } else if (event == SMSSDK.EVENT_GET_SUPPORTED_COUNTRIES) {
+                    //返回支持发送验证码的国家列表
+                }
+            } else {
+                getVerifyBut.setClickable(true);
+            }
+            hideProgressDialog();
+            super.handleMessage(msg);
+        }
+    };
+
+    @Click(R.id.submitVerifyBut)
+    void checkVerify() {
+        showProgressDialog("正在验证");
+        String verify = verfyEdit.getText().toString();
+        SMSSDK.submitVerificationCode("86", phone, verify);
     }
 
     @Click(R.id.submit)
@@ -101,6 +177,10 @@ public class LoginActivity extends BasicActivity implements ActionBar.OnHeadImgC
     }
 
     private void doRegister() {
+        if (!isVerification) {
+            showToast("请先验证手机号");
+            return;
+        }
         String password = setPasswordEdit.getText().toString();
         if (TextUtils.isEmpty(password)) {
             showToast("密码不能为空");
@@ -108,7 +188,7 @@ public class LoginActivity extends BasicActivity implements ActionBar.OnHeadImgC
         }
         password = MD5.encode(password);
         showProgressDialog();
-        mJwcManager.register(username, password, name, idcard, sex, new FetchCallBack<UserBean>() {
+        mJwcManager.register(username, password, name, phone, idcard, sex, new FetchCallBack<UserBean>() {
             @Override
             public void onSuccess(int code, UserBean userBean) {
                 hideProgressDialog();
@@ -222,6 +302,14 @@ public class LoginActivity extends BasicActivity implements ActionBar.OnHeadImgC
                 actionBar.setTitle("注册");
                 break;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (eventHandler != null) {
+            SMSSDK.unregisterEventHandler(eventHandler);
+        }
+        super.onDestroy();
     }
 
     private void doLogin() {

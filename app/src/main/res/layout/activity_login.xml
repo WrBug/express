@@ -9,7 +9,8 @@
     <cn.mandroid.express.UI.widget.ActionBar
         android:id="@+id/actionBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -80,6 +81,64 @@
             android:layout_marginTop="30dp"
             android:orientation="vertical"
             android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/setPhoneEdit"
+                    style="@style/edit_main_bg"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_weight="3"
+                    android:focusable="true"
+                    android:hint="请输入手机号码"
+                    android:inputType="number"
+                    android:singleLine="true" />
+
+                <Button
+                    android:id="@+id/getVerifyBut"
+                    style="@style/btn_no_shape_bg"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_weight="5"
+                    android:text="获取验证码" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/verifyContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:visibility="gone"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/verfyEdit"
+                    style="@style/edit_main_bg"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_weight="3"
+                    android:focusable="true"
+                    android:hint="请输入验证码"
+                    android:inputType="number"
+                    android:singleLine="true" />
+
+                <Button
+                    android:id="@+id/submitVerifyBut"
+                    style="@style/btn_no_shape_bg"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_weight="5"
+                    android:text="验证" />
+            </LinearLayout>
 
             <EditText
                 android:id="@+id/setPasswordEdit"
