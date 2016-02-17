@@ -20,9 +20,27 @@ public class TaskDetailBean implements Serializable {
     String destination;
     String expressPassword;
     String remark;
-    String receiveUser;
+    UserBean receiveUser;
     long date;
+    long receiveTime;
+    long finishTime;
     int status;
+
+    public long getReceiveTime() {
+        return receiveTime;
+    }
+
+    public void setReceiveTime(long receiveTime) {
+        this.receiveTime = receiveTime;
+    }
+
+    public long getFinishTime() {
+        return finishTime;
+    }
+
+    public void setFinishTime(long finishTime) {
+        this.finishTime = finishTime;
+    }
 
     public boolean isReceived() {
         return isReceived;
@@ -136,11 +154,11 @@ public class TaskDetailBean implements Serializable {
         this.remark = remark;
     }
 
-    public String getReceiveUser() {
-        return receiveUser;
+    public UserBean getReceiveUser() {
+        return receiveUser==null?new UserBean():receiveUser;
     }
 
-    public void setReceiveUser(String receiveUser) {
+    public void setReceiveUser(UserBean receiveUser) {
         this.receiveUser = receiveUser;
     }
 

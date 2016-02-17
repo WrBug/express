@@ -17,6 +17,7 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.res.StringRes;
 
 import cn.mandroid.express.Event.RefreshEvent;
 import cn.mandroid.express.Model.Bean.TaskDetailBean;
@@ -54,6 +55,16 @@ public class TaskDetailActivity extends BasicActivity implements SwipeRefreshLay
     StepView stepView4;
     @ViewById
     SwipeRefreshLayout swipeRefreshLayout;
+    @ViewById
+    View receiveInfoContainer;
+    @ViewById
+    TextView receiverNameText;
+    @ViewById
+    TextView receiverPhoneNumberText;
+    @ViewById
+    TextView receiveTimeText;
+    @ViewById
+    TextView finishTimeText;
     @ViewById
     TextView expressCompanyText;
     @ViewById
@@ -104,6 +115,7 @@ public class TaskDetailActivity extends BasicActivity implements SwipeRefreshLay
     int id;
     @Extra
     TaskInfoBean taskInfoBean;
+    @StringRes(R.string.receive_to_watch)
     String receiveToWatch;
     boolean isReceived;
     TaskDetailBean taskDetailBean;
@@ -111,7 +123,6 @@ public class TaskDetailActivity extends BasicActivity implements SwipeRefreshLay
     @AfterViews
     void afterView() {
         swipeRefreshLayout.setOnRefreshListener(this);
-        receiveToWatch = getResources().getString(R.string.receive_to_watch);
         heavyCheck.setClickable(false);
         bigCheck.setClickable(false);
         chatBut.setText("联系" + (taskInfoBean.getUser().getSex() == 1 ? "她" : "他"));
@@ -334,7 +345,7 @@ public class TaskDetailActivity extends BasicActivity implements SwipeRefreshLay
         taskDetailBean = bean;
         setBottomButton(bean);
         initStep(bean.getStatus());
-        isReceived = bean.isReceived() && (TextUtils.isEmpty(bean.getReceiveUser()) || (bean.getReceiveUser().equals(mPreferenceHelper.getUsername())) || (bean.getUsername().equals(mPreferenceHelper.getUsername())));
+        isReceived = bean.isReceived() && (TextUtils.isEmpty(bean.getReceiveUser().getUsername()) || (bean.getReceiveUser().getUsername().equals(mPreferenceHelper.getUsername())) || (bean.getUsername().equals(mPreferenceHelper.getUsername())));
         expressCompanyText.setText(bean.getExpressCompany());
         courinerNumberText.setText(isReceived ? TextUtils.isEmpty(bean.getCourinerNumber()) ? "无" : bean.getCourinerNumber() : receiveToWatch);
         contactorText.setText(isReceived ? TextUtils.isEmpty(bean.getContactor()) ? "无" : bean.getContactor() : receiveToWatch);
@@ -351,22 +362,24 @@ public class TaskDetailActivity extends BasicActivity implements SwipeRefreshLay
     private void setBottomButton(TaskDetailBean bean) {
         if (bean.getUsername().equals(mPreferenceHelper.getUsername())) {
             if (bean.getStatus() == 2) {
-                setViewVisibility(View.VISIBLE, releaseUserButContainer, evaluteBut, deleteTaskBut);
+                setViewVisibility(View.VISIBLE, receiveInfoContainer, releaseUserButContainer, evaluteBut, deleteTaskBut);
                 setViewVisibility(View.GONE, receiveUserButContainer, editTaskBut, closeTaskBut, saveTaskBut, deleteTaskBut);
+                receiverNameText.setText(bean.getReceiveUser().getName());
+//                receiverPhoneNumberText.setText();
             } else if (bean.getStatus() == 1) {
-                setViewVisibility(View.VISIBLE, releaseUserButContainer, editTaskBut);
+                setViewVisibility(View.VISIBLE, receiveInfoContainer, releaseUserButContainer, editTaskBut);
                 setViewVisibility(View.GONE, receiveUserButContainer, saveTaskBut, closeTaskBut, deleteTaskBut, evaluteBut, problemBut);
             } else if (bean.getStatus() == 0) {
                 setViewVisibility(View.VISIBLE, releaseUserButContainer, editTaskBut, closeTaskBut, deleteTaskBut);
-                setViewVisibility(View.GONE, receiveUserButContainer, saveTaskBut, evaluteBut, problemBut);
+                setViewVisibility(View.GONE, receiveInfoContainer, receiveUserButContainer, saveTaskBut, evaluteBut, problemBut);
             }
             return;
         }
-        if (TextUtils.isEmpty(bean.getReceiveUser())) {
+        if (TextUtils.isEmpty(bean.getReceiveUser().getUsername())) {
             setViewVisibility(View.VISIBLE, receiveUserButContainer, receiveTaskBut, chatBut);
             setViewVisibility(View.GONE, releaseUserButContainer, finishTaskBut);
         } else {
-            if (bean.getReceiveUser().equals(mPreferenceHelper.getUsername())) {
+            if (bean.getReceiveUser().getUsername().equals(mPreferenceHelper.getUsername())) {
                 if (bean.getStatus() == 1) {
                     setViewVisibility(View.VISIBLE, receiveUserButContainer, chatBut, finishTaskBut);
                     setViewVisibility(View.GONE, releaseUserButContainer, receiveTaskBut);

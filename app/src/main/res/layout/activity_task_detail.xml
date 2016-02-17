@@ -88,6 +88,87 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/receiveInfoContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_white_color_shape"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_task_detail_sub_title"
+                        android:drawablePadding="10dp"
+                        android:gravity="center_vertical"
+                        android:padding="10dp"
+                        android:text="领取人信息"
+                        android:textColor="@android:color/black"
+                        android:textSize="20sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/receiverNameText"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:drawableLeft="@drawable/ic_user_black"
+                            android:drawablePadding="10dp"
+                            android:gravity="center_vertical"
+                            android:padding="10dp"
+                            android:singleLine="true"
+                            android:text="领取人" />
+
+                        <TextView
+                            android:id="@+id/receiverPhoneNumberText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawableLeft="@drawable/ic_phone_black"
+                            android:drawablePadding="10dp"
+                            android:gravity="center_vertical"
+                            android:padding="10dp"
+                            android:singleLine="true"
+                            android:text="联系方式" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/receiveTimeText"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:drawableLeft="@drawable/ic_time_3_black"
+                            android:drawablePadding="10dp"
+                            android:gravity="center_vertical"
+                            android:padding="10dp"
+                            android:singleLine="true"
+                            android:text="领取时间" />
+
+                        <TextView
+                            android:id="@+id/finishTimeText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawableLeft="@drawable/ic_time_5_black"
+                            android:drawablePadding="10dp"
+                            android:gravity="center_vertical"
+                            android:padding="10dp"
+                            android:singleLine="true"
+                            android:text="完成时间" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -345,6 +426,7 @@
                         android:layout_margin="1dp"
                         android:layout_weight="1"
                         android:text="保存" />
+
                     <Button
                         android:id="@+id/evaluteBut"
                         style="@style/btn_no_shape_bg"
@@ -353,6 +435,7 @@
                         android:layout_margin="1dp"
                         android:layout_weight="1"
                         android:text="评价" />
+
                     <Button
                         android:id="@+id/problemBut"
                         style="@style/btn_no_shape_bg"
