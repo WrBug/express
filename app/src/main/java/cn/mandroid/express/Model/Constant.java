@@ -21,5 +21,6 @@ public class Constant {
         public static final int TASK_IS_DELETE=10;
         public static final int TASK_IS_RECEIVED=11;
         public static final int TASK_IS_NOT_RECEIVED=12;
+        public static final int PHONE_IS_EXIST=13;
     }
 }

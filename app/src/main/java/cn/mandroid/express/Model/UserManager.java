@@ -181,6 +181,26 @@ public class UserManager extends ApiManager {
                 });
     }
 
+    public void checkPhone(String phone, final FetchCallBack callBack) {
+        TreeMap<String, String> map = new TreeMap<>();
+        map.put("phone", phone);
+        Ion.with(context).load(Constant.API_URL + "/User/checkPhone")
+                .setMultipartParameters(getFinalMap(map))
+                .asJsonObject()
+                .setCallback(new FutureCallback<JsonObject>() {
+                    @Override
+                    public void onCompleted(Exception e, JsonObject result) {
+                        if (isExceptionNull(e, callBack)) {
+                            if (isSuccess(result)) {
+                                callBack.onSuccess(getCode(result), null);
+                            } else {
+                                callBack.onFail(getCode(result), null);
+                            }
+                        }
+                    }
+                });
+    }
+
     public void getFriendList(final FetchCallBack<List<UserBean>> callBack) {
         Ion.with(context).load(Constant.API_URL + "/User/getFriendsList")
                 .setMultipartParameters(getFinalMap(new TreeMap<String, String>()))

@@ -25,6 +25,7 @@ import cn.mandroid.express.Model.Bean.UserBean;
 import cn.mandroid.express.Model.Constant;
 import cn.mandroid.express.Model.FetchCallBack;
 import cn.mandroid.express.Model.JwcManager;
+import cn.mandroid.express.Model.UserManager;
 import cn.mandroid.express.R;
 import cn.mandroid.express.UI.common.BasicActivity;
 import cn.mandroid.express.UI.widget.ActionBar;
@@ -66,6 +67,8 @@ public class LoginActivity extends BasicActivity implements ActionBar.OnHeadImgC
     Button submit;
     @Bean
     JwcManager mJwcManager;
+    @Bean
+    UserManager mUserManager;
     String ticket;
     String username;
     String cookie;
@@ -106,19 +109,44 @@ public class LoginActivity extends BasicActivity implements ActionBar.OnHeadImgC
             return;
         }
         showProgressDialog("请稍后");
-        getVerifyBut.setClickable(false);
-        eventHandler = new EventHandler() {
+        checkPhone();
+    }
+
+    private void checkPhone() {
+        mUserManager.checkPhone(phone, new FetchCallBack() {
             @Override
-            public void afterEvent(int event, int result, Object data) {
-                Message message = new Message();
-                message.what = result;
-                message.arg1 = event;
-                message.obj = data;
-                handler.sendMessage(message);
+            public void onSuccess(int code, Object o) {
+                hideProgressDialog();
+                getVerifyBut.setClickable(false);
+                eventHandler = new EventHandler() {
+                    @Override
+                    public void afterEvent(int event, int result, Object data) {
+                        Message message = new Message();
+                        message.what = result;
+                        message.arg1 = event;
+                        message.obj = data;
+                        handler.sendMessage(message);
+                    }
+                };
+                SMSSDK.registerEventHandler(eventHandler);
+                SMSSDK.getVerificationCode("86", phone);
             }
-        };
-        SMSSDK.registerEventHandler(eventHandler);
-        SMSSDK.getVerificationCode("86", phone);
+
+            @Override
+            public void onFail(int code, Object o) {
+                hideProgressDialog();
+                if (code == Constant.Code.PHONE_IS_EXIST) {
+                    showToast("手机号码已存在，请换个手机再试");
+                }
+            }
+
+            @Override
+            public boolean onError() {
+                hideProgressDialog();
+
+                return true;
+            }
+        });
     }
 
     Handler handler = new Handler() {
