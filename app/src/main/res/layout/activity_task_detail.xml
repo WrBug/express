@@ -94,18 +94,31 @@
                     android:layout_marginTop="10dp"
                     android:background="@drawable/bg_white_color_shape"
                     android:orientation="vertical"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_task_detail_sub_title"
-                        android:drawablePadding="10dp"
-                        android:gravity="center_vertical"
-                        android:padding="10dp"
-                        android:text="领取人信息"
-                        android:textColor="@android:color/black"
-                        android:textSize="20sp" />
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/ic_task_detail_sub_title"
+                            android:drawablePadding="10dp"
+                            android:gravity="center_vertical"
+                            android:padding="10dp"
+                            android:text="领取人信息"
+                            android:textColor="@android:color/black"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="20dp"
+                            android:text="点击即可聊天"
+                            android:textColor="@android:color/holo_red_light" />
+                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"

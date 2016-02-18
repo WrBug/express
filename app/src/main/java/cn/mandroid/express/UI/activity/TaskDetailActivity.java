@@ -1,6 +1,7 @@
 package cn.mandroid.express.UI.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
@@ -34,6 +35,7 @@ import cn.mandroid.express.UI.common.BasicActivity;
 import cn.mandroid.express.UI.widget.StepView;
 import cn.mandroid.express.Utils.Base64;
 import cn.mandroid.express.Utils.Cache;
+import cn.mandroid.express.Utils.DateUtil;
 import cn.mandroid.express.Utils.MLog;
 import cn.pedant.sweetalert.SweetAlertDialog;
 import de.greenrobot.event.EventBus;
@@ -162,6 +164,21 @@ public class TaskDetailActivity extends BasicActivity implements SwipeRefreshLay
         getTaskDetail(true);
     }
 
+    @Click({R.id.receiverPhoneNumberText, R.id.phoneNumberText})
+    void callClack(View view) {
+        final String number = ((TextView) view).getText().toString();
+        SweetAlertDialog dialog = new SweetAlertDialog(context);
+        dialog.setTitleText("是否呼叫" + number).setConfirmText("呼叫").setCancelText("取消").changeAlertType(SweetAlertDialog.WARNING_TYPE).setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + number));
+                startActivity(intent);
+                sweetAlertDialog.dismiss();
+            }
+        }).show();
+
+    }
+
     @Click(R.id.chatBut)
     void chatClick() {
         if (rongIMstatus == ConnectionStatus.CONNECTED) {
@@ -216,6 +233,11 @@ public class TaskDetailActivity extends BasicActivity implements SwipeRefreshLay
                     }
                 })
                 .show();
+    }
+
+    @Click(R.id.receiveInfoContainer)
+    void receiveInfoContainerClick() {
+        RongIM.getInstance().startPrivateChat(this, taskDetailBean.getReceiveUser().getUsername(), taskDetailBean.getReceiveUser().getName());
     }
 
     @Click(R.id.finishTaskBut)
@@ -365,10 +387,16 @@ public class TaskDetailActivity extends BasicActivity implements SwipeRefreshLay
                 setViewVisibility(View.VISIBLE, receiveInfoContainer, releaseUserButContainer, evaluteBut, deleteTaskBut);
                 setViewVisibility(View.GONE, receiveUserButContainer, editTaskBut, closeTaskBut, saveTaskBut, deleteTaskBut);
                 receiverNameText.setText(bean.getReceiveUser().getName());
-//                receiverPhoneNumberText.setText();
+                receiverPhoneNumberText.setText(bean.getReceiveUser().getPhone());
+                receiveTimeText.setText(DateUtil.timeToStrMDHM_ZH(bean.getReceiveTime() * 1000));
+                finishTimeText.setText(DateUtil.timeToStrMDHM_ZH(bean.getFinishTime() * 1000));
             } else if (bean.getStatus() == 1) {
                 setViewVisibility(View.VISIBLE, receiveInfoContainer, releaseUserButContainer, editTaskBut);
                 setViewVisibility(View.GONE, receiveUserButContainer, saveTaskBut, closeTaskBut, deleteTaskBut, evaluteBut, problemBut);
+                receiverNameText.setText(bean.getReceiveUser().getName());
+                receiverPhoneNumberText.setText(bean.getReceiveUser().getPhone());
+                receiveTimeText.setText(DateUtil.timeToStrMDHM_ZH(bean.getReceiveTime() * 1000));
+                finishTimeText.setText("进行中");
             } else if (bean.getStatus() == 0) {
                 setViewVisibility(View.VISIBLE, releaseUserButContainer, editTaskBut, closeTaskBut, deleteTaskBut);
                 setViewVisibility(View.GONE, receiveInfoContainer, receiveUserButContainer, saveTaskBut, evaluteBut, problemBut);
