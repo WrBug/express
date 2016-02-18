@@ -18,6 +18,7 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.json.JSONException;
 
 import cn.mandroid.express.Event.ChatEvent;
 import cn.mandroid.express.Model.Bean.UserBean;
@@ -75,6 +76,8 @@ public class LoginActivity extends BasicActivity implements ActionBar.OnHeadImgC
     EventHandler eventHandler;
     String phone;
     boolean isVerification;
+    private long waitTime;
+    private final int UPDATE_BTN = 0x0020;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,22 +127,51 @@ public class LoginActivity extends BasicActivity implements ActionBar.OnHeadImgC
             int result = msg.what;
             int event = msg.arg1;
             Object data = msg.obj;
+            if (result == UPDATE_BTN) {
+                long time = waitTime - System.currentTimeMillis() / 1000;
+                if (time > 0) {
+                    getVerifyBut.setText(time + "秒后重新获取");
+                    handler.sendEmptyMessageDelayed(UPDATE_BTN, 1000);
+                } else {
+                    getVerifyBut.setClickable(true);
+                    getVerifyBut.setText("获取验证码");
+                    setPhoneEdit.setEnabled(true);
+                }
+                return;
+            }
             if (result == SMSSDK.RESULT_COMPLETE) {
                 //回调完成
                 if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
                     isVerification = true;
                     showToast("验证成功");
+                    setPhoneEdit.setEnabled(false);
                     //提交验证码成功
                 } else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
-                    showToast("验证码已发送到您手机，请注意查收");
-                    setPhoneEdit.setEnabled(false);
-                    verifyContainer.setVisibility(View.VISIBLE);
+                    if (data instanceof Boolean) {
+                        if (((Boolean) data).booleanValue()) {
+                            isVerification = true;
+                            showToast("验证成功");
+                            setPhoneEdit.setEnabled(false);
+                            getVerifyBut.setText("验证成功");
+                        } else {
+                            showToast("验证码已发送到您手机，请注意查收");
+                            waitTime = System.currentTimeMillis() / 1000 + 60;
+                            handler.sendEmptyMessage(UPDATE_BTN);
+                            setPhoneEdit.setEnabled(false);
+                            verifyContainer.setVisibility(View.VISIBLE);
+                        }
+                    }
                     //获取验证码成功
                 } else if (event == SMSSDK.EVENT_GET_SUPPORTED_COUNTRIES) {
                     //返回支持发送验证码的国家列表
                 }
             } else {
-                getVerifyBut.setClickable(true);
+                Throwable throwable = (Throwable) data;
+                try {
+                    showSmsErrorToast(throwable);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
             hideProgressDialog();
             super.handleMessage(msg);

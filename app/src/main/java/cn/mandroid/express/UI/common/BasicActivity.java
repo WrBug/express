@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import cn.mandroid.express.Event.ChatEvent;
 import cn.mandroid.express.Event.ExitApp;
 import cn.mandroid.express.Event.RefreshEvent;
@@ -70,9 +73,11 @@ public class BasicActivity extends FragmentActivity implements RongIMClient.Conn
                 break;
         }
     }
+
     public void onEvent(RefreshEvent event) {
         MLog.i("a");
     }
+
     private void initIm() {
         RongIM.getInstance().getRongIMClient().setConnectionStatusListener(this);
         RongIM.setOnReceiveMessageListener(new ReceiveMeassageListener());
@@ -89,6 +94,11 @@ public class BasicActivity extends FragmentActivity implements RongIMClient.Conn
 
     public void showToast(String content) {
         MToast.show(context, content);
+    }
+
+    public void showSmsErrorToast(Throwable throwable) throws JSONException {
+        JSONObject jsonObject = new JSONObject(throwable.getMessage());
+        MToast.show(context, jsonObject.getString("detail"));
     }
 
     protected void showProgressDialog() {
@@ -115,7 +125,7 @@ public class BasicActivity extends FragmentActivity implements RongIMClient.Conn
     @Override
     public void startActivityForResult(Intent intent, int requestCode, Bundle options) {
         super.startActivityForResult(intent, requestCode, options);
-        overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
     @Override
