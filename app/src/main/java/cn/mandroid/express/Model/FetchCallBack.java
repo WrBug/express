@@ -5,6 +5,6 @@ package cn.mandroid.express.Model;
  */
 public interface FetchCallBack<T> {
     void onSuccess(int code, T t);
-    void onFail(int code,T t);
+    boolean onFail(int code,T t);
     boolean onError();
 }

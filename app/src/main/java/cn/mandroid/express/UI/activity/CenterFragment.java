@@ -67,8 +67,9 @@ public class CenterFragment extends BasicFragment implements PullToRefreshView.O
             }
 
             @Override
-            public void onFail(int code, List<TaskInfoBean> list) {
+            public boolean onFail(int code, List<TaskInfoBean> list) {
                 pullToRefreshView.setRefreshing(false);
+                return true;
             }
 
             @Override

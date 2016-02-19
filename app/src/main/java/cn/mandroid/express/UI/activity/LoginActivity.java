@@ -133,11 +133,9 @@ public class LoginActivity extends BasicActivity implements ActionBar.OnHeadImgC
             }
 
             @Override
-            public void onFail(int code, Object o) {
+            public boolean onFail(int code, Object o) {
                 hideProgressDialog();
-                if (code == Constant.Code.PHONE_IS_EXIST) {
-                    showToast("手机号码已存在，请换个手机再试");
-                }
+                return false;
             }
 
             @Override
@@ -262,9 +260,9 @@ public class LoginActivity extends BasicActivity implements ActionBar.OnHeadImgC
             }
 
             @Override
-            public void onFail(int code, UserBean bean) {
+            public boolean onFail(int code, UserBean bean) {
                 hideProgressDialog();
-                showToast("注册失败,请稍后再试!");
+                return false;
             }
 
             @Override
@@ -293,8 +291,9 @@ public class LoginActivity extends BasicActivity implements ActionBar.OnHeadImgC
             }
 
             @Override
-            public void onFail(int code, String s) {
+            public boolean onFail(int code, String s) {
                 hideProgressDialog();
+                return true;
             }
 
             @Override
@@ -320,20 +319,18 @@ public class LoginActivity extends BasicActivity implements ActionBar.OnHeadImgC
             }
 
             @Override
-            public void onFail(int code, Integer integer) {
+            public boolean onFail(int code, Integer integer) {
                 hideProgressDialog();
                 if (code == Constant.Code.JWC_NAME_ERROR) {
-                    showToast("姓名有误,请重新输入");
                     cookie = s;
                 } else if (code == Constant.Code.JWC_IDCARD_ERROR) {
-                    showToast("身份证有误,请重新输入");
                     cookie = s;
                 } else if (code == Constant.Code.JWC_COOKIE_ERROR) {
-                    showToast("验证失败,请再试一次");
                     cookie = null;
                     showContainerNum = 1;
                     showContainerView();
                 }
+                return false;
             }
 
             @Override
@@ -398,20 +395,16 @@ public class LoginActivity extends BasicActivity implements ActionBar.OnHeadImgC
             }
 
             @Override
-            public void onFail(int code, JsonObject jsonObject) {
+            public boolean onFail(int code, JsonObject jsonObject) {
                 hideProgressDialog();
-                if (code == Constant.Code.JWC_PSWD_ERROR) {
-                    showToast("教务处密码有误");
-                } else if (code == Constant.Code.NO_USER) {
+                if (code == Constant.Code.NO_USER) {
                     mPreferenceHelper.saveUsername(username);
                     mPreferenceHelper.savePassword(pswd);
                     ticket = jsonObject.get("data").getAsString();
-                    showToast("请填写正确的姓名和身份证");
                     showContainerNum = 2;
                     showContainerView();
-                } else if (code == Constant.Code.PASSWORD_ERROR) {
-                    showToast("登录密码有误,请重新输入");
                 }
+                return false;
             }
 
             @Override

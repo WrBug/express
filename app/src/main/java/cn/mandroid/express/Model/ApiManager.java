@@ -17,8 +17,10 @@ import java.util.TreeMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
+import cn.mandroid.express.UI.activity.LoginActivity_;
 import cn.mandroid.express.UI.common.BasicActivity;
 import cn.mandroid.express.Utils.MD5;
+import cn.mandroid.express.Utils.MToast;
 import cn.mandroid.express.Utils.PreferenceHelper;
 
 /**
@@ -91,5 +93,54 @@ public class ApiManager {
 
     protected JsonElement getData(JsonObject result) {
         return result.get("data");
+    }
+    protected void showFailedToast(FetchCallBack callBack, JsonObject result) {
+        showFailedToast(callBack,result,result);
+    }
+    protected void showFailedToast(FetchCallBack callBack, JsonObject result,Object o) {
+        if (!callBack.onFail(getCode(result), o)) {
+            switch (getCode(result)) {
+                case Constant.Code.JWC_PSWD_ERROR:
+                    MToast.show(context, "教务处密码有误");
+                    break;
+                case Constant.Code.NO_USER:
+                    MToast.show(context, "请填写正确的姓名和身份证");
+                    break;
+                case Constant.Code.JWC_NAME_ERROR:
+                    MToast.show(context, "姓名有误,请重新输入");
+                    break;
+                case Constant.Code.JWC_IDCARD_ERROR:
+                    MToast.show(context, "身份证有误,请重新输入");
+                    break;
+                case Constant.Code.JWC_COOKIE_ERROR:
+                    MToast.show(context, "验证失败,请再试一次");
+                    break;
+                case Constant.Code.PASSWORD_ERROR:
+                    MToast.show(context, "登录密码有误,请重新输入");
+                    break;
+                case Constant.Code.SESSION_ERROR:
+                    MToast.show(context, "身份已过期，请重新登录！");
+                    LoginActivity_.intent(context).start();
+                    break;
+                case Constant.Code.TASK_IS_DELETE:
+                    MToast.show(context, "该信息不存在!");
+                    break;
+                case Constant.Code.TASK_IS_RECEIVED:
+                    MToast.show(context, "该任务已被其他人领取");
+                    break;
+                case Constant.Code.TASK_IS_NOT_RECEIVED:
+                    MToast.show(context, "数据错误!");
+                    break;
+                case Constant.Code.PHONE_IS_EXIST:
+                    MToast.show(context, "手机号码已存在，请换个手机再试");
+                    break;
+                case Constant.Code.TASK_USER_ERROR:
+                    MToast.show(context, "数据错误!");
+                    break;
+                case Constant.Code.NOT_TO_EVALUTE:
+                    MToast.show(context, "无需评价!");
+                    break;
+            }
+        }
     }
 }

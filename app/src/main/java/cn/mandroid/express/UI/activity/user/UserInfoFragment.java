@@ -130,12 +130,9 @@ public class UserInfoFragment extends BasicFragment implements SwipeRefreshLayou
             }
 
             @Override
-            public void onFail(int code, UserBean bean) {
+            public boolean onFail(int code, UserBean bean) {
                 progressDialog.dismiss();
-                if (code == Constant.Code.SESSION_ERROR) {
-                    showToast("身份已过期，请重新登录！");
-                    LoginActivity_.intent(getActivity()).start();
-                } else if (code == Constant.Code.SING_IN_ERROR) {
+                if (code == Constant.Code.SING_IN_ERROR) {
                     new SweetAlertDialog(getActivity()).setTitleText("签到失败").changeAlertType(SweetAlertDialog.ERROR_TYPE).setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
@@ -143,6 +140,7 @@ public class UserInfoFragment extends BasicFragment implements SwipeRefreshLayou
                         }
                     }).show();
                 }
+                return false;
             }
 
             @Override
@@ -196,10 +194,8 @@ public class UserInfoFragment extends BasicFragment implements SwipeRefreshLayou
             }
 
             @Override
-            public void onFail(int code, String s) {
-                if (code == Constant.Code.SESSION_ERROR) {
-                    showToast("身份已过期，请重新登录！");
-                }
+            public boolean onFail(int code, String s) {
+                return false;
             }
 
             @Override
@@ -221,11 +217,12 @@ public class UserInfoFragment extends BasicFragment implements SwipeRefreshLayou
             }
 
             @Override
-            public void onFail(int code, UserBean bean) {
+            public boolean onFail(int code, UserBean bean) {
                 swipeRefreshLayout.setRefreshing(false);
                 if (code == Constant.Code.SESSION_ERROR) {
                     LoginActivity_.intent(getActivity()).start();
                 }
+                return true;
             }
 
             @Override

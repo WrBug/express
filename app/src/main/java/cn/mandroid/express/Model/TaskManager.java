@@ -41,7 +41,7 @@ public class TaskManager extends ApiManager {
                         DaoManager.saveTaskList(list);
                         callBack.onSuccess(getCode(result), list);
                     } else {
-                        callBack.onFail(getCode(result), null);
+                        showFailedToast(callBack, result);
                     }
                 }
             }
@@ -61,7 +61,7 @@ public class TaskManager extends ApiManager {
                         }.getType());
                         callBack.onSuccess(getCode(result), list);
                     } else {
-                        callBack.onFail(getCode(result), null);
+                        showFailedToast(callBack, result);
                     }
                 }
             }
@@ -81,7 +81,7 @@ public class TaskManager extends ApiManager {
                         }.getType());
                         callBack.onSuccess(getCode(result), list);
                     } else {
-                        callBack.onFail(getCode(result), null);
+                        showFailedToast(callBack, result);
                     }
                 }
             }
@@ -100,7 +100,7 @@ public class TaskManager extends ApiManager {
                     if (isSuccess(result)) {
                         callBack.onSuccess(getCode(result), 1);
                     } else {
-                        callBack.onFail(getCode(result), 0);
+                        showFailedToast(callBack, result);
                     }
                 }
             }
@@ -119,7 +119,7 @@ public class TaskManager extends ApiManager {
                         TaskDetailBean bean = gson.fromJson(getDataAsJsonObject(result), TaskDetailBean.class);
                         callBack.onSuccess(getCode(result), bean);
                     } else {
-                        callBack.onFail(getCode(result), null);
+                        showFailedToast(callBack, result);
                     }
                 }
             }
@@ -144,7 +144,7 @@ public class TaskManager extends ApiManager {
                         } else {
                             Gson gson = new Gson();
                             TaskDetailBean bean = gson.fromJson(object, TaskDetailBean.class);
-                            callBack.onFail(getCode(result), bean);
+                            showFailedToast(callBack, result,bean);
                         }
                     }
                 }
@@ -170,7 +170,7 @@ public class TaskManager extends ApiManager {
                         } else {
                             Gson gson = new Gson();
                             TaskDetailBean bean = gson.fromJson(object, TaskDetailBean.class);
-                            callBack.onFail(getCode(result), bean);
+                            showFailedToast(callBack, result,bean);
                         }
                     }
                 }
@@ -197,7 +197,7 @@ public class TaskManager extends ApiManager {
                         } else {
                             Gson gson = new Gson();
                             TaskDetailBean bean = gson.fromJson(object, TaskDetailBean.class);
-                            callBack.onFail(getCode(result), bean);
+                            showFailedToast(callBack, result,bean);
                         }
                     }
                 }

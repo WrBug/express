@@ -66,8 +66,9 @@ public class UserTaskDetailFragment extends BasicFragment {
             }
 
             @Override
-            public void onFail(int code, List<TaskInfoBean> list) {
+            public boolean onFail(int code, List<TaskInfoBean> list) {
                 hideProgressDialog();
+                return false;
             }
 
             @Override
@@ -87,8 +88,9 @@ public class UserTaskDetailFragment extends BasicFragment {
             }
 
             @Override
-            public void onFail(int code, List<TaskInfoBean> list) {
+            public boolean onFail(int code, List<TaskInfoBean> list) {
                 hideProgressDialog();
+                return false;
             }
 
             @Override

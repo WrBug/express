@@ -87,11 +87,9 @@ public class FriendsFragment extends BasicChatFragment implements SwipeRefreshLa
 
 
             @Override
-            public void onFail(int code, List<UserBean> userBeen) {
+            public boolean onFail(int code, List<UserBean> userBeen) {
                 swipeRefreshLayout.setRefreshing(false);
-                if (code == Constant.Code.SESSION_ERROR) {
-                    showToast("身份已过期，请重新登录！");
-                }
+                return false;
             }
 
             @Override

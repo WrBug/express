@@ -145,13 +145,13 @@ public class TaskDetailActivity extends BasicActivity implements SwipeRefreshLay
             }
 
             @Override
-            public void onFail(int code, TaskDetailBean bean) {
+            public boolean onFail(int code, TaskDetailBean bean) {
                 hideProgressDialog();
                 if (code == Constant.Code.TASK_IS_DELETE) {
-                    showToast("该信息不存在!");
                     DaoManager.deleteTaskFormList(id);
                     finish();
                 }
+                return false;
             }
 
             @Override
@@ -202,8 +202,9 @@ public class TaskDetailActivity extends BasicActivity implements SwipeRefreshLay
             }
 
             @Override
-            public void onFail(int code, TaskDetailBean bean) {
+            public boolean onFail(int code, TaskDetailBean bean) {
                 hideProgressDialog();
+                return false;
             }
 
             @Override
@@ -358,22 +359,18 @@ public class TaskDetailActivity extends BasicActivity implements SwipeRefreshLay
             }
 
             @Override
-            public void onFail(int code, TaskDetailBean bean) {
+            public boolean onFail(int code, TaskDetailBean bean) {
                 hideProgressDialog();
-                if (code == Constant.Code.SESSION_ERROR) {
-                    showToast("身份已过期，请重新登录！");
-                    LoginActivity_.intent(context).start();
-                } else if (code == Constant.Code.TASK_IS_DELETE) {
-                    showToast("该信息不存在!");
+                if (code == Constant.Code.TASK_IS_DELETE) {
                     DaoManager.deleteTaskFormList(id);
                     Intent intent = new Intent();
                     intent.putExtra("action", new RefreshEvent(RefreshEvent.Action.UPDATELOCALTASKLIST));
                     setResult(RESULT_OK, intent);
                     finish();
                 } else if (code == Constant.Code.TASK_IS_NOT_RECEIVED) {
-                    showToast("数据错误!");
                     getTaskDetail(false);
                 }
+                return false;
             }
 
             @Override
@@ -409,22 +406,18 @@ public class TaskDetailActivity extends BasicActivity implements SwipeRefreshLay
             }
 
             @Override
-            public void onFail(int code, TaskDetailBean bean) {
+            public boolean onFail(int code, TaskDetailBean bean) {
                 hideProgressDialog();
-                if (code == Constant.Code.SESSION_ERROR) {
-                    showToast("身份已过期，请重新登录！");
-                    LoginActivity_.intent(context).start();
-                } else if (code == Constant.Code.TASK_IS_DELETE) {
-                    showToast("该信息不存在!");
+                if (code == Constant.Code.TASK_IS_DELETE) {
                     DaoManager.deleteTaskFormList(id);
                     Intent intent = new Intent();
                     intent.putExtra("action", new RefreshEvent(RefreshEvent.Action.UPDATELOCALTASKLIST));
                     setResult(RESULT_OK, intent);
                     finish();
                 } else if (code == Constant.Code.TASK_IS_RECEIVED) {
-                    showToast("该任务已被其他人领取");
                     setData(bean);
                 }
+                return false;
             }
 
             @Override

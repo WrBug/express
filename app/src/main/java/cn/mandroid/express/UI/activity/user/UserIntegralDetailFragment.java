@@ -60,11 +60,9 @@ public class UserIntegralDetailFragment extends BasicFragment {
           }
 
         @Override
-        public void onFail ( int code, IntegralDetailBean integralDetailBean) {
+        public boolean onFail ( int code, IntegralDetailBean integralDetailBean) {
             hideProgressDialog();
-            if (code == Constant.Code.SESSION_ERROR) {
-                showToast("身份已过期，请重新登录！");
-            }
+            return false;
         }
             @Override
             public boolean onError () {

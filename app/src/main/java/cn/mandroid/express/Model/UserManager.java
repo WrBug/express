@@ -52,7 +52,7 @@ public class UserManager extends ApiManager {
                                 rongImManager.setUserinfo(userBean);
                                 callBack.onSuccess(getCode(result), userBean);
                             } else {
-                                callBack.onFail(getCode(result), null);
+                                showFailedToast(callBack, result);
                             }
                         }
                     }
@@ -74,7 +74,7 @@ public class UserManager extends ApiManager {
                                 UserBean userBean = new Gson().fromJson(getData(result), UserBean.class);
                                 callBack.onSuccess(getCode(result), userBean);
                             } else {
-                                callBack.onFail(getCode(result), null);
+                                showFailedToast(callBack, result);
                             }
                         }
                     }
@@ -110,7 +110,7 @@ public class UserManager extends ApiManager {
                                 rongImManager.setUserinfo(userBean);
                                 callBack.onSuccess(getCode(result), url);
                             } else {
-                                callBack.onFail(getCode(result), null);
+                                showFailedToast(callBack, result);
                             }
                         }
                     }
@@ -130,7 +130,7 @@ public class UserManager extends ApiManager {
                             if (isSuccess(result)) {
                                 callBack.onSuccess(getCode(result), getData(result).getAsString());
                             } else {
-                                callBack.onFail(getCode(result), null);
+                                showFailedToast(callBack, result);
                             }
                         }
                     }
@@ -152,7 +152,7 @@ public class UserManager extends ApiManager {
                                 IntegralDetailBean bean = gson.fromJson(getData(result), IntegralDetailBean.class);
                                 callBack.onSuccess(getCode(result), bean);
                             } else {
-                                callBack.onFail(getCode(result), null);
+                                showFailedToast(callBack, result);
                             }
                         }
                     }
@@ -174,7 +174,7 @@ public class UserManager extends ApiManager {
                                 UserBean userBean = gson.fromJson(getData(result), UserBean.class);
                                 callBack.onSuccess(getCode(result), userBean);
                             } else {
-                                callBack.onFail(getCode(result), null);
+                                showFailedToast(callBack, result);
                             }
                         }
                     }
@@ -194,7 +194,7 @@ public class UserManager extends ApiManager {
                             if (isSuccess(result)) {
                                 callBack.onSuccess(getCode(result), null);
                             } else {
-                                callBack.onFail(getCode(result), null);
+                                showFailedToast(callBack, result);
                             }
                         }
                     }
@@ -217,7 +217,7 @@ public class UserManager extends ApiManager {
                                 }.getType());
                                 callBack.onSuccess(getCode(result), list);
                             } else {
-                                callBack.onFail(getCode(result), null);
+                                showFailedToast(callBack, result);
                             }
                         }
                     }

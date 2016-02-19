@@ -52,7 +52,7 @@ public class JwcManager extends ApiManager {
                     if (isSuccess(result)) {
                         callBack.onSuccess(getCode(result), result);
                     } else {
-                        callBack.onFail(getCode(result), result);
+                        showFailedToast(callBack,result);
                     }
                 }
             }
@@ -103,7 +103,7 @@ public class JwcManager extends ApiManager {
                             if (isSuccess(result)) {
                                 callBack.onSuccess(getCode(result), getData(result) == null || TextUtils.isEmpty(getData(result).getAsString()) ? 0 : getData(result).getAsInt());
                             } else {
-                                callBack.onFail(getCode(result), null);
+                                showFailedToast(callBack, result);
                             }
                         }
                     }
@@ -130,7 +130,7 @@ public class JwcManager extends ApiManager {
                                 UserBean userBean = gson.fromJson(getData(result), UserBean.class);
                                 callback.onSuccess(getCode(result), userBean);
                             } else {
-                                callback.onFail(getCode(result), null);
+                                showFailedToast(callback, result);
                             }
                         }
                     }

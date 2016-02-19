@@ -93,8 +93,8 @@ public class RongImManager {
                     }
 
                     @Override
-                    public void onFail(int code, UserBean bean) {
-
+                    public boolean onFail(int code, UserBean bean) {
+                        return true;
                     }
 
                     @Override
@@ -130,8 +130,8 @@ public class RongImManager {
             }
 
             @Override
-            public void onFail(int code, String s) {
-
+            public boolean onFail(int code, String s) {
+                return true;
             }
 
             @Override
