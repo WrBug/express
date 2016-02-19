@@ -2,7 +2,6 @@ package cn.mandroid.express.UI.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +26,7 @@ import cn.mandroid.express.Utils.UiUtil;
 /**
  * Created by Administrator on 2016/1/14 0014.
  */
-public class ExpressListAdapter extends BaseAdapter implements OnItemClickListener {
+public class TaskListAdapter extends BaseAdapter implements OnItemClickListener {
     private Context context;
     private List<TaskInfoBean> list;
     private LayoutInflater inflater;
@@ -35,12 +34,12 @@ public class ExpressListAdapter extends BaseAdapter implements OnItemClickListen
     int[] colors = new int[3];
     private ListView listView;
 
-    public ExpressListAdapter(CenterFragment fragment, ListView listView, List<TaskInfoBean> list) {
+    public TaskListAdapter(CenterFragment fragment, ListView listView, List<TaskInfoBean> list) {
         this(fragment.getActivity(), listView, list);
         this.fragment = fragment;
     }
 
-    public ExpressListAdapter(Context context, ListView listView, List<TaskInfoBean> list) {
+    public TaskListAdapter(Context context, ListView listView, List<TaskInfoBean> list) {
         this.context = context;
         this.list = list;
         this.listView = listView;
@@ -118,6 +117,10 @@ public class ExpressListAdapter extends BaseAdapter implements OnItemClickListen
             case 2:
                 statusText.setText("已完成");
                 statusText.setTextColor(Color.GREEN);
+                break;
+            case 3:
+                statusText.setText("已结束");
+                statusText.setTextColor(Color.WHITE);
                 break;
             default:
                 statusText.setText("未知状态");

@@ -270,7 +270,7 @@ public class SweetAlertDialog extends Dialog implements View.OnClickListener {
     public SweetAlertDialog setContentColor(int color) {
         contentColor = color;
         if (mContentTextView != null) {
-            mContentTextView.setTextColor(contentColor == 0 ? 0x797979 : contentColor);
+            mContentTextView.setTextColor(contentColor == 0 ? 0xff797979 : contentColor);
         }
         return this;
     }

@@ -18,7 +18,7 @@ import cn.mandroid.express.Model.Bean.UserBean;
 import cn.mandroid.express.Model.FetchCallBack;
 import cn.mandroid.express.Model.TaskManager;
 import cn.mandroid.express.R;
-import cn.mandroid.express.UI.adapter.ExpressListAdapter;
+import cn.mandroid.express.UI.adapter.TaskListAdapter;
 import cn.mandroid.express.UI.common.BasicFragment;
 import cn.mandroid.express.UI.widget.LoadMoreListView;
 
@@ -28,7 +28,7 @@ public class UserTaskDetailFragment extends BasicFragment {
     PullToRefreshView pullToRefreshView;
     @ViewById(R.id.list_view)
     LoadMoreListView listView;
-    ExpressListAdapter adapter;
+    TaskListAdapter adapter;
     @FragmentArg
     String username;
     @Bean
@@ -101,7 +101,7 @@ public class UserTaskDetailFragment extends BasicFragment {
 
     private void setView(List<TaskInfoBean> taskInfoBeans) {
         list = taskInfoBeans;
-        adapter = new ExpressListAdapter(getActivity(), listView, list);
+        adapter = new TaskListAdapter(getActivity(), listView, list);
         listView.setAdapter(adapter);
     }
 }

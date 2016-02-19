@@ -1,8 +1,6 @@
 package cn.mandroid.express.UI.activity;
 
 import android.content.Intent;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.View;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
@@ -25,7 +23,7 @@ import cn.mandroid.express.Model.DaoManager;
 import cn.mandroid.express.Model.FetchCallBack;
 import cn.mandroid.express.Model.TaskManager;
 import cn.mandroid.express.R;
-import cn.mandroid.express.UI.adapter.ExpressListAdapter;
+import cn.mandroid.express.UI.adapter.TaskListAdapter;
 import cn.mandroid.express.UI.common.BasicFragment;
 import cn.mandroid.express.UI.widget.LoadMoreListView;
 
@@ -45,7 +43,7 @@ public class CenterFragment extends BasicFragment implements PullToRefreshView.O
     @ViewById(R.id.searchFB)
     FloatingActionButton searchFB;
     List<TaskInfoBean> list = new ArrayList<>();
-    ExpressListAdapter adapter;
+    TaskListAdapter adapter;
     @Bean
     TaskManager mTaskManager;
     boolean isRefresh;
@@ -90,7 +88,7 @@ public class CenterFragment extends BasicFragment implements PullToRefreshView.O
             return;
         }
         list = taskInfoBeans;
-        adapter = new ExpressListAdapter(this, listView, list);
+        adapter = new TaskListAdapter(this, listView, list);
         listView.setAdapter(adapter);
     }
 
@@ -157,7 +155,7 @@ public class CenterFragment extends BasicFragment implements PullToRefreshView.O
             list.add(info);
         }
         if (adapter == null) {
-            adapter = new ExpressListAdapter(this, listView, list);
+            adapter = new TaskListAdapter(this, listView, list);
             listView.setAdapter(adapter);
         } else {
             adapter.notifyDataSetChanged();

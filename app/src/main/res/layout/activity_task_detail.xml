@@ -439,16 +439,6 @@
                         android:layout_margin="1dp"
                         android:layout_weight="1"
                         android:text="保存" />
-
-                    <Button
-                        android:id="@+id/evaluteBut"
-                        style="@style/btn_no_shape_bg"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_margin="1dp"
-                        android:layout_weight="1"
-                        android:text="评价" />
-
                     <Button
                         android:id="@+id/problemBut"
                         style="@style/btn_no_shape_bg"

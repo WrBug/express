@@ -1,16 +1,19 @@
 package cn.mandroid.express.UI.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.hedgehog.ratingbar.RatingBar;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -100,8 +103,6 @@ public class TaskDetailActivity extends BasicActivity implements SwipeRefreshLay
     @ViewById
     Button saveTaskBut;
     @ViewById
-    Button evaluteBut;
-    @ViewById
     Button problemBut;
     @ViewById
     View receiveUserButContainer;
@@ -121,6 +122,7 @@ public class TaskDetailActivity extends BasicActivity implements SwipeRefreshLay
     String receiveToWatch;
     boolean isReceived;
     TaskDetailBean taskDetailBean;
+    int ratingCount;
 
     @AfterViews
     void afterView() {
@@ -162,6 +164,54 @@ public class TaskDetailActivity extends BasicActivity implements SwipeRefreshLay
 
     private void getTaskDetail() {
         getTaskDetail(true);
+    }
+
+    @Click(R.id.closeTaskBut)
+    void closeTaskClick() {
+        SweetAlertDialog dialog = new SweetAlertDialog(context).changeAlertType(SweetAlertDialog.WARNING_TYPE);
+        dialog.setTitleText("关闭提醒").setContentText("为领取人打个分数吧").setConfirmText("关闭").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                if (ratingCount == 0) {
+                    sweetAlertDialog.setContentColor(Color.RED);
+                } else {
+                    sweetAlertDialog.dismiss();
+                    showProgressDialog("请稍后");
+                    mTaskManager.evaluteTask(taskDetailBean.getId() + "", ratingCount + "", evaluteCallBack());
+                }
+            }
+        });
+        View view = getLayoutInflater().inflate(R.layout.sub_layout_rating, null);
+
+        RatingBar ratingBar = (RatingBar) view.findViewById(R.id.ratingbar);
+        ratingBar.setOnRatingChangeListener(new RatingBar.OnRatingChangeListener() {
+            @Override
+            public void onRatingChange(int RatingCount) {
+                ratingCount = RatingCount;
+            }
+        });
+        dialog.addContentView(view);
+        dialog.show();
+    }
+
+    private FetchCallBack<TaskDetailBean> evaluteCallBack() {
+        return new FetchCallBack<TaskDetailBean>() {
+            @Override
+            public void onSuccess(int code, TaskDetailBean bean) {
+                hideProgressDialog();
+            }
+
+            @Override
+            public void onFail(int code, TaskDetailBean bean) {
+                hideProgressDialog();
+            }
+
+            @Override
+            public boolean onError() {
+                hideProgressDialog();
+                return true;
+            }
+        };
     }
 
     @Click(R.id.problemBut)
@@ -405,23 +455,30 @@ public class TaskDetailActivity extends BasicActivity implements SwipeRefreshLay
 
     private void setBottomButton(TaskDetailBean bean) {
         if (bean.getUsername().equals(mPreferenceHelper.getUsername())) {
-            if (bean.getStatus() == 2) {
-                setViewVisibility(View.VISIBLE, receiveInfoContainer, releaseUserButContainer, evaluteBut, deleteTaskBut);
-                setViewVisibility(View.GONE, receiveUserButContainer, editTaskBut, closeTaskBut, saveTaskBut, deleteTaskBut);
+            if (bean.getStatus() == 3) {
+                setViewVisibility(View.VISIBLE, receiveInfoContainer);
+                setViewVisibility(View.GONE, receiveUserButContainer, releaseUserButContainer);
+                receiverNameText.setText(bean.getReceiveUser().getName());
+                receiverPhoneNumberText.setText(bean.getReceiveUser().getPhone());
+                receiveTimeText.setText(DateUtil.timeToStrMDHM_ZH(bean.getReceiveTime() * 1000));
+                finishTimeText.setText(DateUtil.timeToStrMDHM_ZH(bean.getFinishTime() * 1000));
+            } else if (bean.getStatus() == 2) {
+                setViewVisibility(View.VISIBLE, receiveInfoContainer, releaseUserButContainer, deleteTaskBut);
+                setViewVisibility(View.GONE, receiveUserButContainer, editTaskBut, saveTaskBut, deleteTaskBut);
                 receiverNameText.setText(bean.getReceiveUser().getName());
                 receiverPhoneNumberText.setText(bean.getReceiveUser().getPhone());
                 receiveTimeText.setText(DateUtil.timeToStrMDHM_ZH(bean.getReceiveTime() * 1000));
                 finishTimeText.setText(DateUtil.timeToStrMDHM_ZH(bean.getFinishTime() * 1000));
             } else if (bean.getStatus() == 1) {
                 setViewVisibility(View.VISIBLE, receiveInfoContainer, releaseUserButContainer, editTaskBut);
-                setViewVisibility(View.GONE, receiveUserButContainer, saveTaskBut, closeTaskBut, deleteTaskBut, evaluteBut, problemBut);
+                setViewVisibility(View.GONE, receiveUserButContainer, saveTaskBut, closeTaskBut, deleteTaskBut, problemBut);
                 receiverNameText.setText(bean.getReceiveUser().getName());
                 receiverPhoneNumberText.setText(bean.getReceiveUser().getPhone());
                 receiveTimeText.setText(DateUtil.timeToStrMDHM_ZH(bean.getReceiveTime() * 1000));
                 finishTimeText.setText("进行中");
             } else if (bean.getStatus() == 0) {
                 setViewVisibility(View.VISIBLE, releaseUserButContainer, editTaskBut, closeTaskBut, deleteTaskBut);
-                setViewVisibility(View.GONE, receiveInfoContainer, receiveUserButContainer, saveTaskBut, evaluteBut, problemBut);
+                setViewVisibility(View.GONE, receiveInfoContainer, receiveUserButContainer, saveTaskBut, problemBut);
             }
             return;
         }
@@ -454,6 +511,7 @@ public class TaskDetailActivity extends BasicActivity implements SwipeRefreshLay
     private void initStep(int status) {
         stepView1.setIsRunning(true);
         switch (status) {
+            case 3:
             case 2:
                 stepView4.setIsRunning(true);
             case 1:
