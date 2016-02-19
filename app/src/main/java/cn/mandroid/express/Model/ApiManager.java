@@ -1,6 +1,7 @@
 package cn.mandroid.express.Model;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.google.gson.JsonArray;
@@ -84,10 +85,18 @@ public class ApiManager {
     }
 
     protected JsonObject getDataAsJsonObject(JsonObject result) {
-        return getData(result).getAsJsonObject();
+        JsonElement element=getData(result);
+        if(element==null||element.isJsonNull()){
+            return null;
+        }
+        return element.getAsJsonObject();
     }
 
     protected JsonArray getDataAsJsonArray(JsonObject result) {
+        JsonElement element=getData(result);
+        if(element==null||element.isJsonNull()){
+            return null;
+        }
         return getData(result).getAsJsonArray();
     }
 
@@ -95,9 +104,9 @@ public class ApiManager {
         return result.get("data");
     }
     protected void showFailedToast(FetchCallBack callBack, JsonObject result) {
-        showFailedToast(callBack,result,result);
+        showFailedToast(callBack,result,null);
     }
-    protected void showFailedToast(FetchCallBack callBack, JsonObject result,Object o) {
+    protected void showFailedToast(FetchCallBack callBack, JsonObject result,@Nullable Object o) {
         if (!callBack.onFail(getCode(result), o)) {
             switch (getCode(result)) {
                 case Constant.Code.JWC_PSWD_ERROR:

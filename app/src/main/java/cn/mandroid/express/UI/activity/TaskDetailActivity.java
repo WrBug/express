@@ -199,11 +199,25 @@ public class TaskDetailActivity extends BasicActivity implements SwipeRefreshLay
             @Override
             public void onSuccess(int code, TaskDetailBean bean) {
                 hideProgressDialog();
+                new SweetAlertDialog(context)
+                        .changeAlertType(SweetAlertDialog.SUCCESS_TYPE)
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertDialog.dismiss();
+                            }
+                        })
+                        .setTitleText("已关闭")
+                        .show();
+                setData(bean);
             }
 
             @Override
             public boolean onFail(int code, TaskDetailBean bean) {
                 hideProgressDialog();
+                if (bean != null) {
+                    setData(bean);
+                }
                 return false;
             }
 

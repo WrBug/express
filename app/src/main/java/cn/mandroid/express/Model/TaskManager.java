@@ -139,12 +139,12 @@ public class TaskManager extends ApiManager {
                         callBack.onSuccess(getCode(result), bean);
                     } else {
                         JsonObject object = getDataAsJsonObject(result);
-                        if (object.isJsonNull()) {
-                            callBack.onFail(getCode(result), null);
+                        if (object == null || object.isJsonNull()) {
+                            showFailedToast(callBack, result);
                         } else {
                             Gson gson = new Gson();
                             TaskDetailBean bean = gson.fromJson(object, TaskDetailBean.class);
-                            showFailedToast(callBack, result,bean);
+                            showFailedToast(callBack, result, bean);
                         }
                     }
                 }
@@ -165,12 +165,12 @@ public class TaskManager extends ApiManager {
                         callBack.onSuccess(getCode(result), bean);
                     } else {
                         JsonObject object = getDataAsJsonObject(result);
-                        if (object.isJsonNull()) {
-                            callBack.onFail(getCode(result), null);
+                        if (object == null || object.isJsonNull()) {
+                            showFailedToast(callBack, result);
                         } else {
                             Gson gson = new Gson();
                             TaskDetailBean bean = gson.fromJson(object, TaskDetailBean.class);
-                            showFailedToast(callBack, result,bean);
+                            showFailedToast(callBack, result, bean);
                         }
                     }
                 }
@@ -192,12 +192,12 @@ public class TaskManager extends ApiManager {
                         callBack.onSuccess(getCode(result), bean);
                     } else {
                         JsonObject object = getDataAsJsonObject(result);
-                        if (object.isJsonNull()) {
-                            callBack.onFail(getCode(result), null);
+                        if (object == null || object.isJsonNull()) {
+                            showFailedToast(callBack, result);
                         } else {
                             Gson gson = new Gson();
                             TaskDetailBean bean = gson.fromJson(object, TaskDetailBean.class);
-                            showFailedToast(callBack, result,bean);
+                            showFailedToast(callBack, result, bean);
                         }
                     }
                 }
