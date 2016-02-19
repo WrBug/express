@@ -164,6 +164,28 @@ public class TaskDetailActivity extends BasicActivity implements SwipeRefreshLay
         getTaskDetail(true);
     }
 
+    @Click(R.id.problemBut)
+    void customerServiceClick() {
+        new SweetAlertDialog(context).changeAlertType(SweetAlertDialog.WARNING_TYPE).setContentText("未收到您的东西，请先联系领取人，如果还没结果，请联系我们的客服进行处理")
+                .setConfirmText("联系领取人")
+                .setCancelText("联系客服")
+                .showCancelButton(true)
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                             @Override
+                                             public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                 receiveInfoContainerClick();
+                                             }
+                                         }
+                )
+                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        RongIM.getInstance().startCustomerServiceChat(context, "customerService", "客服");
+                    }
+                })
+                .show();
+    }
+
     @Click({R.id.receiverPhoneNumberText, R.id.phoneNumberText})
     void callClack(View view) {
         final String number = ((TextView) view).getText().toString();
