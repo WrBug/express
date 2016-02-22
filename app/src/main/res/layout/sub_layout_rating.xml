@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.hedgehog.ratingbar.RatingBar
+    <cn.mandroid.express.UI.widget.RatingBar
         android:id="@+id/ratingbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -13,7 +13,7 @@
         android:layout_gravity="center"
         hedgehog:clickable="true"
         hedgehog:starCount="5"
-        hedgehog:starEmpty="@mipmap/ic_star_empty"
-        hedgehog:starFill="@mipmap/ic_star_fill"
+        hedgehog:starEmpty="@drawable/ic_star_empty"
+        hedgehog:starFill="@drawable/ic_star_fill"
         hedgehog:starImageSize="30dp" />
 </LinearLayout>

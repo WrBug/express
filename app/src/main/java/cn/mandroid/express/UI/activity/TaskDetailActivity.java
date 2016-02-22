@@ -13,8 +13,6 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.hedgehog.ratingbar.RatingBar;
-
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
@@ -35,6 +33,7 @@ import cn.mandroid.express.Model.RongIMMessage.TaskInfoNoNoticeMessage;
 import cn.mandroid.express.Model.TaskManager;
 import cn.mandroid.express.R;
 import cn.mandroid.express.UI.common.BasicActivity;
+import cn.mandroid.express.UI.widget.RatingBar;
 import cn.mandroid.express.UI.widget.StepView;
 import cn.mandroid.express.Utils.Base64;
 import cn.mandroid.express.Utils.Cache;
