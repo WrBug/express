@@ -35,6 +35,7 @@ import cn.mandroid.express.R;
 import cn.mandroid.express.UI.common.BasicActivity;
 import cn.mandroid.express.UI.widget.RatingBar;
 import cn.mandroid.express.UI.widget.StepView;
+import cn.mandroid.express.UI.widget.TipView;
 import cn.mandroid.express.Utils.Base64;
 import cn.mandroid.express.Utils.Cache;
 import cn.mandroid.express.Utils.DateUtil;
@@ -457,6 +458,46 @@ public class TaskDetailActivity extends BasicActivity implements SwipeRefreshLay
         depositoryDetailText.setText(isReceived ? TextUtils.isEmpty(bean.getDepositoryDetail()) ? "无" : bean.getDepositoryDetail() : receiveToWatch);
         expressPasswordText.setText(isReceived ? TextUtils.isEmpty(bean.getExpressPassword()) ? "无" : bean.getExpressPassword() : receiveToWatch);
         remarkText.setText(TextUtils.isEmpty(bean.getRemark()) ? "无" : bean.getRemark());
+        if(!mPreferenceHelper.isFirstOpen()){
+            setTip();
+        }
+    }
+
+    private void setTip() {
+        final TipView tipView=new TipView(context);
+        tipView.setBackgroundResource(R.color.trans_30_black);
+        TextView textView=new TextView(context);
+        textView.setTextColor(Color.RED);
+        textView.setText("快递公司");
+        tipView.drawImageView(new TipView.DataView(expressCompanyText, textView));
+        textView=new TextView(context);
+        textView.setTextColor(Color.RED);
+        textView.setText("快递单号");
+        tipView.drawImageView(new TipView.DataView(courinerNumberText, textView));
+        textView=new TextView(context);
+        textView.setTextColor(Color.RED);
+        textView.setText("收件人");
+        tipView.drawImageView(new TipView.DataView(contactorText, textView));
+         textView=new TextView(context);
+        textView.setTextColor(Color.RED);
+        textView.setText("联系方式");
+        tipView.drawImageView(new TipView.DataView(phoneNumberText, textView));
+        textView=new TextView(context);
+        textView.setTextColor(Color.RED);
+        textView.setText("存放点");
+        tipView.drawImageView(new TipView.DataView(depositoryText, textView));
+        textView=new TextView(context);
+        textView.setTextColor(Color.RED);
+        textView.setText("送达地");
+        tipView.drawImageView(new TipView.DataView(destinationText, textView));
+        textView=new TextView(context);
+        textView.setTextColor(Color.RED);
+        textView.setText("存放位置");
+        tipView.drawImageView(new TipView.DataView(depositoryDetailText, textView));
+        textView=new TextView(context);
+        textView.setTextColor(Color.RED);
+        textView.setText("取货密码");
+        tipView.drawImageView(new TipView.DataView(expressPasswordText, textView));
     }
 
     private void setBottomButton(TaskDetailBean bean) {

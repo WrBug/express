@@ -32,7 +32,12 @@ public class PreferenceHelper {
         }
         return helper;
     }
-
+    public boolean isFirstOpen(){
+        return preference.getBoolean(Preference.IS_FIRST_RUN);
+    }
+    public void setRun(boolean run){
+        preference.putBoolean(Preference.IS_FIRST_RUN,run);
+    }
     public void saveUsername(String username) {
         preference.putString(Preference.USERNAME, username);
     }

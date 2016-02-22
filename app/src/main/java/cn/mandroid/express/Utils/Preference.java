@@ -32,6 +32,7 @@ public class Preference {
     public static String USER_SEX = "sex";
     public static String AVATAR_URL = "avatarUrl";
     public static String TOKEN = "token";
+    public static String IS_FIRST_RUN = "isFirstRun";
     public static String TASK_LIST = "taskList";
 
     public static Preference instance(Context context) {
