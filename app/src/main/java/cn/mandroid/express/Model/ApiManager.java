@@ -149,6 +149,9 @@ public class ApiManager {
                 case Constant.Code.NOT_TO_EVALUTE:
                     MToast.show(context, "无需评价!");
                     break;
+                case Constant.Code.TASK_STATUS_CHANGE:
+                    MToast.show(context, "任务状态发生变化");
+                    break;
             }
         }
     }

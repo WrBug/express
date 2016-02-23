@@ -3,16 +3,15 @@ package cn.mandroid.express.UI.activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
@@ -25,7 +24,6 @@ import cn.mandroid.express.Event.RefreshEvent;
 import cn.mandroid.express.Model.Bean.TaskDetailBean;
 import cn.mandroid.express.Model.Bean.TaskInfoBean;
 import cn.mandroid.express.Model.Constant;
-import cn.mandroid.express.Model.Dao.TaskInfoDao;
 import cn.mandroid.express.Model.DaoManager;
 import cn.mandroid.express.Model.FetchCallBack;
 import cn.mandroid.express.Model.RongIMMessage.TaskInfoMessage;
@@ -36,17 +34,11 @@ import cn.mandroid.express.UI.common.BasicActivity;
 import cn.mandroid.express.UI.widget.RatingBar;
 import cn.mandroid.express.UI.widget.StepView;
 import cn.mandroid.express.UI.widget.TipView;
-import cn.mandroid.express.Utils.Base64;
 import cn.mandroid.express.Utils.Cache;
 import cn.mandroid.express.Utils.DateUtil;
-import cn.mandroid.express.Utils.MLog;
 import cn.pedant.sweetalert.SweetAlertDialog;
-import de.greenrobot.event.EventBus;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
-import io.rong.imlib.model.Conversation;
-import io.rong.imlib.model.Message;
-import io.rong.message.TextMessage;
 
 @EActivity(R.layout.activity_task_detail)
 public class TaskDetailActivity extends BasicActivity implements SwipeRefreshLayout.OnRefreshListener {
@@ -164,6 +156,54 @@ public class TaskDetailActivity extends BasicActivity implements SwipeRefreshLay
 
     private void getTaskDetail() {
         getTaskDetail(true);
+    }
+
+    @Click(R.id.deleteTaskBut)
+    void deleteClick() {
+        SweetAlertDialog dialog = new SweetAlertDialog(context).changeAlertType(SweetAlertDialog.WARNING_TYPE);
+        dialog.setContentText("是否删除，删除后无法恢复").setConfirmText("删除").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                sweetAlertDialog.dismiss();
+                showProgressDialog("请稍后");
+                mTaskManager.deleteTask(taskDetailBean.getId() + "", deleteCallback());
+
+            }
+        });
+        dialog.show();
+    }
+
+    private FetchCallBack deleteCallback() {
+        return new FetchCallBack() {
+            @Override
+            public void onSuccess(int code, Object o) {
+                hideProgressDialog();
+                DaoManager.deleteTaskFormList(id);
+                showToast("已删除");
+                Intent intent = new Intent();
+                intent.putExtra("action", new RefreshEvent(RefreshEvent.Action.UPDATELOCALTASKLIST));
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+
+            @Override
+            public boolean onFail(int code, Object o) {
+                hideProgressDialog();
+                if (code == Constant.Code.TASK_IS_DELETE) {
+                    DaoManager.deleteTaskFormList(id);
+                    finish();
+                } else if (code == Constant.Code.TASK_STATUS_CHANGE) {
+                    getTaskDetail();
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onError() {
+                hideProgressDialog();
+                return true;
+            }
+        };
     }
 
     @Click(R.id.closeTaskBut)
@@ -458,43 +498,43 @@ public class TaskDetailActivity extends BasicActivity implements SwipeRefreshLay
         depositoryDetailText.setText(isReceived ? TextUtils.isEmpty(bean.getDepositoryDetail()) ? "无" : bean.getDepositoryDetail() : receiveToWatch);
         expressPasswordText.setText(isReceived ? TextUtils.isEmpty(bean.getExpressPassword()) ? "无" : bean.getExpressPassword() : receiveToWatch);
         remarkText.setText(TextUtils.isEmpty(bean.getRemark()) ? "无" : bean.getRemark());
-        if(!mPreferenceHelper.isFirstOpen()){
+        if (!mPreferenceHelper.isFirstOpen()) {
             setTip();
         }
     }
 
     private void setTip() {
-        final TipView tipView=new TipView(context);
-        tipView.setBackgroundResource(R.color.trans_30_black);
-        TextView textView=new TextView(context);
+        final TipView tipView = new TipView(context);
+        tipView.setBackgroundResource(R.color.trans_50_black);
+        TextView textView = new TextView(context);
         textView.setTextColor(Color.RED);
         textView.setText("快递公司");
         tipView.drawImageView(new TipView.DataView(expressCompanyText, textView));
-        textView=new TextView(context);
+        textView = new TextView(context);
         textView.setTextColor(Color.RED);
         textView.setText("快递单号");
         tipView.drawImageView(new TipView.DataView(courinerNumberText, textView));
-        textView=new TextView(context);
+        textView = new TextView(context);
         textView.setTextColor(Color.RED);
         textView.setText("收件人");
         tipView.drawImageView(new TipView.DataView(contactorText, textView));
-         textView=new TextView(context);
+        textView = new TextView(context);
         textView.setTextColor(Color.RED);
         textView.setText("联系方式");
         tipView.drawImageView(new TipView.DataView(phoneNumberText, textView));
-        textView=new TextView(context);
+        textView = new TextView(context);
         textView.setTextColor(Color.RED);
         textView.setText("存放点");
         tipView.drawImageView(new TipView.DataView(depositoryText, textView));
-        textView=new TextView(context);
+        textView = new TextView(context);
         textView.setTextColor(Color.RED);
         textView.setText("送达地");
         tipView.drawImageView(new TipView.DataView(destinationText, textView));
-        textView=new TextView(context);
+        textView = new TextView(context);
         textView.setTextColor(Color.RED);
         textView.setText("存放位置");
         tipView.drawImageView(new TipView.DataView(depositoryDetailText, textView));
-        textView=new TextView(context);
+        textView = new TextView(context);
         textView.setTextColor(Color.RED);
         textView.setText("取货密码");
         tipView.drawImageView(new TipView.DataView(expressPasswordText, textView));
@@ -524,8 +564,8 @@ public class TaskDetailActivity extends BasicActivity implements SwipeRefreshLay
                 receiveTimeText.setText(DateUtil.timeToStrMDHM_ZH(bean.getReceiveTime() * 1000));
                 finishTimeText.setText("进行中");
             } else if (bean.getStatus() == 0) {
-                setViewVisibility(View.VISIBLE, releaseUserButContainer, editTaskBut, closeTaskBut, deleteTaskBut);
-                setViewVisibility(View.GONE, receiveInfoContainer, receiveUserButContainer, saveTaskBut, problemBut);
+                setViewVisibility(View.VISIBLE, releaseUserButContainer, editTaskBut, deleteTaskBut);
+                setViewVisibility(View.GONE, receiveInfoContainer, receiveUserButContainer, closeTaskBut, saveTaskBut, problemBut);
             }
             return;
         }

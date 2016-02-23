@@ -204,4 +204,21 @@ public class TaskManager extends ApiManager {
             }
         });
     }
+
+    public void deleteTask(String id, final FetchCallBack callBack) {
+        TreeMap<String, String> map = new TreeMap<>();
+        map.put("id", id);
+        Ion.with(context).load(Constant.API_URL + "/Task/deleteTask").setMultipartParameters(getFinalMap(map)).asJsonObject().setCallback(new FutureCallback<JsonObject>() {
+            @Override
+            public void onCompleted(Exception e, JsonObject result) {
+                if (isExceptionNull(e, callBack)) {
+                    if (isSuccess(result)) {
+                        callBack.onSuccess(getCode(result), null);
+                    } else {
+                        showFailedToast(callBack, result);
+                    }
+                }
+            }
+        });
+    }
 }

@@ -34,16 +34,22 @@ public class TipView extends RelativeLayout {
     private List<DataView> views;
 
     private Display display;
+    private Position position;
 
     public TipView(Context context) {
+        this(context, Position.RIGHT);
+    }
+
+    public TipView(Context context, Position position) {
         super(context);
         this.mContext = context;
         setWillNotDraw(false);
+        this.position = position;
         setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View paramView) {
-                    drop();
+                drop();
             }
         });
         drawbles = new ArrayList<TipView.DataDrawble>(10);
@@ -163,11 +169,29 @@ public class TipView extends RelativeLayout {
             }
             if (indexOfChild(viewTip) == -1) {
                 Point point = getLeftAndTopPoint(viewAnchor, viewTip);
-                viewTip.setPadding(point.x, point.y, 0, 0);
+                setPadding(viewTip, point);
                 addView(viewTip, lpChild);
             }
         }
     }
+
+    private void setPadding(View viewTip, Point point) {
+        switch (position) {
+            case LEFT:
+                viewTip.setPadding(0, point.y, point.x, 0);
+                break;
+            case RIGHT:
+                viewTip.setPadding(point.x, point.y, 0, 0);
+                break;
+            case TOP:
+                viewTip.setPadding(point.x / 2, 0, 0, point.y);
+                break;
+            case BOTTOM:
+                viewTip.setPadding(point.x / 2, point.y, 0, 0);
+                break;
+        }
+    }
+
 
     public static class DataDrawble {
 
@@ -246,5 +270,9 @@ public class TipView extends RelativeLayout {
         public View getViewTip() {
             return viewTip;
         }
+    }
+
+    public enum Position {
+        LEFT, RIGHT, TOP, BOTTOM
     }
 }

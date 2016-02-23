@@ -24,6 +24,6 @@ public class Constant {
         public static final int PHONE_IS_EXIST=13;
         public static final int TASK_USER_ERROR=14;
         public static final int NOT_TO_EVALUTE=15;
-
+        public static final int TASK_STATUS_CHANGE=16;
     }
 }

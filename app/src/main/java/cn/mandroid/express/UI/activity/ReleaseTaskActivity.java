@@ -134,7 +134,7 @@ public class ReleaseTaskActivity extends BasicActivity implements ActionBar.OnHe
             bean.setExpressPassword(expressPassword);
             bean.setRemark(remark);
             bean.setDate(System.currentTimeMillis() / 1000);
-            showProgressDialog();
+            showProgressDialog("正在提交");
             mTaskManager.releaseTask(bean, new FetchCallBack<Integer>() {
                 @Override
                 public void onSuccess(int code, Integer integer) {
