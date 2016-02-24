@@ -17,6 +17,7 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.StringRes;
 
@@ -115,6 +116,7 @@ public class TaskDetailActivity extends BasicActivity implements SwipeRefreshLay
     boolean isReceived;
     TaskDetailBean taskDetailBean;
     int ratingCount;
+    private final int EDIT_TASK = 0x88;
 
     @AfterViews
     void afterView() {
@@ -158,6 +160,23 @@ public class TaskDetailActivity extends BasicActivity implements SwipeRefreshLay
         getTaskDetail(true);
     }
 
+    @OnActivityResult(EDIT_TASK)
+    void editResult(int resultCode, Intent intent) {
+        if (resultCode == RESULT_OK && intent != null) {
+            RefreshEvent event = (RefreshEvent) intent.getSerializableExtra("action");
+            if (RefreshEvent.Action.REFRESHTASK == event.getAction()) {
+                getTaskDetail();
+            } else if (RefreshEvent.Action.DELETETASK == event.getAction()) {
+                finish();
+            }
+        }
+    }
+
+    @Click(R.id.editTaskBut)
+    void editTaskClick() {
+        ReleaseTaskActivity_.intent(context).isEdit(true).taskDetailBean(taskDetailBean).startForResult(EDIT_TASK);
+    }
+
     @Click(R.id.deleteTaskBut)
     void deleteClick() {
         SweetAlertDialog dialog = new SweetAlertDialog(context).changeAlertType(SweetAlertDialog.WARNING_TYPE);
@@ -167,7 +186,6 @@ public class TaskDetailActivity extends BasicActivity implements SwipeRefreshLay
                 sweetAlertDialog.dismiss();
                 showProgressDialog("请稍后");
                 mTaskManager.deleteTask(taskDetailBean.getId() + "", deleteCallback());
-
             }
         });
         dialog.show();

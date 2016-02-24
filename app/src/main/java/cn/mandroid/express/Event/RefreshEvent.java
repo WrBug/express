@@ -21,6 +21,6 @@ public class RefreshEvent implements Serializable{
     }
 
     public enum Action {
-        REFRESHTASKLIST, UPDATELOCALTASKLIST
+        REFRESHTASKLIST, UPDATELOCALTASKLIST,REFRESHTASK,DELETETASK
     }
 }

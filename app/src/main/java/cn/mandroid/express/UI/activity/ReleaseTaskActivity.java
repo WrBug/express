@@ -15,11 +15,14 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ItemSelect;
 import org.androidannotations.annotations.ViewById;
 
 import cn.mandroid.express.Event.RefreshEvent;
 import cn.mandroid.express.Model.Bean.TaskDetailBean;
+import cn.mandroid.express.Model.Constant;
+import cn.mandroid.express.Model.DaoManager;
 import cn.mandroid.express.Model.FetchCallBack;
 import cn.mandroid.express.Model.TaskManager;
 import cn.mandroid.express.R;
@@ -66,6 +69,10 @@ public class ReleaseTaskActivity extends BasicActivity implements ActionBar.OnHe
     Button submit;
     @Bean
     TaskManager mTaskManager;
+    @Extra
+    boolean isEdit;
+    @Extra
+    TaskDetailBean taskDetailBean;
     String expressCompany;
     String cacheEC;
     String courinerNumber;
@@ -85,6 +92,26 @@ public class ReleaseTaskActivity extends BasicActivity implements ActionBar.OnHe
     void afterView() {
         setActionBar();
         setSpinner();
+        if (isEdit) {
+            setData();
+        }
+    }
+
+    private void setData() {
+        expressCompanySpinner.setSelection(Const.EXPRESS_COMPANY.length - 1);
+        expressCompanyEdit.setText(taskDetailBean.getExpressCompany());
+        courierNumberEdit.setText(taskDetailBean.getCourinerNumber());
+        contactorEdit.setText(taskDetailBean.getContactor());
+        phoneNumberEdit.setText(taskDetailBean.getPhoneNumber());
+        heavyCheck.setChecked(taskDetailBean.getHeavy() == 1);
+        bigCheck.setChecked(taskDetailBean.getBig() == 1);
+        depositorySpinner.setSelection(Const.DEPOSITORY.length - 1);
+        depositoryEdit.setText(taskDetailBean.getDepository());
+        depositoryDetailEdit.setText(taskDetailBean.getDepositoryDetail());
+        destinationSpinner.setSelection(Const.DESTINATION.length - 1);
+        destinationEdit.setText(taskDetailBean.getDestination());
+        expressPasswordEdit.setText(taskDetailBean.getExpressPassword());
+        remarkEdit.setText(taskDetailBean.getRemark());
     }
 
     @ItemSelect(R.id.expressCompanySpinner)
@@ -122,6 +149,9 @@ public class ReleaseTaskActivity extends BasicActivity implements ActionBar.OnHe
         saveData();
         if (checkData()) {
             TaskDetailBean bean = new TaskDetailBean();
+            if (isEdit) {
+                bean = taskDetailBean;
+            }
             bean.setExpressCompany(expressCompany);
             bean.setCourinerNumber(courinerNumber);
             bean.setContactor(contactor);
@@ -134,16 +164,17 @@ public class ReleaseTaskActivity extends BasicActivity implements ActionBar.OnHe
             bean.setExpressPassword(expressPassword);
             bean.setRemark(remark);
             bean.setDate(System.currentTimeMillis() / 1000);
+            bean.setReceiveUser(null);
             showProgressDialog("正在提交");
             mTaskManager.releaseTask(bean, new FetchCallBack<Integer>() {
                 @Override
                 public void onSuccess(int code, Integer integer) {
                     hideProgressDialog();
-                    new SweetAlertDialog(context).changeAlertType(SweetAlertDialog.SUCCESS_TYPE).setContentText("发布成功").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    new SweetAlertDialog(context).changeAlertType(SweetAlertDialog.SUCCESS_TYPE).setContentText(isEdit ? "修改成功" : "发布成功").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
                             Intent intent = new Intent();
-                            intent.putExtra("action", new RefreshEvent(RefreshEvent.Action.REFRESHTASKLIST));
+                            intent.putExtra("action", new RefreshEvent(isEdit ? RefreshEvent.Action.REFRESHTASK : RefreshEvent.Action.REFRESHTASKLIST));
                             setResult(RESULT_OK, intent);
                             finish();
                         }
@@ -153,6 +184,13 @@ public class ReleaseTaskActivity extends BasicActivity implements ActionBar.OnHe
                 @Override
                 public boolean onFail(int code, Integer integer) {
                     hideProgressDialog();
+                    if (code == Constant.Code.TASK_IS_DELETE) {
+                        DaoManager.deleteTaskFormList(taskDetailBean.getId());
+                        Intent intent = new Intent();
+                        intent.putExtra("action", new RefreshEvent(RefreshEvent.Action.DELETETASK));
+                        setResult(RESULT_OK, intent);
+                        finish();
+                    }
                     return false;
                 }
 
@@ -218,7 +256,7 @@ public class ReleaseTaskActivity extends BasicActivity implements ActionBar.OnHe
     }
 
     private void setActionBar() {
-        actionBar.setTitle("发布");
+        actionBar.setTitle(isEdit ? "修改" : "发布");
         actionBar.setRigthImgVisible(View.GONE);
         actionBar.setOnHeadImgClickListener(this);
     }
