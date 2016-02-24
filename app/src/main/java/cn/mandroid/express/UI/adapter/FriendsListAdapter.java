@@ -46,6 +46,7 @@ public class FriendsListAdapter extends BaseAdapter implements SectionIndexer {
 
     public View getView(final int position, View view, ViewGroup arg2) {
         ViewHolder viewHolder = null;
+        final Content mContent = list.get(position);
         if (view == null) {
             viewHolder = new ViewHolder();
             view = LayoutInflater.from(mContext).inflate(R.layout.item_friends, null);
@@ -56,7 +57,6 @@ public class FriendsListAdapter extends BaseAdapter implements SectionIndexer {
         } else {
             viewHolder = (ViewHolder) view.getTag();
         }
-        final Content mContent = list.get(position);
         if (position == 0) {
             viewHolder.tvLetter.setVisibility(View.VISIBLE);
             viewHolder.tvLetter.setText(mContent.getLetter());

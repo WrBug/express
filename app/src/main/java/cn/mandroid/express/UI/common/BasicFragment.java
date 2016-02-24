@@ -20,7 +20,7 @@ public class BasicFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        UiUtil.hideKeyboard(getActivity());
+//        UiUtil.hideKeyboard(getActivity());
         preferenceHelper = PreferenceHelper.instance(getActivity());
     }
 

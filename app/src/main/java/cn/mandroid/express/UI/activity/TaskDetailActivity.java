@@ -359,6 +359,10 @@ public class TaskDetailActivity extends BasicActivity implements SwipeRefreshLay
 
     @Click(R.id.receiveTaskBut)
     void receiveTaskButClick() {
+        if (TextUtils.isEmpty(mPreferenceHelper.getUsername())) {
+            LoginActivity_.intent(context).start();
+            return;
+        }
         new SweetAlertDialog(context)
                 .changeAlertType(SweetAlertDialog.WARNING_TYPE)
                 .setTitleText("确认领取，领取后不可取消")

@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             fab:fab_colorNormal="@color/app_main"
             fab:fab_colorPressed="@color/button_pressed"
-            fab:fab_icon="@drawable/ic_user_info_release_white"
+            fab:fab_icon="@drawable/ic_user_conversition_white"
             fab:fab_size="mini"
             fab:fab_title="最近联系人" />
 
@@ -30,16 +30,7 @@
             android:layout_height="wrap_content"
             fab:fab_colorNormal="@color/app_main"
             fab:fab_colorPressed="@color/button_pressed"
-            fab:fab_icon="@drawable/ic_filter_white"
+            fab:fab_icon="@drawable/ic_user_friends_white"
             fab:fab_size="mini" />
-
-        <!--<com.getbase.floatingactionbutton.FloatingActionButton-->
-        <!--android:id="@+id/searchFB"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--fab:fab_colorNormal="@color/app_main"-->
-        <!--fab:fab_colorPressed="@color/button_pressed"-->
-        <!--fab:fab_icon="@drawable/ic_search_white"-->
-        <!--fab:fab_size="mini" />-->
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 </FrameLayout>

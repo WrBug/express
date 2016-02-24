@@ -8,14 +8,27 @@ public class Content {
     private String username;
     private String avatarUrl;
     private String name;
-
-
+    private String pinyinName;
+    private boolean hide;
     public Content(UserBean user) {
         super();
         name = user.getName();
         avatarUrl = user.getAvatarUrl();
         username = user.getUsername();
-        letter = CharacterParser.getInstance().getSelling(name).toUpperCase().substring(0, 1);
+        pinyinName = CharacterParser.getInstance().getSelling(name);
+        letter = pinyinName.toUpperCase().substring(0, 1);
+    }
+
+    public boolean isHide() {
+        return hide;
+    }
+
+    public void setHide(boolean hide) {
+        this.hide = hide;
+    }
+
+    public String getPinyinName() {
+        return pinyinName;
     }
 
     public String getLetter() {

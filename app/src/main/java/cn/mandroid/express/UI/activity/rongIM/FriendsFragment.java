@@ -5,9 +5,15 @@ import android.content.Context;
 import android.graphics.PixelFormat;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -48,12 +54,18 @@ public class FriendsFragment extends BasicChatFragment implements SwipeRefreshLa
     SwipeRefreshLayout swipeRefreshLayout;
     @Bean
     UserManager mUsermanager;
+    List<Content> friendsList;
+    List<Content> cacheList = new ArrayList<>();
+    EditText searchFriendEdit;
+    FriendsListAdapter adapter;
 
     @AfterViews
     void afterView() {
         TextView mDialogText = (TextView) LayoutInflater.from(getActivity()).inflate(R.layout.list_position, null);
         View headView = LayoutInflater.from(getActivity()).inflate(R.layout.list_view_friends_head, null);
+        searchFriendEdit = (EditText) headView.findViewById(R.id.searchFriendEdit);
         friendListView.addHeaderView(headView);
+        searchFriendEdit.addTextChangedListener(searchListener);
         swipeRefreshLayout.setOnRefreshListener(this);
         mDialogText.setVisibility(View.INVISIBLE);
         WindowManager mWindowManager = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
@@ -69,6 +81,39 @@ public class FriendsFragment extends BasicChatFragment implements SwipeRefreshLa
         getCacheList();
     }
 
+    TextWatcher searchListener = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            String keyword = s.toString();
+            searchKeyword(keyword);
+        }
+    };
+
+    private void searchKeyword(String keyword) {
+        cacheList.clear();
+        for (int i = 0; i < friendsList.size(); i++) {
+            if (TextUtils.isEmpty(keyword)) {
+                cacheList.addAll(friendsList);
+                break;
+            } else {
+                if (friendsList.get(i).getPinyinName().toLowerCase().startsWith(keyword.toLowerCase()) || friendsList.get(i).getName().contains(keyword)) {
+                    cacheList.add(friendsList.get(i));
+                }
+            }
+        }
+        adapter.notifyDataSetChanged();
+    }
+
     private void getCacheList() {
         String listStr = FileUtils.readFile(getActivity(), FileUtils.FRIEND_LIST);
         Gson gson = new Gson();
@@ -76,6 +121,7 @@ public class FriendsFragment extends BasicChatFragment implements SwipeRefreshLa
         }.getType());
         initData(list);
     }
+
 
     private void getFriendsList() {
         mUsermanager.getFriendList(new FetchCallBack<List<UserBean>>() {
@@ -101,19 +147,25 @@ public class FriendsFragment extends BasicChatFragment implements SwipeRefreshLa
     }
 
     private void initData(List<UserBean> data) {
-        if(data==null||data.size()==0){
+        if (data == null || data.size() == 0) {
             return;
         }
         //初始化数据
-        List<Content> list = new ArrayList<Content>();
+        friendsList = new ArrayList<Content>();
+        cacheList.clear();
         for (UserBean been : data) {
             Content content = new Content(been);
-            list.add(content);
+            friendsList.add(content);
         }
         //根据a-z进行排序
-        Collections.sort(list, new PinyinComparator());
+        Collections.sort(friendsList, new PinyinComparator());
+        cacheList.addAll(friendsList);
+        setAdapter(cacheList);
+    }
+
+    private void setAdapter(List<Content> cacheList) {
         // 实例化自定义内容适配类
-        FriendsListAdapter adapter = new FriendsListAdapter(getActivity(), list);
+        adapter = new FriendsListAdapter(getActivity(), cacheList);
         // 为listView设置适配
         friendListView.setAdapter(adapter);
         //设置SideBar的ListView内容实现点击a-z中任意一个进行定位
