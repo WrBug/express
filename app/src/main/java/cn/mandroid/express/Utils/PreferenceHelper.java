@@ -32,12 +32,15 @@ public class PreferenceHelper {
         }
         return helper;
     }
-    public boolean isFirstOpen(){
+
+    public boolean isFirstOpen() {
         return preference.getBoolean(Preference.IS_FIRST_RUN);
     }
-    public void setRun(boolean run){
-        preference.putBoolean(Preference.IS_FIRST_RUN,run);
+
+    public void setRun(boolean run) {
+        preference.putBoolean(Preference.IS_FIRST_RUN, run);
     }
+
     public void saveUsername(String username) {
         preference.putString(Preference.USERNAME, username);
     }
@@ -68,13 +71,12 @@ public class PreferenceHelper {
         preference.putString(Preference.PASSWORD, password);
     }
 
-    public void saveSignInfo(int signInCount, long signInDate) {
+    public void saveSignInfo(int signInCount, long signInDate, int integral) {
         preference.putInt(Preference.SIGN_IN_COUNT, signInCount);
         preference.putLong(Preference.SIGN_IN_DATE, signInDate);
-    }
-
-    public void saveIntegral(int integral) {
         preference.putInt(Preference.INTEGRAL, integral);
+        updataUser();
+
     }
 
     public String getPassword() {

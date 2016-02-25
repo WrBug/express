@@ -111,7 +111,7 @@ public class UserInfoFragment extends BasicFragment implements SwipeRefreshLayou
 
     @Click(R.id.userSignInText)
     void userSignInClick() {
-        progressDialog = new ProgressDialog(getActivity(), "正在签到");
+        progressDialog = new ProgressDialog(getActivity(), "请稍后");
         progressDialog.show();
         mUserManager.signIn(userBean.getUsername(), new FetchCallBack<UserBean>() {
             @Override
@@ -123,8 +123,7 @@ public class UserInfoFragment extends BasicFragment implements SwipeRefreshLayou
                         sweetAlertDialog.dismiss();
                     }
                 }).show();
-                preferenceHelper.saveSignInfo(userBean.getSignInCount(), userBean.getSignInDate());
-                preferenceHelper.saveIntegral(userBean.getIntegral());
+                preferenceHelper.saveSignInfo(userBean.getSignInCount(), userBean.getSignInDate(), userBean.getIntegral());
                 setSignInInfo(userBean);
                 userIntegralText.setText(userBean.getIntegral() + "");
             }
