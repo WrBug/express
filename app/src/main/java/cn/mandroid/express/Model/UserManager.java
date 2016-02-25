@@ -9,6 +9,7 @@ import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.koushikdutta.ion.ProgressCallback;
 
+import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 
@@ -19,7 +20,7 @@ import java.util.TreeMap;
 import cn.mandroid.express.Model.Bean.IntegralDetailBean;
 import cn.mandroid.express.Model.Bean.TaskInfoBean;
 import cn.mandroid.express.Model.Bean.UserBean;
-import cn.mandroid.express.UI.common.App;
+import cn.mandroid.express.UI.common.Application;
 import cn.mandroid.express.Utils.FileUtils;
 import cn.mandroid.express.Utils.MLog;
 
@@ -31,7 +32,8 @@ public class UserManager extends ApiManager {
     private Context context;
     @Bean
     RongImManager rongImManager;
-
+    @App
+    Application mApp;
     public UserManager(Context context) {
         super(context);
         this.context = context;
@@ -82,7 +84,7 @@ public class UserManager extends ApiManager {
     }
 
     public void uploadAvatar(String username, final String name, File file, final FetchCallBack<String> callBack) {
-        TreeMap<String, String> map = new TreeMap<>();
+        final TreeMap<String, String> map = new TreeMap<>();
         map.put("username", username);
         map.put("name", name);
         map.put("host", Constant.API_URL);
@@ -103,10 +105,10 @@ public class UserManager extends ApiManager {
                     public void onCompleted(Exception e, JsonObject result) {
                         if (isExceptionNull(e, callBack)) {
                             if (isSuccess(result)) {
-                                UserBean userBean = App.INSTANCE.getUser();
+                                UserBean userBean = mApp.getUser();
                                 String url = result.get("data").getAsString();
                                 userBean.setAvatarUrl(url);
-                                App.INSTANCE.saveUser(userBean);
+                                mApp.saveUser(userBean);
                                 rongImManager.setUserinfo(userBean);
                                 callBack.onSuccess(getCode(result), url);
                             } else {

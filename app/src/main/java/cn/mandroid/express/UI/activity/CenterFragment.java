@@ -25,6 +25,8 @@ import cn.mandroid.express.Model.TaskManager;
 import cn.mandroid.express.R;
 import cn.mandroid.express.UI.adapter.TaskListAdapter;
 import cn.mandroid.express.UI.common.BasicFragment;
+import cn.mandroid.express.UI.dialog.SearchDialog;
+import cn.mandroid.express.UI.dialog.SearchDialog_;
 import cn.mandroid.express.UI.widget.LoadMoreListView;
 
 /**
@@ -49,6 +51,7 @@ public class CenterFragment extends BasicFragment implements PullToRefreshView.O
     boolean isRefresh;
     public final int TASK_DETAIL_REQUEST = 1;
     private final int RELEASE_TASK_REQUEST = 2;
+    SearchDialog searchDialog;
 
     @AfterViews
     void afterView() {
@@ -99,9 +102,26 @@ public class CenterFragment extends BasicFragment implements PullToRefreshView.O
             case R.id.releaseFB:
                 ReleaseTaskActivity_.intent(this).startForResult(RELEASE_TASK_REQUEST);
                 break;
+            case R.id.filterFB:
+                
+                break;
             case R.id.searchFB:
+                if (searchDialog == null) {
+                    searchDialog = SearchDialog_.builder().build();
+                    searchDialog.setOnKeywordChangeListenner(new SearchDialog.KeywordChangeListenner() {
+                        @Override
+                        public void onChanged(String keyword) {
+                            searchKeyword(keyword);
+                        }
+                    });
+                }
+                searchDialog.show(getFragmentManager());
                 break;
         }
+    }
+
+    private void searchKeyword(String keyword) {
+
     }
 
     @OnActivityResult(TASK_DETAIL_REQUEST)

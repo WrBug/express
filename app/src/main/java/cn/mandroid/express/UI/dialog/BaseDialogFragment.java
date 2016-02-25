@@ -3,6 +3,7 @@ package cn.mandroid.express.UI.dialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 
 import cn.mandroid.express.R;
 
@@ -14,5 +15,9 @@ public class BaseDialogFragment extends DialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(DialogFragment.STYLE_NORMAL, R.style.MyDialogFragment);
+    }
+
+    public void show(FragmentManager manager) {
+        show(manager, this.getClass().getName());
     }
 }

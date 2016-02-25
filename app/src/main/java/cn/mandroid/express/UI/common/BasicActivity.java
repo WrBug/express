@@ -47,7 +47,6 @@ public class BasicActivity extends FragmentActivity implements RongIMClient.Conn
         super.onCreate(savedInstanceState);
         context = this;
         //renceHelper.instance(context);
-        UiUtil.hideKeyboard(this);
         mPreference = Preference.instance(this);
         mPreferenceHelper = PreferenceHelper.instance(this);
         EventBus.getDefault().register(this);

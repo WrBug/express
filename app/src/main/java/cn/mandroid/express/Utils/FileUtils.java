@@ -11,7 +11,6 @@ import org.apache.http.util.EncodingUtils;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -19,7 +18,6 @@ import java.util.Date;
 import java.util.Locale;
 
 import cn.mandroid.express.R;
-import cn.mandroid.express.UI.common.App;
 
 /**
  * 文件操作类

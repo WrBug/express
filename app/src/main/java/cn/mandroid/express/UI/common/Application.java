@@ -1,12 +1,13 @@
 package cn.mandroid.express.UI.common;
 
 import android.app.ActivityManager;
-import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
 import com.activeandroid.ActiveAndroid;
 import com.koushikdutta.ion.Ion;
+
+import org.androidannotations.annotations.EApplication;
 
 import cn.mandroid.express.Model.Bean.UserBean;
 import cn.mandroid.express.Model.RongIMMessage.TaskInfoMessage;
@@ -18,15 +19,12 @@ import io.rong.imkit.RongIM;
 /**
  * Created by Administrator on 2015-12-12.
  */
-public class App extends Application {
-    public static App INSTANCE;
+@EApplication
+public class Application extends android.app.Application {
 
     @Override
     public void onCreate() {
         super.onCreate();
-        INSTANCE = this;
-//        RealmConfiguration config = new RealmConfiguration.Builder(this).build();
-//        Realm.setDefaultConfiguration(config);
 //        Ion.getDefault(this).configure().setLogging("ion-sample", Log.DEBUG).proxy("192.168.1.195", 8888);
         Ion.getDefault(this).configure().setLogging("ion-sample", Log.DEBUG).proxy("10.1.51.53", 8888);
         SMSSDK.initSDK(this, "f806a43aa048", "79a51c451d4a6af077d13ed5eb104891");
