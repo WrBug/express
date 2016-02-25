@@ -1,65 +1,65 @@
 package cn.mandroid.express.Model;
 
+import com.activeandroid.ActiveAndroid;
+import com.activeandroid.query.Delete;
+import com.activeandroid.query.Select;
+
 import java.util.List;
 
 import cn.mandroid.express.Model.Bean.TaskInfoBean;
 import cn.mandroid.express.Model.Bean.UserBean;
-import cn.mandroid.express.Model.Dao.TaskInfoDao;
+import cn.mandroid.express.Model.Dao.TaskDao;
 import cn.mandroid.express.Model.Dao.UserDao;
-import io.realm.Realm;
-import io.realm.RealmResults;
-import io.realm.Sort;
+import cn.mandroid.express.Utils.MLog;
 
 /**
  * Created by Administrator on 2015/12/18.
  */
 public class DaoManager {
     public static void saveUserInfo(String username, Integer sex, String name, String userAvatar) {
-        Realm realm = Realm.getDefaultInstance();
         UserDao dao = new UserDao();
-        dao.setUsername(username);
-        dao.setSex(sex);
-        dao.setName(name);
-        dao.setUserAvatar(userAvatar);
-        realm.beginTransaction();
-        realm.copyToRealmOrUpdate(dao);
-        realm.commitTransaction();
+        dao.username = username;
+        dao.sex = sex;
+        dao.name = name;
+        dao.userAvatar = userAvatar;
+        dao.save();
+    }
+
+    public static UserDao getUserDao(String username) {
+        return new Select()
+                .from(UserDao.class)
+                .where("username = ?", username)
+                .executeSingle();
     }
 
     public static void saveTaskList(List<TaskInfoBean> list) {
-        Realm realm = Realm.getDefaultInstance();
-        realm.beginTransaction();
-        realm.copyToRealmOrUpdate(TaskInfoDao.bean2dao(list));
-        realm.commitTransaction();
+        ActiveAndroid.beginTransaction();
+        try {
+            for (TaskInfoBean bean : list) {
+                TaskDao taskDao = new TaskDao();
+                taskDao.saveBean(bean);
+                taskDao.save();
+                MLog.i(taskDao.getId());
+            }
+            ActiveAndroid.setTransactionSuccessful();
+        } finally {
+            ActiveAndroid.endTransaction();
+        }
     }
 
     public static List<TaskInfoBean> getTaskList() {
-        Realm realm = Realm.getDefaultInstance();
-        RealmResults<TaskInfoDao> taskInfoDaos = realm.where(TaskInfoDao.class).findAllSorted("id", Sort.DESCENDING);
-        if (taskInfoDaos.isLoaded()) {
-            return TaskInfoBean.dao2bean(taskInfoDaos);
-        }
-        return null;
+        List<TaskDao> list = new Select()
+                .from(TaskDao.class)
+                .orderBy("tid DESC")
+                .execute();
+        return TaskInfoBean.dao2bean(list);
     }
 
     public static void deleteTaskFormList(int id) {
-        Realm realm = Realm.getDefaultInstance();
-        realm.beginTransaction();
-        RealmResults<TaskInfoDao> daos = realm.where(TaskInfoDao.class).equalTo("id", id).findAll();
-        if (daos.isLoaded() && daos.size() == 1) {
-            daos.get(0).removeFromRealm();
-        }
-        realm.commitTransaction();
+        new Delete().from(TaskDao.class).where("id = ?", id).execute();
     }
 
-    public static UserBean getUserInfoByUsername(String username) {
-        Realm realm = Realm.getDefaultInstance();
-        RealmResults<UserDao> userDaos = realm.where(UserDao.class).equalTo("username", username).findAll();
-        if (userDaos.isLoaded()) {
-            if (userDaos.size() > 0) {
-                return UserBean.dao2Bean(userDaos.get(0));
-            }
-        }
-        return null;
+    public static UserBean getLocalUserInfo(String username) {
+        return UserBean.dao2Bean(getUserDao(username));
     }
 }

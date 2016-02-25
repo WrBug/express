@@ -119,10 +119,10 @@ public class UserBean implements Serializable {
 
     public static UserBean dao2Bean(UserDao dao) {
         UserBean userBean = new UserBean();
-        userBean.setSex(dao.getSex());
-        userBean.setUsername(dao.getUsername());
-        userBean.setAvatarUrl(dao.getUserAvatar());
-        userBean.setName(dao.getName());
+        userBean.setSex(dao.sex);
+        userBean.setUsername(dao.username);
+        userBean.setAvatarUrl(dao.userAvatar);
+        userBean.setName(dao.name);
         return userBean;
     }
 

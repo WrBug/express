@@ -72,7 +72,7 @@ public class RongImManager {
         RongIM.setUserInfoProvider(new RongIM.UserInfoProvider() {
             @Override
             public UserInfo getUserInfo(String s) {
-                UserBean userBean = DaoManager.getUserInfoByUsername(s);
+                UserBean userBean = DaoManager.getLocalUserInfo(s);
                 if (userBean != null) {
                     Uri uri;
                     if (TextUtils.isEmpty(userBean.getAvatarUrl())) {
