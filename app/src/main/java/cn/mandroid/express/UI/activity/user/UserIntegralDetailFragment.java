@@ -18,13 +18,11 @@ import java.util.List;
 import cn.mandroid.express.Model.Bean.IntegralDetailBean;
 import cn.mandroid.express.Model.Bean.IntegralDetailItem;
 import cn.mandroid.express.Model.Bean.UserBean;
-import cn.mandroid.express.Model.Constant;
 import cn.mandroid.express.Model.FetchCallBack;
 import cn.mandroid.express.Model.UserManager;
 import cn.mandroid.express.R;
 import cn.mandroid.express.UI.adapter.IntegralDetailListAdapter;
 import cn.mandroid.express.UI.common.BasicFragment;
-import cn.mandroid.express.UI.dialog.ProgressDialog;
 import cn.mandroid.express.UI.widget.LoadMoreListView;
 
 @EFragment(R.layout.fragment_user_integral_detail)
@@ -50,7 +48,7 @@ public class UserIntegralDetailFragment extends BasicFragment {
 
     private void getData() {
         showProgressDialog();
-        UserBean userBean = preferenceHelper.getUser();
+        UserBean userBean = mPreferenceHelper.getUser();
         integralText.setText(userBean.getIntegral() + "");
         mUserManager.getIntegralDetail(userBean.getUsername(), new FetchCallBack<IntegralDetailBean>() {
             @Override

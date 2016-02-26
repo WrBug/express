@@ -13,6 +13,7 @@ import org.androidannotations.annotations.sharedpreferences.Pref;
 
 import java.util.List;
 
+import cn.mandroid.express.Model.Bean.FilterBean;
 import cn.mandroid.express.Model.Bean.TaskInfoBean;
 import cn.mandroid.express.Model.Bean.UserBean;
 
@@ -27,9 +28,11 @@ public class PreferenceHelper {
     private static UserBean mUserBean;
     @Pref
     UserPrefs_ userPrefs;
+    @Pref
+    FilterPrefs_ filterPrefs;
 
     public boolean isFirstOpen() {
-        return preference.getBoolean(Preference.IS_FIRST_RUN);
+        return false;
     }
 
     public void setRun(boolean run) {
@@ -99,6 +102,24 @@ public class PreferenceHelper {
         return mUserBean;
     }
 
+    public void saveFilter(FilterBean bean) {
+        filterPrefs.edit()
+                .depo().put(bean.getDepo())
+                .dest().put(bean.getDest())
+                .finish().put(bean.isFinish())
+                .pennding().put(bean.isPennding())
+                .running().put(bean.isRunning())
+                .apply();
+    }
+    public FilterBean getFilter(){
+        FilterBean bean=new FilterBean();
+        bean.setPennding(filterPrefs.pennding().get());
+        bean.setRunning(filterPrefs.running().get());
+        bean.setFinish(filterPrefs.finish().get());
+        bean.setDepo(filterPrefs.depo().get());
+        bean.setDest(filterPrefs.dest().get());
+        return bean;
+    }
     public UserBean getUser() {
         if (mUserBean == null) {
             return updataUser();

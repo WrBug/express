@@ -123,7 +123,7 @@ public class UserInfoFragment extends BasicFragment implements SwipeRefreshLayou
                         sweetAlertDialog.dismiss();
                     }
                 }).show();
-                preferenceHelper.saveSignInfo(userBean.getSignInCount(), userBean.getSignInDate(), userBean.getIntegral());
+                mPreferenceHelper.saveSignInfo(userBean.getSignInCount(), userBean.getSignInDate(), userBean.getIntegral());
                 setSignInInfo(userBean);
                 userIntegralText.setText(userBean.getIntegral() + "");
             }
@@ -183,7 +183,7 @@ public class UserInfoFragment extends BasicFragment implements SwipeRefreshLayou
 
     private void uploadAvatar(File file) {
         showToast("正在上传");
-        final UserBean userBean = preferenceHelper.getUser();
+        final UserBean userBean = mPreferenceHelper.getUser();
         mUserManager.uploadAvatar(userBean.getUsername(), userBean.getName(), file, new FetchCallBack<String>() {
             @Override
             public void onSuccess(int code, String s) {
@@ -206,12 +206,12 @@ public class UserInfoFragment extends BasicFragment implements SwipeRefreshLayou
     }
 
     private void updateUser() {
-        userBean = preferenceHelper.getUser();
+        userBean = mPreferenceHelper.getUser();
         mUserManager.updateUser(userBean.getUsername(), new FetchCallBack<UserBean>() {
             @Override
             public void onSuccess(int code, UserBean userBean) {
                 swipeRefreshLayout.setRefreshing(false);
-                preferenceHelper.saveUser(userBean);
+                mPreferenceHelper.saveUser(userBean);
                 updateUI();
             }
 
@@ -233,7 +233,7 @@ public class UserInfoFragment extends BasicFragment implements SwipeRefreshLayou
     }
 
     private void updateUI() {
-        UserBean userBean = preferenceHelper.getUser();
+        UserBean userBean = mPreferenceHelper.getUser();
         userIcoImg.setImageResource(userBean.getSex() == 1 ? R.drawable.ic_user_default_woman : R.drawable.ic_user_default_man);
         if (!TextUtils.isEmpty(userBean.getAvatarUrl())) {
             UiUtil.loadImage(getActivity(), userIcoImg, userBean.getAvatarUrl());

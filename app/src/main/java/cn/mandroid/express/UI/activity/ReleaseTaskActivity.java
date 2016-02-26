@@ -3,21 +3,20 @@ package cn.mandroid.express.UI.activity;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.ActionMenuView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
-import org.androidannotations.annotations.ItemSelect;
 import org.androidannotations.annotations.ViewById;
+
+import java.util.Arrays;
 
 import cn.mandroid.express.Event.RefreshEvent;
 import cn.mandroid.express.Model.Bean.TaskDetailBean;
@@ -28,19 +27,17 @@ import cn.mandroid.express.Model.TaskManager;
 import cn.mandroid.express.R;
 import cn.mandroid.express.UI.common.BasicActivity;
 import cn.mandroid.express.UI.widget.ActionBar;
+import cn.mandroid.express.UI.widget.EditSpinner;
 import cn.mandroid.express.Utils.Base64;
 import cn.mandroid.express.Utils.Const;
 import cn.pedant.sweetalert.SweetAlertDialog;
-import de.greenrobot.event.EventBus;
 
 @EActivity(R.layout.activity_release_task)
 public class ReleaseTaskActivity extends BasicActivity implements ActionBar.OnHeadImgClickListener {
     @ViewById
     ActionBar actionBar;
     @ViewById(R.id.expressCompanySpinner)
-    Spinner expressCompanySpinner;
-    @ViewById(R.id.expressCompanyEdit)
-    EditText expressCompanyEdit;
+    EditSpinner expressCompanySpinner;
     @ViewById
     EditText courierNumberEdit;
     @ViewById
@@ -52,15 +49,11 @@ public class ReleaseTaskActivity extends BasicActivity implements ActionBar.OnHe
     @ViewById
     CheckBox bigCheck;
     @ViewById
-    Spinner depositorySpinner;
-    @ViewById
-    EditText depositoryEdit;
+    EditSpinner depositorySpinner;
     @ViewById
     EditText depositoryDetailEdit;
     @ViewById
-    Spinner destinationSpinner;
-    @ViewById
-    EditText destinationEdit;
+    EditSpinner destinationSpinner;
     @ViewById
     EditText expressPasswordEdit;
     @ViewById
@@ -98,50 +91,17 @@ public class ReleaseTaskActivity extends BasicActivity implements ActionBar.OnHe
     }
 
     private void setData() {
-        expressCompanySpinner.setSelection(Const.EXPRESS_COMPANY.length - 1);
-        expressCompanyEdit.setText(taskDetailBean.getExpressCompany());
+        expressCompanySpinner.setText(taskDetailBean.getExpressCompany());
         courierNumberEdit.setText(taskDetailBean.getCourinerNumber());
         contactorEdit.setText(taskDetailBean.getContactor());
         phoneNumberEdit.setText(taskDetailBean.getPhoneNumber());
         heavyCheck.setChecked(taskDetailBean.getHeavy() == 1);
         bigCheck.setChecked(taskDetailBean.getBig() == 1);
-        depositorySpinner.setSelection(Const.DEPOSITORY.length - 1);
-        depositoryEdit.setText(taskDetailBean.getDepository());
+        depositorySpinner.setText(taskDetailBean.getDepository());
         depositoryDetailEdit.setText(taskDetailBean.getDepositoryDetail());
-        destinationSpinner.setSelection(Const.DESTINATION.length - 1);
-        destinationEdit.setText(taskDetailBean.getDestination());
+        destinationSpinner.setText(taskDetailBean.getDestination());
         expressPasswordEdit.setText(taskDetailBean.getExpressPassword());
         remarkEdit.setText(taskDetailBean.getRemark());
-    }
-
-    @ItemSelect(R.id.expressCompanySpinner)
-    void expressCompanySelect(boolean selected, int position) {
-        if (position == Const.EXPRESS_COMPANY.length - 1) {
-            expressCompanyEdit.setVisibility(View.VISIBLE);
-        } else {
-            expressCompanyEdit.setVisibility(View.GONE);
-            cacheEC = Const.EXPRESS_COMPANY[position];
-        }
-    }
-
-    @ItemSelect(R.id.destinationSpinner)
-    void destinationSelect(boolean selected, int position) {
-        if (position == Const.DESTINATION.length - 1) {
-            destinationEdit.setVisibility(View.VISIBLE);
-        } else {
-            destinationEdit.setVisibility(View.GONE);
-            cacheDT = Const.DESTINATION[position];
-        }
-    }
-
-    @ItemSelect(R.id.depositorySpinner)
-    void depositorySpinnerSelect(boolean selected, int position) {
-        if (position == Const.DEPOSITORY.length - 1) {
-            depositoryEdit.setVisibility(View.VISIBLE);
-        } else {
-            depositoryEdit.setVisibility(View.GONE);
-            cacheDP = Const.DEPOSITORY[position];
-        }
     }
 
     @Click(R.id.submit)
@@ -232,26 +192,23 @@ public class ReleaseTaskActivity extends BasicActivity implements ActionBar.OnHe
     }
 
     private void saveData() {
-        expressCompany = expressCompanyEdit.getVisibility() == View.VISIBLE ? expressCompanyEdit.getText().toString() : cacheEC;
+        expressCompany = expressCompanySpinner.getEditString();
         courinerNumber = courierNumberEdit.getText().toString();
         contactor = contactorEdit.getText().toString();
         phoneNumber = phoneNumberEdit.getText().toString();
         heavy = heavyCheck.isChecked() ? 1 : 0;
         big = bigCheck.isChecked() ? 1 : 0;
-        depository = depositoryEdit.getVisibility() == View.VISIBLE ? depositoryEdit.getText().toString() : cacheDP;
+        depository = depositorySpinner.getEditString();
         depositoryDetail = depositoryDetailEdit.getText().toString();
-        destination = destinationEdit.getVisibility() == View.VISIBLE ? destinationEdit.getText().toString() : cacheDT;
+        destination = destinationSpinner.getEditString();
         expressPassword = expressPasswordEdit.getText().toString();
         remark = Base64.encode(remarkEdit.getText().toString());
     }
 
     private void setSpinner() {
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, Const.EXPRESS_COMPANY);
-        expressCompanySpinner.setAdapter(adapter);
-        adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, Const.DEPOSITORY);
-        depositorySpinner.setAdapter(adapter);
-        adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, Const.DESTINATION);
-        destinationSpinner.setAdapter(adapter);
+        expressCompanySpinner.setItemData(Arrays.asList(Const.EXPRESS_COMPANY));
+        depositorySpinner.setItemData(Arrays.asList(Const.DEPOSITORY));
+        destinationSpinner.setItemData(Arrays.asList(Const.DESTINATION));
 
     }
 

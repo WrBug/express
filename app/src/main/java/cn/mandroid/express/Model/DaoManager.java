@@ -39,7 +39,6 @@ public class DaoManager {
                 TaskDao taskDao = new TaskDao();
                 taskDao.saveBean(bean);
                 taskDao.save();
-                MLog.i(taskDao.getId());
             }
             ActiveAndroid.setTransactionSuccessful();
         } finally {

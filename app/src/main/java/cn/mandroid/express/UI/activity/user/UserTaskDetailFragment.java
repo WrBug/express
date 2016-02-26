@@ -41,7 +41,7 @@ public class UserTaskDetailFragment extends BasicFragment {
     @AfterViews
     void afterView() {
         if (TextUtils.isEmpty(username)) {
-            user = preferenceHelper.getUser();
+            user = mPreferenceHelper.getUser();
             username = user.getUsername();
         }
         getData();

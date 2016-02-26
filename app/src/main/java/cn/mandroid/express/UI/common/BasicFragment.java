@@ -17,7 +17,7 @@ import cn.mandroid.express.Model.SPrefs.PreferenceHelper;
 @EFragment
 public class BasicFragment extends Fragment {
     @Bean
-    protected PreferenceHelper preferenceHelper;
+    protected PreferenceHelper mPreferenceHelper;
     private ProgressDialog progressDialog;
 
     @Override

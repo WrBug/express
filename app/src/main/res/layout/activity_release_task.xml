@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/ashy_bg"
     android:orientation="vertical">
 
@@ -10,7 +10,7 @@
         android:id="@+id/actionBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="发布"/>
+        app:title="发布" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -19,8 +19,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="3dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="3dp">
 
 
             <LinearLayout
@@ -31,21 +31,12 @@
                 android:orientation="vertical"
                 android:padding="7dp">
 
-                <Spinner
+                <cn.mandroid.express.UI.widget.EditSpinner
                     android:id="@+id/expressCompanySpinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:spinnerMode="dropdown" />
-
-                <EditText
-                    android:id="@+id/expressCompanyEdit"
-                    style="@style/edit_main_bg"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:hint="快递公司"
-                    android:visibility="gone" />
+                    app:hint="请选择快递公司" />
 
                 <EditText
                     android:id="@+id/courierNumberEdit"
@@ -99,44 +90,31 @@
                 android:orientation="vertical"
                 android:padding="7dp">
 
-                <Spinner
+                <cn.mandroid.express.UI.widget.EditSpinner
                     android:id="@+id/depositorySpinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:spinnerMode="dropdown"
+                    app:hint="请选择快递存放地点"
                     android:textSize="15sp" />
 
-                <EditText
-                    android:id="@+id/depositoryEdit"
-                    style="@style/edit_main_bg"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:hint="存放地点"
-                    android:visibility="gone" />
+
                 <EditText
                     android:id="@+id/depositoryDetailEdit"
                     style="@style/edit_main_bg"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:hint="具体存放位置（A区1号架）"/>
-                <Spinner
+                    android:hint="具体存放位置（A区1号架）" />
+
+                <cn.mandroid.express.UI.widget.EditSpinner
                     android:id="@+id/destinationSpinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:spinnerMode="dropdown" />
-
-                <EditText
-                    android:id="@+id/destinationEdit"
-                    style="@style/edit_main_bg"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:hint="送达地点"
-                    android:visibility="gone" />
+                    android:spinnerMode="dropdown"
+                    app:hint="请选择快递送达地点" />
 
                 <EditText
                     android:id="@+id/expressPasswordEdit"
@@ -169,10 +147,10 @@
                 style="@style/btn_main_bg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginBottom="7dp"
                 android:layout_marginLeft="7dp"
                 android:layout_marginRight="7dp"
-                android:layout_marginBottom="7dp"
+                android:layout_marginTop="20dp"
                 android:text="提交" />
         </LinearLayout>
 

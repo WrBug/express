@@ -18,6 +18,7 @@ import cn.mandroid.express.Event.UnreadEvent;
 import cn.mandroid.express.Model.Bean.UserBean;
 import cn.mandroid.express.Model.RongIMListener.ReceiveMeassageListener;
 import cn.mandroid.express.Model.RongImManager;
+import cn.mandroid.express.Model.SPrefs.PreferenceHelper_;
 import cn.mandroid.express.UI.activity.MainActivity;
 import cn.mandroid.express.UI.dialog.ProgressDialog;
 import cn.mandroid.express.Utils.CheckUtil;
@@ -33,12 +34,10 @@ import io.rong.imlib.model.Message;
 /**
  * Created by Administrator on 2015-11-22.
  */
-@EActivity
 public class BasicActivity extends FragmentActivity implements RongIMClient.ConnectionStatusListener {
     protected Context context;
     protected Preference mPreference;
-    @Bean
-    protected PreferenceHelper mPreferenceHelper;
+    protected PreferenceHelper_ mPreferenceHelper;
     protected static RongIMClient.ConnectionStatusListener.ConnectionStatus rongIMstatus;
     private ProgressDialog progressDialog;
 
@@ -48,6 +47,7 @@ public class BasicActivity extends FragmentActivity implements RongIMClient.Conn
         context = this;
         //renceHelper.instance(context);
         mPreference = Preference.instance(this);
+        mPreferenceHelper = PreferenceHelper_.getInstance_(context);
         EventBus.getDefault().register(this);
     }
 

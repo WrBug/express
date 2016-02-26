@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.mandroid.express.Event.RefreshEvent;
+import cn.mandroid.express.Model.Bean.FilterBean;
 import cn.mandroid.express.Model.Bean.TaskInfoBean;
 import cn.mandroid.express.Model.Bean.UserBean;
 import cn.mandroid.express.Model.DaoManager;
@@ -25,6 +26,7 @@ import cn.mandroid.express.Model.TaskManager;
 import cn.mandroid.express.R;
 import cn.mandroid.express.UI.adapter.TaskListAdapter;
 import cn.mandroid.express.UI.common.BasicFragment;
+import cn.mandroid.express.UI.dialog.FilterDialog;
 import cn.mandroid.express.UI.dialog.SearchDialog;
 import cn.mandroid.express.UI.dialog.SearchDialog_;
 import cn.mandroid.express.UI.widget.LoadMoreListView;
@@ -121,7 +123,14 @@ public class CenterFragment extends BasicFragment implements PullToRefreshView.O
     }
 
     private void setFilter() {
-
+        FilterDialog filterDialog = new FilterDialog(getActivity(), mPreferenceHelper.getFilter());
+        filterDialog.setFilterCallback(new FilterDialog.FilterCallback() {
+            @Override
+            public void onClick(FilterBean bean) {
+                mPreferenceHelper.saveFilter(bean);
+            }
+        });
+        filterDialog.show();
     }
 
     private void searchKeyword(String keyword) {

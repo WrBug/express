@@ -23,4 +23,7 @@
         <!--boolean值-->
         <attr name="clickable" format="boolean"/>
     </declare-styleable>
+    <declare-styleable name="EditSpinner">
+        <attr name="hint" format="string" />
+    </declare-styleable>
 </resources>
