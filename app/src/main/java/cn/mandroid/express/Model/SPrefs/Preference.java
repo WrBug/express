@@ -1,8 +1,7 @@
-package cn.mandroid.express.Utils;
+package cn.mandroid.express.Model.SPrefs;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.text.TextUtils;
 
 import java.util.HashMap;
 import java.util.Map;

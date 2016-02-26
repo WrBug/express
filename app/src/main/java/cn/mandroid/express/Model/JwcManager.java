@@ -5,27 +5,18 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.koushikdutta.async.ByteBufferList;
-import com.koushikdutta.async.DataEmitter;
-import com.koushikdutta.async.callback.DataCallback;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.async.http.Multimap;
-import com.koushikdutta.async.util.FileCache;
 import com.koushikdutta.ion.Ion;
 import com.koushikdutta.ion.Response;
 import com.koushikdutta.ion.cookie.CookieMiddleware;
 
 import org.androidannotations.annotations.EBean;
-import org.w3c.dom.Document;
 
-import java.net.CookieManager;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.TreeMap;
 
 import cn.mandroid.express.Model.Bean.UserBean;
-import cn.mandroid.express.Utils.MLog;
-import cn.mandroid.express.Utils.PreferenceHelper;
+import cn.mandroid.express.Model.SPrefs.PreferenceHelper;
 
 /**
  * Created by Administrator on 2015-12-11.
@@ -63,7 +54,7 @@ public class JwcManager extends ApiManager {
         String url = "http://jxgl.hdu.edu.cn/index.aspx?ticket=" + ticket;
         TreeMap<String, String> map = new TreeMap<>();
         map.put("__VIEWSTATE", "/wEPDwUKLTUxMTcwNzgxMGRk");
-        PreferenceHelper.instance(context).cleanCookie();
+        preferenceHelper.cleanCookie();
         CookieMiddleware cookieMiddleware = Ion.getDefault(context).getCookieMiddleware();
         cookieMiddleware.clear();
         Ion.with(context).load(url)
@@ -74,7 +65,7 @@ public class JwcManager extends ApiManager {
                     @Override
                     public void onCompleted(Exception e, Response<String> result) {
                         if (e == null) {
-                            PreferenceHelper.instance(context).cleanCookie();
+                            preferenceHelper.cleanCookie();
                             Multimap multimap = result.getHeaders().getHeaders().getMultiMap();
                             String session = multimap.get("set-cookie").get(0);
                             String route = multimap.get("set-cookie").get(1);
@@ -89,7 +80,7 @@ public class JwcManager extends ApiManager {
         map.put("username", username);
         map.put("name", name);
         map.put("idcard", idcard);
-        PreferenceHelper.instance(context).cleanCookie();
+        preferenceHelper.cleanCookie();
         CookieMiddleware cookieMiddleware = Ion.getDefault(context).getCookieMiddleware();
         cookieMiddleware.clear();
         Ion.with(context).load(Constant.API_URL + "/JwcInfo/getInfo")

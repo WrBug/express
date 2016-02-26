@@ -3,9 +3,11 @@ package cn.mandroid.express.UI.common;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.EBean;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -16,18 +18,14 @@ import cn.mandroid.express.Event.UnreadEvent;
 import cn.mandroid.express.Model.Bean.UserBean;
 import cn.mandroid.express.Model.RongIMListener.ReceiveMeassageListener;
 import cn.mandroid.express.Model.RongImManager;
-import cn.mandroid.express.R;
-import cn.mandroid.express.UI.activity.CenterFragment;
 import cn.mandroid.express.UI.activity.MainActivity;
 import cn.mandroid.express.UI.dialog.ProgressDialog;
 import cn.mandroid.express.Utils.CheckUtil;
 import cn.mandroid.express.Utils.MLog;
 import cn.mandroid.express.Utils.MToast;
-import cn.mandroid.express.Utils.Preference;
-import cn.mandroid.express.Utils.PreferenceHelper;
-import cn.mandroid.express.Utils.UiUtil;
+import cn.mandroid.express.Model.SPrefs.Preference;
+import cn.mandroid.express.Model.SPrefs.PreferenceHelper;
 import de.greenrobot.event.EventBus;
-import dmax.dialog.SpotsDialog;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Message;
@@ -35,9 +33,11 @@ import io.rong.imlib.model.Message;
 /**
  * Created by Administrator on 2015-11-22.
  */
+@EActivity
 public class BasicActivity extends FragmentActivity implements RongIMClient.ConnectionStatusListener {
     protected Context context;
     protected Preference mPreference;
+    @Bean
     protected PreferenceHelper mPreferenceHelper;
     protected static RongIMClient.ConnectionStatusListener.ConnectionStatus rongIMstatus;
     private ProgressDialog progressDialog;
@@ -48,7 +48,6 @@ public class BasicActivity extends FragmentActivity implements RongIMClient.Conn
         context = this;
         //renceHelper.instance(context);
         mPreference = Preference.instance(this);
-        mPreferenceHelper = PreferenceHelper.instance(this);
         EventBus.getDefault().register(this);
     }
 

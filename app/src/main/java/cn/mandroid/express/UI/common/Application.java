@@ -7,12 +7,13 @@ import android.util.Log;
 import com.activeandroid.ActiveAndroid;
 import com.koushikdutta.ion.Ion;
 
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EApplication;
 
 import cn.mandroid.express.Model.Bean.UserBean;
 import cn.mandroid.express.Model.RongIMMessage.TaskInfoMessage;
 import cn.mandroid.express.Model.RongIMMessage.TaskInfoNoNoticeMessage;
-import cn.mandroid.express.Utils.PreferenceHelper;
+import cn.mandroid.express.Model.SPrefs.PreferenceHelper;
 import cn.smssdk.SMSSDK;
 import io.rong.imkit.RongIM;
 
@@ -21,6 +22,8 @@ import io.rong.imkit.RongIM;
  */
 @EApplication
 public class Application extends android.app.Application {
+    @Bean
+    PreferenceHelper mPreferenceHelper;
 
     @Override
     public void onCreate() {
@@ -64,10 +67,10 @@ public class Application extends android.app.Application {
     }
 
     public UserBean getUser() {
-        return PreferenceHelper.instance(this).getUser();
+        return mPreferenceHelper.getUser();
     }
 
     public void saveUser(UserBean u) {
-        PreferenceHelper.instance(this).saveUser(u);
+        mPreferenceHelper.saveUser(u);
     }
 }

@@ -9,6 +9,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.EBean;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,18 +22,19 @@ import cn.mandroid.express.UI.activity.LoginActivity_;
 import cn.mandroid.express.UI.common.BasicActivity;
 import cn.mandroid.express.Utils.MD5;
 import cn.mandroid.express.Utils.MToast;
-import cn.mandroid.express.Utils.PreferenceHelper;
+import cn.mandroid.express.Model.SPrefs.PreferenceHelper;
 
 /**
  * Created by Administrator on 2015-12-11.
  */
+@EBean
 public class ApiManager {
     private Context context;
+    @Bean
     PreferenceHelper preferenceHelper;
 
     public ApiManager(Context context) {
         this.context = context;
-        preferenceHelper = PreferenceHelper.instance(context);
     }
 
     public Map<String, List<String>> getFinalMap(TreeMap<String, String> map) {

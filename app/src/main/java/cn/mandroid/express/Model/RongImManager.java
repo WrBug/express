@@ -5,10 +5,8 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import cn.mandroid.express.Model.Bean.UserBean;
 import cn.mandroid.express.Model.RongIMListener.UnreadCountChangedListener;
@@ -17,7 +15,7 @@ import cn.mandroid.express.Model.RongIMMessage.TaskInfoNoNoticeMessageItemProvid
 import cn.mandroid.express.R;
 import cn.mandroid.express.Utils.FileUtils;
 import cn.mandroid.express.Utils.MLog;
-import cn.mandroid.express.Utils.PreferenceHelper;
+import cn.mandroid.express.Model.SPrefs.PreferenceHelper;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
@@ -29,6 +27,8 @@ import io.rong.imlib.model.UserInfo;
 @EBean
 public class RongImManager {
     private Context context;
+    @Bean
+    PreferenceHelper preferenceHelper;
 
     public RongImManager(Context context) {
         this.context = context;
@@ -125,8 +125,8 @@ public class RongImManager {
             @Override
             public void onSuccess(int code, String s) {
                 userBean.setToken(s);
-                PreferenceHelper.instance(context).saveUser(userBean);
-                connectIm(PreferenceHelper.instance(context).getUser(), false);
+                preferenceHelper.saveUser(userBean);
+                connectIm(preferenceHelper.getUser(), false);
             }
 
             @Override

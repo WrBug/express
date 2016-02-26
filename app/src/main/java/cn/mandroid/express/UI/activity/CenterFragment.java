@@ -103,7 +103,7 @@ public class CenterFragment extends BasicFragment implements PullToRefreshView.O
                 ReleaseTaskActivity_.intent(this).startForResult(RELEASE_TASK_REQUEST);
                 break;
             case R.id.filterFB:
-                
+                setFilter();
                 break;
             case R.id.searchFB:
                 if (searchDialog == null) {
@@ -118,6 +118,10 @@ public class CenterFragment extends BasicFragment implements PullToRefreshView.O
                 searchDialog.show(getFragmentManager());
                 break;
         }
+    }
+
+    private void setFilter() {
+
     }
 
     private void searchKeyword(String keyword) {
