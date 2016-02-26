@@ -560,6 +560,7 @@ public class TaskDetailActivity extends BasicActivity implements SwipeRefreshLay
         textView.setTextColor(Color.RED);
         textView.setText("取货密码");
         tipView.drawImageView(new TipView.DataView(expressPasswordText, textView));
+        mPreferenceHelper.setRun(true);
     }
 
     private void setBottomButton(TaskDetailBean bean) {

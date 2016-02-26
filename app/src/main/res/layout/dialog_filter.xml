@@ -32,7 +32,7 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:text="按进度"
-            android:textColor="@color/trans_70_black" />
+            android:textSize="12sp" />
 
         <CheckBox
             android:id="@+id/runningCheck"
@@ -43,7 +43,8 @@
             android:layout_toRightOf="@+id/penndingCheck"
             android:checked="false"
             android:text="进行中"
-            android:textColor="@color/trans_70_black" />
+            android:textColor="@color/trans_70_black"
+            android:textSize="12sp" />
 
         <CheckBox
             android:id="@+id/finishCheck"
@@ -54,7 +55,20 @@
             android:layout_toRightOf="@+id/runningCheck"
             android:checked="false"
             android:text="已完成"
-            android:textColor="@color/trans_70_black" />
+            android:textColor="@color/trans_70_black"
+            android:textSize="12sp" />
+
+        <CheckBox
+            android:id="@+id/completeCheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView5"
+            android:layout_toEndOf="@+id/finishCheck"
+            android:layout_toRightOf="@+id/finishCheck"
+            android:checked="false"
+            android:text="已结束"
+            android:textColor="@color/trans_70_black"
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/textView6"
@@ -105,6 +119,8 @@
             android:layout_marginTop="10dp"
             android:padding="5dp"
             android:text="确定" />
+
+
     </RelativeLayout>
 
 

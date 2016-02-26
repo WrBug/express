@@ -10,6 +10,7 @@ public interface FilterPrefs {
     boolean pennding();
     boolean running();
     boolean finish();
+    boolean complete();
     String depo();
     String dest();
 }

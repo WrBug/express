@@ -7,8 +7,17 @@ public class FilterBean {
     private boolean pennding;
     private boolean running;
     private boolean finish;
+    private boolean complete;
     private String depo;
     private String dest;
+
+    public boolean isComplete() {
+        return complete;
+    }
+
+    public void setComplete(boolean complete) {
+        this.complete = complete;
+    }
 
     public boolean isPennding() {
         return pennding;

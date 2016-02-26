@@ -24,7 +24,6 @@ import cn.mandroid.express.Model.Bean.UserBean;
 public class PreferenceHelper {
     @RootContext
     Context context;
-    Preference preference;
     private static UserBean mUserBean;
     @Pref
     UserPrefs_ userPrefs;
@@ -32,11 +31,11 @@ public class PreferenceHelper {
     FilterPrefs_ filterPrefs;
 
     public boolean isFirstOpen() {
-        return false;
+        return Preference.instance(context).getBoolean(Preference.IS_FIRST_RUN);
     }
 
     public void setRun(boolean run) {
-        preference.putBoolean(Preference.IS_FIRST_RUN, run);
+        Preference.instance(context).putBoolean(Preference.IS_FIRST_RUN, run);
     }
 
     public void saveUsername(String username) {
@@ -107,19 +106,23 @@ public class PreferenceHelper {
                 .depo().put(bean.getDepo())
                 .dest().put(bean.getDest())
                 .finish().put(bean.isFinish())
+                .complete().put(bean.isComplete())
                 .pennding().put(bean.isPennding())
                 .running().put(bean.isRunning())
                 .apply();
     }
-    public FilterBean getFilter(){
-        FilterBean bean=new FilterBean();
+
+    public FilterBean getFilter() {
+        FilterBean bean = new FilterBean();
         bean.setPennding(filterPrefs.pennding().get());
         bean.setRunning(filterPrefs.running().get());
         bean.setFinish(filterPrefs.finish().get());
+        bean.setComplete(filterPrefs.complete().get());
         bean.setDepo(filterPrefs.depo().get());
         bean.setDest(filterPrefs.dest().get());
         return bean;
     }
+
     public UserBean getUser() {
         if (mUserBean == null) {
             return updataUser();

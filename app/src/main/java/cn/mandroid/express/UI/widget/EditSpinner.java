@@ -130,8 +130,7 @@ public class EditSpinner extends RelativeLayout implements View.OnClickListener,
             cacheData.clear();
             cacheData.addAll(data);
             adapter.notifyDataSetChanged();
-            popupWindow.show();
-
+            popupWindow.dismiss();
         }
     }
 

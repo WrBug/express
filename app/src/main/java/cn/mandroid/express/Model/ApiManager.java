@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.TimeoutException;
 
+import cn.mandroid.express.Model.SPrefs.PreferenceHelper_;
 import cn.mandroid.express.UI.activity.LoginActivity_;
 import cn.mandroid.express.UI.common.BasicActivity;
 import cn.mandroid.express.Utils.MD5;
@@ -27,14 +28,13 @@ import cn.mandroid.express.Model.SPrefs.PreferenceHelper;
 /**
  * Created by Administrator on 2015-12-11.
  */
-@EBean
 public class ApiManager {
     private Context context;
-    @Bean
-    PreferenceHelper preferenceHelper;
+    PreferenceHelper_ preferenceHelper;
 
     public ApiManager(Context context) {
         this.context = context;
+        preferenceHelper = PreferenceHelper_.getInstance_(context);
     }
 
     public Map<String, List<String>> getFinalMap(TreeMap<String, String> map) {
@@ -86,16 +86,16 @@ public class ApiManager {
     }
 
     protected JsonObject getDataAsJsonObject(JsonObject result) {
-        JsonElement element=getData(result);
-        if(element==null||element.isJsonNull()){
+        JsonElement element = getData(result);
+        if (element == null || element.isJsonNull()) {
             return null;
         }
         return element.getAsJsonObject();
     }
 
     protected JsonArray getDataAsJsonArray(JsonObject result) {
-        JsonElement element=getData(result);
-        if(element==null||element.isJsonNull()){
+        JsonElement element = getData(result);
+        if (element == null || element.isJsonNull()) {
             return null;
         }
         return getData(result).getAsJsonArray();
@@ -104,10 +104,12 @@ public class ApiManager {
     protected JsonElement getData(JsonObject result) {
         return result.get("data");
     }
+
     protected void showFailedToast(FetchCallBack callBack, JsonObject result) {
-        showFailedToast(callBack,result,null);
+        showFailedToast(callBack, result, null);
     }
-    protected void showFailedToast(FetchCallBack callBack, JsonObject result,@Nullable Object o) {
+
+    protected void showFailedToast(FetchCallBack callBack, JsonObject result, @Nullable Object o) {
         if (!callBack.onFail(getCode(result), o)) {
             switch (getCode(result)) {
                 case Constant.Code.JWC_PSWD_ERROR:

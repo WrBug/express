@@ -1,6 +1,7 @@
 package cn.mandroid.express.UI.activity;
 
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
@@ -46,7 +47,8 @@ public class CenterFragment extends BasicFragment implements PullToRefreshView.O
     FloatingActionButton filterFB;
     @ViewById(R.id.searchFB)
     FloatingActionButton searchFB;
-    List<TaskInfoBean> list = new ArrayList<>();
+    List<TaskInfoBean> taskInfoBeanList = new ArrayList<>();
+    List<TaskInfoBean> cacheList = new ArrayList<>();
     TaskListAdapter adapter;
     @Bean
     TaskManager mTaskManager;
@@ -93,8 +95,10 @@ public class CenterFragment extends BasicFragment implements PullToRefreshView.O
         if (taskInfoBeans == null) {
             return;
         }
-        list = taskInfoBeans;
-        adapter = new TaskListAdapter(this, listView, list);
+        taskInfoBeanList = taskInfoBeans;
+        cacheList.clear();
+        cacheList.addAll(taskInfoBeans);
+        adapter = new TaskListAdapter(this, listView, cacheList);
         listView.setAdapter(adapter);
     }
 
@@ -128,9 +132,28 @@ public class CenterFragment extends BasicFragment implements PullToRefreshView.O
             @Override
             public void onClick(FilterBean bean) {
                 mPreferenceHelper.saveFilter(bean);
+                setFilter(bean);
             }
         });
         filterDialog.show();
+    }
+
+    private void setFilter(FilterBean bean) {
+        int pennding = bean.isPennding() ? 0 : -1;
+        int running = bean.isRunning() ? 1 : -1;
+        int finish = bean.isFinish() ? 2 : -1;
+        int complete = bean.isComplete() ? 3 : -1;
+        cacheList.clear();
+        for (TaskInfoBean info : taskInfoBeanList) {
+            if (info.getStatus() != -1 && (info.getStatus() == pennding || info.getStatus() == running || info.getStatus() == finish || info.getStatus() == complete)) {
+                if (TextUtils.isEmpty(bean.getDepo()) || info.getDepository().contains(bean.getDepo())) {
+                    if (TextUtils.isEmpty(bean.getDest()) || info.getDestination().contains(bean.getDest())) {
+                        cacheList.add(info);
+                    }
+                }
+            }
+        }
+        adapter.notifyDataSetChanged();
     }
 
     private void searchKeyword(String keyword) {
@@ -175,7 +198,7 @@ public class CenterFragment extends BasicFragment implements PullToRefreshView.O
 
     @Override
     public void pushToLoad() {
-        int index = list.size();
+        int index = taskInfoBeanList.size();
         for (int i = 0; i < 3; i++) {
             TaskInfoBean info = new TaskInfoBean();
             UserBean userBean = new UserBean();
@@ -186,10 +209,12 @@ public class CenterFragment extends BasicFragment implements PullToRefreshView.O
             info.setDate(System.currentTimeMillis());
             info.setExpressCompany("顺丰快递");
             info.setStatus(i % 3);
-            list.add(info);
+            taskInfoBeanList.add(info);
         }
+        cacheList.clear();
+        cacheList.addAll(taskInfoBeanList);
         if (adapter == null) {
-            adapter = new TaskListAdapter(this, listView, list);
+            adapter = new TaskListAdapter(this, listView, cacheList);
             listView.setAdapter(adapter);
         } else {
             adapter.notifyDataSetChanged();

@@ -21,6 +21,7 @@ public class FilterDialog extends BaseDialog {
     private CheckBox penndingCheck;
     private CheckBox runningCheck;
     private CheckBox finishCheck;
+    private CheckBox completeCheck;
     private EditSpinner depoSpinner;
     private EditSpinner destSpinner;
     private Button submit;
@@ -48,10 +49,10 @@ public class FilterDialog extends BaseDialog {
         penndingCheck.setChecked(mFilterBean.isPennding());
         runningCheck.setChecked(mFilterBean.isRunning());
         finishCheck.setChecked(mFilterBean.isFinish());
-
+        completeCheck.setChecked(mFilterBean.isComplete());
         destSpinner.setItemData(Arrays.asList(Const.DESTINATION));
         destSpinner.setText(mFilterBean.getDest());
-        depoSpinner.setItemData(Arrays.asList(Const.DESTINATION));
+        depoSpinner.setItemData(Arrays.asList(Const.DEPOSITORY));
         depoSpinner.setText(mFilterBean.getDepo());
     }
 
@@ -59,6 +60,7 @@ public class FilterDialog extends BaseDialog {
         penndingCheck = (CheckBox) findViewById(R.id.penndingCheck);
         runningCheck = (CheckBox) findViewById(R.id.runningCheck);
         finishCheck = (CheckBox) findViewById(R.id.finishCheck);
+        completeCheck = (CheckBox) findViewById(R.id.completeCheck);
         depoSpinner = (EditSpinner) findViewById(R.id.depoSpinner);
         destSpinner = (EditSpinner) findViewById(R.id.destSpinner);
         submit = (Button) findViewById(R.id.submit);
@@ -71,6 +73,7 @@ public class FilterDialog extends BaseDialog {
                 bean.setFinish(finishCheck.isChecked());
                 bean.setPennding(penndingCheck.isChecked());
                 bean.setRunning(runningCheck.isChecked());
+                bean.setComplete(completeCheck.isChecked());
                 if (callback != null) {
                     callback.onClick(bean);
                 }
