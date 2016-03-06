@@ -217,6 +217,22 @@
                     android:padding="5dp"
                     android:text="我帮忙拿了10次快递" />
             </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_white_color_shape"
+                android:padding="5dp">
+
+                <Button
+                    android:id="@+id/logoutBut"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/holo_red_dark"
+                    android:text="退出登录"
+                    android:textColor="@android:color/white" />
+            </FrameLayout>
         </LinearLayout>
 
     </ScrollView>

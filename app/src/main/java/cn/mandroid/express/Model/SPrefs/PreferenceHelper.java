@@ -16,6 +16,7 @@ import java.util.List;
 import cn.mandroid.express.Model.Bean.FilterBean;
 import cn.mandroid.express.Model.Bean.TaskInfoBean;
 import cn.mandroid.express.Model.Bean.UserBean;
+import io.rong.imkit.RongIM;
 
 /**
  * Created by Administrator on 2015-11-15.
@@ -84,6 +85,12 @@ public class PreferenceHelper {
                 .avatarUrl().put(userBean.getAvatarUrl())
                 .token().put(userBean.getToken())
                 .apply();
+    }
+
+    public void cleanUser() {
+        userPrefs.edit().clear().apply();
+        mUserBean = null;
+        RongIM.getInstance().disconnect();
     }
 
     private UserBean updataUser() {

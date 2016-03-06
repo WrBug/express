@@ -27,6 +27,7 @@ import cn.mandroid.express.Model.TaskManager;
 import cn.mandroid.express.R;
 import cn.mandroid.express.UI.adapter.TaskListAdapter;
 import cn.mandroid.express.UI.common.BasicFragment;
+import cn.mandroid.express.UI.common.BasicHomeFragment;
 import cn.mandroid.express.UI.dialog.FilterDialog;
 import cn.mandroid.express.UI.dialog.SearchDialog;
 import cn.mandroid.express.UI.dialog.SearchDialog_;
@@ -36,7 +37,7 @@ import cn.mandroid.express.UI.widget.LoadMoreListView;
  * Created by Administrator on 2015/12/17.
  */
 @EFragment(R.layout.fragment_center)
-public class CenterFragment extends BasicFragment implements PullToRefreshView.OnRefreshListener, LoadMoreListView.PushToLoadListenner {
+public class CenterFragment extends BasicHomeFragment implements PullToRefreshView.OnRefreshListener, LoadMoreListView.PushToLoadListenner {
     @ViewById(R.id.pullToRefresh)
     PullToRefreshView pullToRefreshView;
     @ViewById(R.id.list_view)
@@ -88,7 +89,12 @@ public class CenterFragment extends BasicFragment implements PullToRefreshView.O
     }
 
     public void setAdapter() {
-        setAdapter(DaoManager.getTaskList());
+        List<TaskInfoBean> taskInfoBeans=DaoManager.getTaskList();
+        if(taskInfoBeans==null||taskInfoBeans.isEmpty()){
+            pullToRefreshView.setRefreshing(true);
+            showToast("正在加载数据");
+        }
+        setAdapter(taskInfoBeans);
     }
 
     private void setAdapter(List<TaskInfoBean> taskInfoBeans) {

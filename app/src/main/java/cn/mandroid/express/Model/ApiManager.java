@@ -132,6 +132,7 @@ public class ApiManager {
                     break;
                 case Constant.Code.SESSION_ERROR:
                     MToast.show(context, "身份已过期，请重新登录！");
+                    preferenceHelper.cleanUser();
                     LoginActivity_.intent(context).start();
                     break;
                 case Constant.Code.TASK_IS_DELETE:

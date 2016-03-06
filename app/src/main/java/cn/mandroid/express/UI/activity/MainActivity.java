@@ -1,5 +1,6 @@
 package cn.mandroid.express.UI.activity;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -82,8 +83,8 @@ public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgCl
         lastCheckedRb = rbCenter;
         rbCenter.setChecked(true);
         initFragment();
+        lastCheckedRb = rbCenter;
         setFragment(centerFragment);
-
     }
 
     private void initFragment() {
@@ -91,6 +92,9 @@ public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgCl
         userInfoFragment = UserInfoFragment_.builder().build();
     }
 
+    public void setCenterFragment() {
+        rbCenter.setChecked(true);
+    }
 
     private void setActionBar() {
         actionBar.setTitle("发现");
@@ -123,6 +127,11 @@ public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgCl
     @Override
     public void leftImgClick(ImageView view) {
 
+    }
+
+    @Override
+    public void startActivityForResult(Intent intent, int requestCode, Bundle options) {
+        super.startActivityForResult(intent, requestCode, options);
     }
 
     public void onEvent(UnreadEvent event) {
@@ -193,10 +202,8 @@ public class MainActivity extends BasicActivity implements ActionBar.OnHeadImgCl
                 break;
             case R.id.rbCenter: {
                 lastCheckedRb = rbCenter;
-
                 setFragment(centerFragment);
                 actionBar.setTitle("发现");
-//                setFragment(checkedId);
                 break;
             }
             case R.id.rbMy:

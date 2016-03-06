@@ -40,7 +40,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".UI.activity.LoginActivity_" />
-        <activity android:name=".UI.activity.MultiImageSelectorActivity" />
+        <activity android:name=".UI.activity.MultiImageSelectorActivity_" />
         <activity
             android:name="com.mob.tools.MobUIShell"
             android:configChanges="keyboardHidden|orientation|screenSize"

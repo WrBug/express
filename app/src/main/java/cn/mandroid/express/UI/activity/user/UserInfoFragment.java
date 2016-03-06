@@ -26,7 +26,9 @@ import cn.mandroid.express.Model.UserManager;
 import cn.mandroid.express.R;
 import cn.mandroid.express.UI.activity.LoginActivity_;
 import cn.mandroid.express.UI.activity.MultiImageSelectorActivity;
+import cn.mandroid.express.UI.activity.MultiImageSelectorActivity_;
 import cn.mandroid.express.UI.common.BasicFragment;
+import cn.mandroid.express.UI.common.BasicHomeFragment;
 import cn.mandroid.express.UI.dialog.ProgressDialog;
 import cn.mandroid.express.Utils.Const;
 import cn.mandroid.express.Utils.DateUtil;
@@ -35,7 +37,7 @@ import cn.pedant.sweetalert.SweetAlertDialog;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 @EFragment(R.layout.fragment_user_info)
-public class UserInfoFragment extends BasicFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class UserInfoFragment extends BasicHomeFragment implements SwipeRefreshLayout.OnRefreshListener {
     @Bean
     UserManager mUserManager;
     @Bean
@@ -66,7 +68,7 @@ public class UserInfoFragment extends BasicFragment implements SwipeRefreshLayou
     TextView userReceiveCountText;
     UserBean userBean;
     public static final int CROP_IMAGE = 2;
-    final int REQUEST_IMAGE = 1;
+    final int REQUEST_IMAGE = 0x99;
     private ProgressDialog progressDialog;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -82,11 +84,20 @@ public class UserInfoFragment extends BasicFragment implements SwipeRefreshLayou
 
     @Click(R.id.userIcoImg)
     void selectIco() {
-        Intent intent = new Intent(getActivity(), MultiImageSelectorActivity.class);
-        intent.putExtra(MultiImageSelectorActivity.EXTRA_SHOW_CAMERA, true);
-        intent.putExtra(MultiImageSelectorActivity.EXTRA_SELECT_COUNT, 1);
-        intent.putExtra(MultiImageSelectorActivity.EXTRA_SELECT_MODE, MultiImageSelectorActivity.MODE_SINGLE);
-        startActivityForResult(intent, REQUEST_IMAGE);
+        MultiImageSelectorActivity_.intent(this).isShow(true).defaultCount(1).mode(MultiImageSelectorActivity.MODE_SINGLE).startForResult(REQUEST_IMAGE);
+    }
+
+    @Click(R.id.logoutBut)
+    void logoutClick() {
+        SweetAlertDialog dialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE);
+        dialog.setTitleText("是否注销登陆？").setConfirmText("注销").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                mPreferenceHelper.cleanUser();
+                mainActivity.setCenterFragment();
+                sweetAlertDialog.dismiss();
+            }
+        }).show();
     }
 
     @Click(R.id.howToGetIntegralText)
@@ -218,9 +229,6 @@ public class UserInfoFragment extends BasicFragment implements SwipeRefreshLayou
             @Override
             public boolean onFail(int code, UserBean bean) {
                 swipeRefreshLayout.setRefreshing(false);
-                if (code == Constant.Code.SESSION_ERROR) {
-                    LoginActivity_.intent(getActivity()).start();
-                }
                 return true;
             }
 

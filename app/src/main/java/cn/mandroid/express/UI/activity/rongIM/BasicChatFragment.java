@@ -10,15 +10,15 @@ import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import cn.mandroid.express.R;
 import cn.mandroid.express.UI.activity.MainActivity_;
 import cn.mandroid.express.UI.common.BasicFragment;
+import cn.mandroid.express.UI.common.BasicHomeFragment;
 
 /**
  * Created by Administrator on 2016/1/29 0029.
  */
-public abstract class BasicChatFragment extends BasicFragment implements View.OnClickListener {
+public abstract class BasicChatFragment extends BasicHomeFragment implements View.OnClickListener {
     private FloatingActionsMenu actionMenu;
     private FloatingActionButton conversationFB;
     private FloatingActionButton friendsFB;
-    private MainActivity_ activity;
     public static Fragment lastChatFragment=ChatFragment_.builder().build();
     protected abstract FloatingActionsMenu setActionMenu();
     protected abstract Fragment register();
@@ -26,10 +26,6 @@ public abstract class BasicChatFragment extends BasicFragment implements View.On
     public void onStart() {
         actionMenu = setActionMenu();
         lastChatFragment=register();
-        Context context = getActivity();
-        if (context instanceof MainActivity_) {
-            activity = (MainActivity_) context;
-        }
         setActionButton();
         super.onStart();
     }
@@ -45,12 +41,12 @@ public abstract class BasicChatFragment extends BasicFragment implements View.On
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.conversationFB:
-                activity.setFragment(ChatFragment_.builder().build());
-                activity.setActionBarTitle("最近联系人");
+                mainActivity.setFragment(ChatFragment_.builder().build());
+                mainActivity.setActionBarTitle("最近联系人");
                 break;
             case R.id.friendsFB:
-                activity.setFragment(FriendsFragment_.builder().build());
-                activity.setActionBarTitle("好友");
+                mainActivity.setFragment(FriendsFragment_.builder().build());
+                mainActivity.setActionBarTitle("好友");
                 break;
         }
     }
