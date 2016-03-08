@@ -1,8 +1,12 @@
 package cn.mandroid.express.UI.widget;
 
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
+import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -23,10 +27,12 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.mandroid.express.R;
+import cn.mandroid.express.Utils.MLog;
 
 /**
  * Created by Administrator on 2016/2/26 0026.
@@ -52,7 +58,9 @@ public class EditSpinner extends RelativeLayout implements View.OnClickListener,
     }
 
     public void setText(String text) {
+        editText.removeTextChangedListener(this);
         editText.setText(text);
+        editText.addTextChangedListener(this);
     }
 
     private void initView() {
@@ -86,7 +94,6 @@ public class EditSpinner extends RelativeLayout implements View.OnClickListener,
         popupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
         popupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         popupWindow.setAnchorView(editText);
-//        popupWindow.setBackgroundDrawable(new BitmapDrawable());
     }
 
     public String getEditString() {
@@ -124,6 +131,7 @@ public class EditSpinner extends RelativeLayout implements View.OnClickListener,
     @Override
     public void afterTextChanged(Editable s) {
         String key = s.toString();
+        editText.setSelection(key.length());
         if (!TextUtils.isEmpty(key)) {
             findData(key);
         } else {
