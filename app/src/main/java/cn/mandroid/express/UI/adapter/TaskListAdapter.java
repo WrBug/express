@@ -91,7 +91,7 @@ public class TaskListAdapter extends BaseAdapter implements OnItemClickListener 
         holder.container.setBackgroundColor(colors[position % 3]);
         if (info.getUser() != null) {
             if (TextUtils.isEmpty(info.getUser().getAvatarUrl())) {
-                UiUtil.loadImage(context, holder.userIcoImg, info.getUser().getSex() == 1 ? R.drawable.ic_user_default_man : R.drawable.ic_user_default_woman);
+                UiUtil.loadImage(context, holder.userIcoImg, info.getUser().isMan() ? R.drawable.ic_user_default_man : R.drawable.ic_user_default_woman);
             } else {
                 UiUtil.loadImage(context, holder.userIcoImg, info.getUser().getAvatarUrl());
             }

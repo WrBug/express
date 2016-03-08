@@ -123,7 +123,7 @@ public class TaskDetailActivity extends BasicActivity implements SwipeRefreshLay
         swipeRefreshLayout.setOnRefreshListener(this);
         heavyCheck.setClickable(false);
         bigCheck.setClickable(false);
-        chatBut.setText("联系" + (taskInfoBean.getUser().getSex() == 1 ? "她" : "他"));
+        chatBut.setText("联系" + (taskInfoBean.getUser().isMan() ? "他" : "她"));
         getTaskDetail();
     }
 

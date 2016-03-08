@@ -76,7 +76,7 @@ public class RongImManager {
                 if (userBean != null) {
                     Uri uri;
                     if (TextUtils.isEmpty(userBean.getAvatarUrl())) {
-                        uri = userBean.getSex() == 1 ? FileUtils.getDefalutWomanIco(context) : FileUtils.getDefalutManIco(context);
+                        uri = userBean.isMan() ? FileUtils.getDefalutManIco(context) : FileUtils.getDefalutWomanIco(context);
                     } else {
                         uri = Uri.parse(userBean.getAvatarUrl());
                     }
@@ -110,7 +110,7 @@ public class RongImManager {
     public void setUserinfo(UserBean userBean) {
         Uri uri;
         if (TextUtils.isEmpty(userBean.getAvatarUrl())) {
-            uri = FileUtils.res2Uri(context, userBean.getSex() == 1 ? R.drawable.ic_user_default_woman : R.drawable.ic_user_default_man);
+            uri = userBean.isMan() ? FileUtils.getDefalutManIco(context) : FileUtils.getDefalutWomanIco(context);
         } else {
             uri = Uri.parse(userBean.getAvatarUrl());
         }
@@ -141,7 +141,13 @@ public class RongImManager {
         });
     }
 
-    public void refreshUserInfoCache(String username, String nickname, @Nullable String avatarUrl) {
-        RongIM.getInstance().refreshUserInfoCache(new UserInfo(username, nickname, Uri.parse(avatarUrl)));
+    public void refreshUserInfoCache(UserBean userBean) {
+        Uri uri;
+        if (TextUtils.isEmpty(userBean.getAvatarUrl())) {
+            uri = userBean.isMan() ? FileUtils.getDefalutManIco(context) : FileUtils.getDefalutWomanIco(context);
+        } else {
+            uri = Uri.parse(userBean.getAvatarUrl());
+        }
+        RongIM.getInstance().refreshUserInfoCache(new UserInfo(userBean.getUsername(), userBean.getName(), uri));
     }
 }

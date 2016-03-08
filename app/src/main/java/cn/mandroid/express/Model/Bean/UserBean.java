@@ -56,7 +56,9 @@ public class UserBean implements Serializable {
     public int getSex() {
         return sex;
     }
-
+    public boolean isMan(){
+        return sex==0;
+    }
     public void setSex(int sex) {
         this.sex = sex;
     }

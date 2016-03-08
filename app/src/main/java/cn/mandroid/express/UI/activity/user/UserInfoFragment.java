@@ -200,7 +200,7 @@ public class UserInfoFragment extends BasicHomeFragment implements SwipeRefreshL
             public void onSuccess(int code, String s) {
                 showToast("上传成功！");
                 UiUtil.loadImage(getActivity(), userIcoImg, s);
-                mRongImManager.refreshUserInfoCache(userBean.getUsername(), userBean.getName(), s);
+                mRongImManager.refreshUserInfoCache(userBean);
             }
 
             @Override
@@ -223,6 +223,7 @@ public class UserInfoFragment extends BasicHomeFragment implements SwipeRefreshL
             public void onSuccess(int code, UserBean userBean) {
                 swipeRefreshLayout.setRefreshing(false);
                 mPreferenceHelper.saveUser(userBean);
+                mRongImManager.refreshUserInfoCache(userBean);
                 updateUI();
             }
 
@@ -242,11 +243,11 @@ public class UserInfoFragment extends BasicHomeFragment implements SwipeRefreshL
 
     private void updateUI() {
         UserBean userBean = mPreferenceHelper.getUser();
-        userIcoImg.setImageResource(userBean.getSex() == 1 ? R.drawable.ic_user_default_woman : R.drawable.ic_user_default_man);
+        userIcoImg.setImageResource(userBean.isMan() ? R.drawable.ic_user_default_man : R.drawable.ic_user_default_woman);
         if (!TextUtils.isEmpty(userBean.getAvatarUrl())) {
             UiUtil.loadImage(getActivity(), userIcoImg, userBean.getAvatarUrl());
         }
-        userSexImg.setImageResource(userBean.getSex() == 1 ? R.drawable.ic_user_sex_female : R.drawable.ic_user_sex_male);
+        userSexImg.setImageResource(userBean.isMan() ? R.drawable.ic_user_sex_male : R.drawable.ic_user_sex_female);
         userNameText.setText(userBean.getName());
         int level = getLevel(userBean);
         userLevelText.setText(Const.LEVEL[level]);
