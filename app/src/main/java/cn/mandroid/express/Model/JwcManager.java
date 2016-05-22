@@ -43,16 +43,18 @@ public class JwcManager extends ApiManager {
                     if (isSuccess(result)) {
                         callBack.onSuccess(getCode(result), result);
                     } else {
-                        showFailedToast(callBack,result);
+                        showFailedToast(callBack, result, result);
                     }
                 }
             }
         });
     }
 
+    //    获取cookie
     public void getCookie(String ticket, final FetchCallBack<String> callBack) {
         String url = "http://jxgl.hdu.edu.cn/index.aspx?ticket=" + ticket;
         TreeMap<String, String> map = new TreeMap<>();
+        //        必传参数
         map.put("__VIEWSTATE", "/wEPDwUKLTUxMTcwNzgxMGRk");
         preferenceHelper.cleanCookie();
         CookieMiddleware cookieMiddleware = Ion.getDefault(context).getCookieMiddleware();
@@ -101,7 +103,7 @@ public class JwcManager extends ApiManager {
                 });
     }
 
-    public void register(String username, String password, String name, String phone,String idcard, String sex, final FetchCallBack<UserBean> callback) {
+    public void register(String username, String password, String name, String phone, String idcard, String sex, final FetchCallBack<UserBean> callback) {
         TreeMap<String, String> map = new TreeMap<>();
         map.put("username", username);
         map.put("password", password);
@@ -115,7 +117,7 @@ public class JwcManager extends ApiManager {
                 .setCallback(new FutureCallback<JsonObject>() {
                     @Override
                     public void onCompleted(Exception e, JsonObject result) {
-                        if (isExceptionNull(e,callback)) {
+                        if (isExceptionNull(e, callback)) {
                             if (isSuccess(result)) {
                                 Gson gson = new Gson();
                                 UserBean userBean = gson.fromJson(getData(result), UserBean.class);

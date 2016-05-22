@@ -29,11 +29,6 @@ public class RongImManager {
     private Context context;
     @Bean
     PreferenceHelper preferenceHelper;
-
-    public RongImManager(Context context) {
-        this.context = context;
-    }
-
     public void connectIm(final UserBean userBean, final boolean tryAgan) {
         RongIM.connect(userBean.getToken(), new RongIMClient.ConnectCallback() {
             @Override
