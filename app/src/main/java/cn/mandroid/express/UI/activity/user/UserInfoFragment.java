@@ -230,7 +230,8 @@ public class UserInfoFragment extends BasicHomeFragment implements SwipeRefreshL
             @Override
             public boolean onFail(int code, UserBean bean) {
                 swipeRefreshLayout.setRefreshing(false);
-                return true;
+                mainActivity.setCenterFragment();
+                return false;
             }
 
             @Override
