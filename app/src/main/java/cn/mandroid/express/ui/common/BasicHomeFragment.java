@@ -2,6 +2,7 @@ package cn.mandroid.express.ui.common;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 
 import org.androidannotations.annotations.EFragment;
 
@@ -12,11 +13,23 @@ import cn.mandroid.express.ui.activity.MainActivity;
  */
 @EFragment
 public class BasicHomeFragment extends BasicFragment {
-    protected MainActivity mainActivity;
+    private MainActivity parentActivity;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mainActivity = (MainActivity) getActivity();
+        parentActivity = (MainActivity) getActivity();
+    }
+
+    protected void setActionBar(CharSequence charSequence) {
+        parentActivity.setActionBarTitle(charSequence.toString());
+    }
+
+    protected void setFragment(Fragment fragment) {
+        parentActivity.setFragment(fragment);
+    }
+
+    protected void setCenterFragment() {
+        parentActivity.setCenterFragment();
     }
 }

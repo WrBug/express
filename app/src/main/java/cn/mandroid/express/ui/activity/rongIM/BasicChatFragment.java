@@ -16,13 +16,16 @@ public abstract class BasicChatFragment extends BasicHomeFragment implements Vie
     private FloatingActionsMenu actionMenu;
     private FloatingActionButton conversationFB;
     private FloatingActionButton friendsFB;
-    public static Fragment lastChatFragment=ChatFragment_.builder().build();
+    public static Fragment lastChatFragment = ChatFragment_.builder().build();
+
     protected abstract FloatingActionsMenu setActionMenu();
+
     protected abstract Fragment register();
+
     @Override
     public void onStart() {
         actionMenu = setActionMenu();
-        lastChatFragment=register();
+        lastChatFragment = register();
         setActionButton();
         super.onStart();
     }
@@ -38,12 +41,12 @@ public abstract class BasicChatFragment extends BasicHomeFragment implements Vie
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.conversationFB:
-                mainActivity.setFragment(ChatFragment_.builder().build());
-                mainActivity.setActionBarTitle("最近联系人");
+                setFragment(ChatFragment_.builder().build());
+                setActionBar("最近联系人");
                 break;
             case R.id.friendsFB:
-                mainActivity.setFragment(FriendsFragment_.builder().build());
-                mainActivity.setActionBarTitle("好友");
+                setFragment(FriendsFragment_.builder().build());
+                setActionBar("好友");
                 break;
         }
     }

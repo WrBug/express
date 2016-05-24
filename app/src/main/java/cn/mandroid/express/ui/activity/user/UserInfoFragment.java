@@ -92,7 +92,7 @@ public class UserInfoFragment extends BasicHomeFragment implements SwipeRefreshL
             @Override
             public void onClick(SweetAlertDialog sweetAlertDialog) {
                 mPreferenceHelper.cleanUser();
-                mainActivity.setCenterFragment();
+                setCenterFragment();
                 sweetAlertDialog.dismiss();
             }
         }).show();
@@ -228,7 +228,7 @@ public class UserInfoFragment extends BasicHomeFragment implements SwipeRefreshL
             @Override
             public boolean onFail(int code, UserBean bean) {
                 swipeRefreshLayout.setRefreshing(false);
-                mainActivity.setCenterFragment();
+                setCenterFragment();
                 return false;
             }
 
