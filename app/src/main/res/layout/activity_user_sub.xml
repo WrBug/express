@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="cn.mandroid.express.UI1.activity.user.UserSubActivity">
+    tools:context="cn.mandroid.express.ui.activity.user.UserSubActivity">
 
-    <cn.mandroid.express.UI1.widget.ActionBar
+    <cn.mandroid.express.ui.widget.ActionBar
         android:id="@+id/actionBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

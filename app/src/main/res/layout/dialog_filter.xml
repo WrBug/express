@@ -79,7 +79,7 @@
             android:layout_below="@+id/penndingCheck"
             android:text="按存放地" />
 
-        <cn.mandroid.express.UI1.widget.EditSpinner
+        <cn.mandroid.express.ui.widget.EditSpinner
             android:id="@+id/depoSpinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -97,7 +97,7 @@
             android:layout_below="@+id/depoSpinner"
             android:text="按目的地" />
 
-        <cn.mandroid.express.UI1.widget.EditSpinner
+        <cn.mandroid.express.ui.widget.EditSpinner
             android:id="@+id/destSpinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

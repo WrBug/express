@@ -6,7 +6,7 @@
     android:background="@color/ashy_bg"
     android:orientation="vertical">
 
-    <cn.mandroid.express.UI1.widget.ActionBar
+    <cn.mandroid.express.ui.widget.ActionBar
         android:id="@+id/actionBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
                 android:orientation="vertical"
                 android:padding="7dp">
 
-                <cn.mandroid.express.UI1.widget.EditSpinner
+                <cn.mandroid.express.ui.widget.EditSpinner
                     android:id="@+id/expressCompanySpinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -90,7 +90,7 @@
                 android:orientation="vertical"
                 android:padding="7dp">
 
-                <cn.mandroid.express.UI1.widget.EditSpinner
+                <cn.mandroid.express.ui.widget.EditSpinner
                     android:id="@+id/depositorySpinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -108,7 +108,7 @@
                     android:layout_marginTop="10dp"
                     android:hint="具体存放位置（A区1号架）" />
 
-                <cn.mandroid.express.UI1.widget.EditSpinner
+                <cn.mandroid.express.ui.widget.EditSpinner
                     android:id="@+id/destinationSpinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

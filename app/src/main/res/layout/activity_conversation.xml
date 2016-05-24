@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="cn.mandroid.express.UI1.activity.rongIM.ConversationActivity">
+    tools:context="cn.mandroid.express.ui.activity.rongIM.ConversationActivity">
 
-    <cn.mandroid.express.UI1.widget.ActionBar
+    <cn.mandroid.express.ui.widget.ActionBar
         android:id="@+id/action_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
