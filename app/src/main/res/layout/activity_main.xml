@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UI.activity.MainActivity">
+    tools:context=".UI1.activity.MainActivity">
 
-    <cn.mandroid.express.UI.widget.ActionBar
+    <cn.mandroid.express.UI1.widget.ActionBar
         android:id="@+id/actionBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

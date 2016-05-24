@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <cn.mandroid.express.UI.widget.LoadMoreListView
+    <cn.mandroid.express.UI1.widget.LoadMoreListView
         android:id="@+id/list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

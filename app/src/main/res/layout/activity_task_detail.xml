@@ -6,9 +6,9 @@
     android:layout_height="match_parent"
     android:background="@color/ashy_bg"
     android:orientation="vertical"
-    tools:context="cn.mandroid.express.UI.activity.TaskDetailActivity">
+    tools:context="cn.mandroid.express.UI1.activity.TaskDetailActivity">
 
-    <cn.mandroid.express.UI.widget.ActionBar
+    <cn.mandroid.express.UI1.widget.ActionBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:hideMoreView="true"
@@ -53,7 +53,7 @@
                         android:orientation="horizontal"
                         android:padding="10dp">
 
-                        <cn.mandroid.express.UI.widget.StepView
+                        <cn.mandroid.express.UI1.widget.StepView
                             android:id="@+id/stepView1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
                             app:bottomText="发布"
                             app:count="1" />
 
-                        <cn.mandroid.express.UI.widget.StepView
+                        <cn.mandroid.express.UI1.widget.StepView
                             android:id="@+id/stepView2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -69,7 +69,7 @@
                             app:bottomText="待领取"
                             app:count="2" />
 
-                        <cn.mandroid.express.UI.widget.StepView
+                        <cn.mandroid.express.UI1.widget.StepView
                             android:id="@+id/stepView3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -77,7 +77,7 @@
                             app:bottomText="进行中"
                             app:count="3" />
 
-                        <cn.mandroid.express.UI.widget.StepView
+                        <cn.mandroid.express.UI1.widget.StepView
                             android:id="@+id/stepView4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

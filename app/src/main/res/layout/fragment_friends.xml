@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UI.activity.rongIM.FriendsFragment">
+    tools:context=".UI1.activity.rongIM.FriendsFragment">
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"
@@ -16,7 +16,7 @@
             android:divider="@null" />
     </android.support.v4.widget.SwipeRefreshLayout>
 
-    <cn.mandroid.express.UI.widget.SideBar
+    <cn.mandroid.express.UI1.widget.SideBar
         android:id="@+id/sideBar"
         android:layout_width="45dp"
         android:layout_height="wrap_content"
